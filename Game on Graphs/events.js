@@ -18,8 +18,8 @@ function calculate(){
 	
 	//run function to see if they can guarantee a win in this position, and output result
 	if(canPlayerForceWin(M_adj, player)) {
-		output.innerText = "Player "+player" can force a win from this position.";
-	} else {
-		output.innerText = "Player "+player" cannot force a win from this position.";
+		output.innerText = "Player "+player+" can force a win from this position.";
+	} else { 
+		output.innerText = "Player "+player+" cannot force a win from this position.";
 	}
 }
