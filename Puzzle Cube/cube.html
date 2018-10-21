@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Puzzle Cube Solver</title>
+		<link type="text/css" rel="stylesheet" href="cube.css"/>
+	</head>
+	<body>
+		<div id="preSolveButtonsContainer">
+			<button id="addPart">Add Part</button>
+			<button id="solve">Solve</button>
+		</div>
+		
+		<div id="partsContainer"></div>
+		
+		<div id="solutionsContainer"></div>
+		
+		
+		<!-- Set-up/data entry/output scripts -->
+		<script src="cube_Globals.js"></script>
+		<script src="cube_GUI.js"></script>
+		<script src="cube_CheckInput.js"></script>
+		
+		<!-- Isometric Display Scripts -->
+		<script src="cube_Isometric.js"></script>
+		
+		<!-- Array/part manipulation scripts -->
+		<script src="cube_Utilities.js"></script>
+		<script src="cube_GetOrientations.js"></script>
+		<script src="cube_Uniquefy.js"></script>
+		<script src="cube_GetCubeLocations.js"></script>
+		
+		<!-- Execution scripts -->
+		<script src="cube_Solve.js"></script>
+		
+		<!-- Event Listeners -->
+		<script src="cube_EventListeners.js"></script>
+	</body>
+</html>

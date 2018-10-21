@@ -1,0 +1,586 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Air War</title>
+        <link type="text/css" rel="stylesheet" href="airWar.css"/>
+		<link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+        
+        <script src="http://code.jquery.com/jquery-1.10.2.js"></script>
+        <script src="http://code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+        
+        <script src="airWar.js"></script>
+        <script src="airWarBattlefield.js"></script>
+        <script src="airWarShops.js"></script>
+        <script src="airWarDirection.js"></script>
+        <script src="airWarModal.js"></script>
+        <script src="airWarBulAnimation.js"></script>
+		<script src="airWarRisingAnimation.js"></script>
+    </head>
+    <body>
+        <div id="clickDisabler"></div> <!--also used for the bomb effect-->
+        <!--BULLET MODALS START >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>-->
+        <div id="bulletModal-1" class="bulletModal">
+            <div class="bulletChooser">
+                <p class="chooseInstructions">Pick which bullet to fire:</p>
+                <div class="bulletsContainer">
+                    <div id="lvl1Bullets-1" class="bulletSlot">
+                        <canvas id="lvl1BulletCanvas-1"></canvas>
+                        <p>x0</p>
+                    </div>
+                    <div id="lvl2Bullets-1" class="bulletSlot">
+                        <canvas id="lvl2BulletCanvas-1"></canvas>
+                        <p>x0</p>
+                    </div>
+                    <div id="lvl3Bullets-1" class="bulletSlot">
+                        <canvas id="lvl3BulletCanvas-1"></canvas>
+                        <p>x0</p>
+                    </div>
+                    <div id="lvl4Bullets-1" class="bulletSlot">
+                        <canvas id="lvl4BulletCanvas-1"></canvas>
+                        <p>x0</p>
+                    </div>
+                    <div id="lvl5Bullets-1" class="bulletSlot">
+                        <canvas id="lvl5BulletCanvas-1"></canvas>
+                        <p>x0</p>
+                    </div>
+                </div>
+                <div class="bulletInfo">
+                    <p class="infoLabels">Damage:<br>Speed:</p>
+                    <p class="actualInfo">
+                        <span id="damageInfo-1">80 health</span><br>
+                        <span id="speedInfo-1">2 units per turn</span>
+                    </p>
+                </div>
+                <div class="chooserButtonContainer">
+                    <div id="cancelBullet-1" class="chooserButton cancelBullet">Cancel</div>
+                    <div id="fireBullet-1" class="chooserButton fireBullet">Fire Bullet</div>
+                </div>
+            </div>
+        </div>
+        <div id="bulletModal-2" class="bulletModal">
+            <div class="bulletChooser">
+                <p class="chooseInstructions">Pick which bullet to fire:</p>
+                <div class="bulletsContainer">
+                    <div id="lvl1Bullets-2" class="bulletSlot">
+                        <canvas id="lvl1BulletCanvas-2"></canvas>
+                        <p>x0</p>
+                    </div>
+                    <div id="lvl2Bullets-2" class="bulletSlot">
+                        <canvas id="lvl2BulletCanvas-2"></canvas>
+                        <p>x0</p>
+                    </div>
+                    <div id="lvl3Bullets-2" class="bulletSlot">
+                        <canvas id="lvl3BulletCanvas-2"></canvas>
+                        <p>x0</p>
+                    </div>
+                    <div id="lvl4Bullets-2" class="bulletSlot">
+                        <canvas id="lvl4BulletCanvas-2"></canvas>
+                        <p>x0</p>
+                    </div>
+                    <div id="lvl5Bullets-2" class="bulletSlot">
+                        <canvas id="lvl5BulletCanvas-2"></canvas>
+                        <p>x0</p>
+                    </div>
+                </div>
+                <div class="bulletInfo">
+                    <p class="infoLabels">Damage:<br>Speed:</p>
+                    <p class="actualInfo">
+                        <span id="damageInfo-2">80 health</span><br>
+                        <span id="speedInfo-2">2 units per turn</span>
+                    </p>
+                </div>
+                <div class="chooserButtonContainer">
+                    <div id="cancelBullet-2" class="chooserButton cancelBullet">Cancel</div>
+                    <div id="fireBullet-2" class="chooserButton fireBullet">Fire Bullet</div>
+                </div>
+            </div>
+        </div>
+        <!--BULLET MODALS END >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>-->
+        
+        <ul id="screenChangeButtons">
+            <li id="changeMain" class="screenButton" onclick="changeScreen('main')">Battlefield</li>
+            <li id="changeAircraft" class="screenButton" onclick="changeScreen('aircraft')">Aircrafts</li>
+            <li id="changeBullet" class="screenButton" onclick="changeScreen('bullet')">Bullets</li>
+            <li id="changeItem" class="screenButton" onclick="changeScreen('item')">Items</li>
+        </ul>
+        
+        <!-- main ======================================================================-->
+        
+        <div id="displayContainer">
+            <div id="mainInterface">
+                <div id="coinValueInfo">
+                    <ul>
+                        <li><span class="dimYellow">&#10027;</span> = <span class="dollarGreen">$</span>10</li>
+                        <li><span class="dimYellow">&#10028;</span> = <span class="dollarGreen">$</span>20</li>
+                        <li><span class="dimYellow">&#10026;</span> = <span class="dollarGreen">$</span>30</li>
+                        <li><span class="dimYellow">&#10023;</span> = <span class="dollarGreen">$</span>40</li>
+                    </ul>
+                    <div id="aircraftBay"></div>
+                    <div id="directionIconStorage">
+                        <div id="directionIcon">
+                            <canvas id="icon" width="50" height="50"></canvas>
+                        </div>
+                    </div>
+                    <img id="trash" src="https://openclipart.org/image/800px/svg_to_png/25915/hrum-trash.png"/>
+                </div>
+                <div id="leftTableDivider" class="tableDivider"></div>
+                <table id="battlefield">
+                    <tbody>
+                        <tr class="coordMarkerRow">
+                            <td class="rowNumbers"></td>
+                            <td class="smallCell"></td>
+                            <td>l</td>
+                            <td class="smallCell"></td>
+                            <td>l</td>
+                            <td class="smallCell"></td>
+                            <td>l</td>
+                            <td class="smallCell"></td>
+                            <td>l</td>
+                            <td class="smallCell"></td>
+                            <td>l</td>
+                            <td class="smallCell"></td>
+                            <td>l</td>
+                            <td class="smallCell"></td>
+                            <td>l</td>
+                            <td class="smallCell"></td>
+                        </tr>
+                        <tr>
+                            <td class="rowNumbers"><div class="numberCoord">1</div></td>
+                            <td class="smallCell"><div class="coordDot"></div></td>
+                            <td id="1a1"></td>
+                            <td class="smallCell"><div class="coordDot"></div></td>
+                            <td id="1a2"></td>
+                            <td class="smallCell"><div class="coordDot"></div></td>
+                            <td id="1a3"></td>
+                            <td class="smallCell"><div class="coordDot"></div></td>
+                            <td id="1a4"><div id="blueBase" class="base">100</div></td>
+                            <td class="smallCell"><div class="coordDot"></div></td>
+                            <td id="1a5"></td>
+                            <td class="smallCell"><div class="coordDot"></div></td>
+                            <td id="1a6"></td>
+                            <td class="smallCell"><div class="coordDot"></div></td>
+                            <td id="1a7"></td>
+                            <td class="smallCell"><div class="coordDot"></div></td>
+                        </tr>
+                        <tr>
+                            <td class="rowNumbers"><div class="numberCoord">2</div></td>
+                            <td class="smallCell"><div class="coordDot"></div></td>
+                            <td id="2a1"></td>
+                            <td class="smallCell"><div class="coordDot"></div></td>
+                            <td id="2a2"></td>
+                            <td class="smallCell"><div class="coordDot"></div></td>
+                            <td id="2a3"></td>
+                            <td class="smallCell"><div class="coordDot"></div></td>
+                            <td id="2a4"></td>
+                            <td class="smallCell"><div class="coordDot"></div></td>
+                            <td id="2a5"></td>
+                            <td class="smallCell"><div class="coordDot"></div></td>
+                            <td id="2a6"></td>
+                            <td class="smallCell"><div class="coordDot"></div></td>
+                            <td id="2a7"></td>
+                            <td class="smallCell"><div class="coordDot"></div></td>
+                        </tr>
+                        <tr>
+                            <td class="rowNumbers"><div class="numberCoord">3</div></td>
+                            <td class="smallCell"><div class="coordDot"></div></td>
+                            <td id="3a1"></td>
+                            <td class="smallCell"><div class="coordDot"></div></td>
+                            <td id="3a2"></td>
+                            <td class="smallCell"><div class="coordDot"></div></td>
+                            <td id="3a3"></td>
+                            <td class="smallCell"><div class="coordDot"></div></td>
+                            <td id="3a4"></td>
+                            <td class="smallCell"><div class="coordDot"></div></td>
+                            <td id="3a5"></td>
+                            <td class="smallCell"><div class="coordDot"></div></td>
+                            <td id="3a6"></td>
+                            <td class="smallCell"><div class="coordDot"></div></td>
+                            <td id="3a7"></td>
+                            <td class="smallCell"><div class="coordDot"></div></td>
+                        </tr>
+                        <tr>
+                            <td class="rowNumbers"><div class="numberCoord">4</div></td>
+                            <td class="smallCell"><div class="coordDot"></div></td>
+                            <td id="4a1"></td>
+                            <td class="smallCell"><div class="coordDot"></div></td>
+                            <td id="4a2"></td>
+                            <td class="smallCell"><div class="coordDot"></div></td>
+                            <td id="4a3"></td>
+                            <td class="smallCell"><div class="coordDot"></div></td>
+                            <td id="4a4"></td>
+                            <td class="smallCell"><div class="coordDot"></div></td>
+                            <td id="4a5"></td>
+                            <td class="smallCell"><div class="coordDot"></div></td>
+                            <td id="4a6"></td>
+                            <td class="smallCell"><div class="coordDot"></div></td>
+                            <td id="4a7"></td>
+                            <td class="smallCell"><div class="coordDot"></div></td>
+                        </tr>
+                        <tr>
+                            <td class="rowNumbers"><div class="numberCoord">5</div></td>
+                            <td class="smallCell"><div class="coordDot"></div></td>
+                            <td id="5a1"></td>
+                            <td class="smallCell"><div class="coordDot"></div></td>
+                            <td id="5a2"></td>
+                            <td class="smallCell"><div class="coordDot"></div></td>
+                            <td id="5a3"></td>
+                            <td class="smallCell"><div class="coordDot"></div></td>
+                            <td id="5a4"></td>
+                            <td class="smallCell"><div class="coordDot"></div></td>
+                            <td id="5a5"></td>
+                            <td class="smallCell"><div class="coordDot"></div></td>
+                            <td id="5a6"></td>
+                            <td class="smallCell"><div class="coordDot"></div></td>
+                            <td id="5a7"></td>
+                            <td class="smallCell"><div class="coordDot"></div></td>
+                        </tr>
+                        <tr>
+                            <td class="rowNumbers"><div class="numberCoord">6</div></td>
+                            <td class="smallCell"><div class="coordDot"></div></td>
+                            <td id="6a1"></td>
+                            <td class="smallCell"><div class="coordDot"></div></td>
+                            <td id="6a2"></td>
+                            <td class="smallCell"><div class="coordDot"></div></td>
+                            <td id="6a3"></td>
+                            <td class="smallCell"><div class="coordDot"></div></td>
+                            <td id="6a4"></td>
+                            <td class="smallCell"><div class="coordDot"></div></td>
+                            <td id="6a5"></td>
+                            <td class="smallCell"><div class="coordDot"></div></td>
+                            <td id="6a6"></td>
+                            <td class="smallCell"><div class="coordDot"></div></td>
+                            <td id="6a7"></td>
+                            <td class="smallCell"><div class="coordDot"></div></td>
+                        </tr>
+                        <tr>
+                            <td class="rowNumbers"><div class="numberCoord">7</div></td>
+                            <td class="smallCell"><div class="coordDot"></div></td>
+                            <td id="7a1"></td>
+                            <td class="smallCell"><div class="coordDot"></div></td>
+                            <td id="7a2"></td>
+                            <td class="smallCell"><div class="coordDot"></div></td>
+                            <td id="7a3"></td>
+                            <td class="smallCell"><div class="coordDot"></div></td>
+                            <td id="7a4"></td>
+                            <td class="smallCell"><div class="coordDot"></div></td>
+                            <td id="7a5"></td>
+                            <td class="smallCell"><div class="coordDot"></div></td>
+                            <td id="7a6"></td>
+                            <td class="smallCell"><div class="coordDot"></div></td>
+                            <td id="7a7"></td>
+                            <td class="smallCell"><div class="coordDot"></div></td>
+                        </tr>
+                        <tr>
+                            <td class="rowNumbers"><div class="numberCoord">8</div></td>
+                            <td class="smallCell"><div class="coordDot"></div></td>
+                            <td id="8a1"></td>
+                            <td class="smallCell"><div class="coordDot"></div></td>
+                            <td id="8a2"></td>
+                            <td class="smallCell"><div class="coordDot"></div></td>
+                            <td id="8a3"></td>
+                            <td class="smallCell"><div class="coordDot"></div></td>
+                            <td id="8a4"></td>
+                            <td class="smallCell"><div class="coordDot"></div></td>
+                            <td id="8a5"></td>
+                            <td class="smallCell"><div class="coordDot"></div></td>
+                            <td id="8a6"></td>
+                            <td class="smallCell"><div class="coordDot"></div></td>
+                            <td id="8a7"></td>
+                            <td class="smallCell"><div class="coordDot"></div></td>
+                        </tr>
+                        <tr>
+                            <td class="rowNumbers"><div class="numberCoord">9</div></td>
+                            <td class="smallCell"><div class="coordDot"></div></td>
+                            <td id="9a1"></td>
+                            <td class="smallCell"><div class="coordDot"></div></td>
+                            <td id="9a2"></td>
+                            <td class="smallCell"><div class="coordDot"></div></td>
+                            <td id="9a3"></td>
+                            <td class="smallCell"><div class="coordDot"></div></td>
+                            <td id="9a4"><div id="greenBase" class="base">100</div></td>
+                            <td class="smallCell"><div class="coordDot"></div></td>
+                            <td id="9a5"></td>
+                            <td class="smallCell"><div class="coordDot"></div></td>
+                            <td id="9a6"></td>
+                            <td class="smallCell"><div class="coordDot"></div></td>
+                            <td id="9a7"></td>
+                            <td class="smallCell"><div class="coordDot"></div></td>
+                        </tr>
+                        <tr class="coordMarkerRow">
+                            <td class="rowNumbers"></td>
+                            <td class="smallCell"></td>
+                            <td>l</td>
+                            <td class="smallCell"></td>
+                            <td>l</td>
+                            <td class="smallCell"></td>
+                            <td>l</td>
+                            <td class="smallCell"></td>
+                            <td>l</td>
+                            <td class="smallCell"></td>
+                            <td>l</td>
+                            <td class="smallCell"></td>
+                            <td>l</td>
+                            <td class="smallCell"></td>
+                            <td>l</td>
+                            <td class="smallCell"></td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div id="rightTableDivider" class="tableDivider"></div>
+                
+                <div id="playerInventory">
+                    <p id="p2Moves">Moves: <span id="blueMoves">1</span></p>
+                    <div id="p2MoneyDisplay" class="moneyDisplay yellow">$<span id="blueMoney">100</span></div>
+                    
+                    <div id="p2Inventory" class="inventory"></div>
+                    
+                    <p id="inventoryWord">Inventory</p>
+                    
+                    <div id="p1Inventory" class="inventory"></div>
+                    
+                    <div id="p1MoneyDisplay" class="moneyDisplay yellow">$<span id="greenMoney">100</span></div>
+                    <p id="p1Moves">Moves: <span id="greenMoves">1</span></p>
+                </div>
+            </div>
+                
+            <div id="aircraftShop" class="shopInterface">
+                <div class="shopName">Aircraft Shop</div>
+                <table class="shopTable">
+                    <tbody>
+                        <tr class="shopColHeaders">
+                            <td class="col1"></td>
+                            <td class="col2">Cost</td>
+                            <td class="col3">Life</td>
+                            <td class="col4">Discount Amount</td>
+                            <td class="col5">Sell Price</td>
+                        </tr>
+                        <tr class="row1 buyable">
+                            <td class="col1">
+                                <div id="bAir1-disp" class="aircraftContainer-1">
+                                  <canvas id="bAir1-disp-canvas"></canvas>
+                                  <p>10</p>
+                                </div>
+                                <div id="gAir1-disp" class="aircraftContainer-1">
+                                  <canvas id="gAir1-disp-canvas"></canvas>
+                                  <p>10</p>
+                                </div>
+                            </td>
+                            <td class="col2"><span class="dollarGreen">$</span>10</td>
+                            <td class="col3"><span class="red">&#9825;</span>10</td>
+                            <td class="col4"><span class="blue">-</span> 0 for bullets</td>
+                            <td class="col5"><span class="dollarGreen">$</span>5</td>
+                        </tr>
+                        <tr class="row2 buyable">
+                            <td class="col1">
+                                <div id="bAir2-disp" class="aircraftContainer-2">
+                                  <canvas id="bAir2-disp-canvas"></canvas>
+                                  <p>20</p>
+                                </div>
+                                <div id="gAir2-disp" class="aircraftContainer-2">
+                                  <canvas id="gAir2-disp-canvas"></canvas>
+                                  <p>20</p>
+                                </div>
+                            </td>
+                            <td class="col2"><span class="dollarGreen">$</span>20</td>
+                            <td class="col3"><span class="red">&#9825;</span>20</td>
+                            <td class="col4"><span class="blue">-</span> 5 for bullets</td>
+                            <td class="col5"><span class="dollarGreen">$</span>10</td>
+                        </tr>
+                        <tr class="row3 buyable">
+                            <td class="col1">
+                                <div id="bAir3-disp" class="aircraftContainer-3">
+                                  <canvas id="bAir3-disp-canvas"></canvas>
+                                  <p>40</p>
+                                </div>
+                                <div id="gAir3-disp" class="aircraftContainer-3">
+                                  <canvas id="gAir3-disp-canvas"></canvas>
+                                  <p>40</p>
+                                </div>
+                            </td>
+                            <td class="col2"><span class="dollarGreen">$</span>35</td>
+                            <td class="col3"><span class="red">&#9825;</span>40</td>
+                            <td class="col4"><span class="blue">-</span> 5 for bullets</td>
+                            <td class="col5"><span class="dollarGreen">$</span>20</td>
+                        </tr>
+                        <tr class="row4 buyable">
+                            <td class="col1">
+                                <div id="bAir4-disp" class="aircraftContainer-4">
+                                  <canvas id="bAir4-disp-canvas"></canvas>
+                                  <p>100</p>
+                                </div>
+                                <div id="gAir4-disp" class="aircraftContainer-4">
+                                  <canvas id="gAir4-disp-canvas"></canvas>
+                                  <p>100</p>
+                                </div>
+                            </td>
+                            <td class="col2"><span class="dollarGreen">$</span>80</td>
+                            <td class="col3"><span class="red">&#9825;</span>100</td>
+                            <td class="col4"><span class="blue">-</span> 10 for bullets</td>
+                            <td class="col5"><span class="dollarGreen">$</span>45</td>
+                        </tr>
+                        <tr class="row5 buyable">
+                            <td class="col1">
+                                <div id="bAir5-disp" class="aircraftContainer-5">
+                                  <canvas id="bAir5-disp-canvas"></canvas>
+                                  <p>150</p>
+                                </div>
+                                <div id="gAir5-disp" class="aircraftContainer-5">
+                                  <canvas id="gAir5-disp-canvas"></canvas>
+                                  <p>150</p>
+                                </div>
+                            </td>
+                            <td class="col2"><span class="dollarGreen">$</span>120</td>
+                            <td class="col3"><span class="red">&#9825;</span>150</td>
+                            <td class="col4"><span class="blue">-</span> 15 for bullets</td>
+                            <td class="col5"><span class="dollarGreen">$</span>65</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            
+            
+            <div id="bulletShop" class="shopInterface">
+                <div class="shopName">Bullet Shop</div>
+                <table class="shopTable">
+                    <tbody>
+                        <tr class="shopColHeaders">
+                            <td class="col1"></td>
+                            <td class="col2">Cost</td>
+                            <td class="col3">Damage</td>
+                            <td class="col4">Speed</td>
+                            <td class="col5">Sell Price</td>
+                        </tr>
+                        <tr class="row1 buyable">
+                            <td class="col1">
+                                <canvas id="bBul1-disp"></canvas>
+                                <canvas id="gBul1-disp"></canvas>
+                            </td>
+                            <td class="col2"><span class="dollarGreen">$</span><span id="bullet1Cost">10</span></td>
+                            <td class="col3"><span class="red">&#9760;</span>5</td>
+                            <td class="col4">1 unit per. turn</td>
+                            <td class="col5"><span class="dollarGreen">$</span>5</td>
+                        </tr>
+                        <tr class="row2 buyable">
+                            <td class="col1">
+                                <canvas id="bBul2-disp"></canvas>
+                                <canvas id="gBul2-disp"></canvas>
+                            </td>
+                            <td class="col2"><span class="dollarGreen">$</span><span id="bullet2Cost">15</span></td>
+                            <td class="col3"><span class="red">&#9760;</span>10</td>
+                            <td class="col4">1 unit per. turn</td>
+                            <td class="col5"><span class="dollarGreen">$</span>10</td>
+                        </tr>
+                        <tr class="row3 buyable">
+                            <td class="col1">
+                                <canvas id="bBul3-disp"></canvas>
+                                <canvas id="gBul3-disp"></canvas>
+                            </td>
+                            <td class="col2"><span class="dollarGreen">$</span><span id="bullet3Cost">25</span></td>
+                            <td class="col3"><span class="red">&#9760;</span>20</td>
+                            <td class="col4">1 unit per. turn</td>
+                            <td class="col5"><span class="dollarGreen">$</span>20</td>
+                        </tr>
+                        <tr class="row4 buyable">
+                            <td class="col1">
+                                <canvas id="bBul4-disp"></canvas>
+                                <canvas id="gBul4-disp"></canvas>
+                            </td>
+                            <td class="col2"><span class="dollarGreen">$</span><span id="bullet4Cost">45</span></td>
+                            <td class="col3"><span class="red">&#9760;</span>40</td>
+                            <td class="col4">2 units per. turn</td>
+                            <td class="col5"><span class="dollarGreen">$</span>35</td>
+                        </tr>
+                        <tr class="row5 buyable">
+                            <td class="col1">
+                                <canvas id="bBul5-disp"></canvas>
+                                <canvas id="gBul5-disp"></canvas>
+                            </td>
+                            <td class="col2"><span class="dollarGreen">$</span><span id="bullet5Cost">85</span></td>
+                            <td class="col3"><span class="red">&#9760;</span>80</td>
+                            <td class="col4">2 units per. turn</td>
+                            <td class="col5"><span class="dollarGreen">$</span>75</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            
+            
+            <div id="itemShop" class="shopInterface">
+                <div class="shopName">Item Shop</div>
+                <table class="shopTable">
+                    <tbody>
+                        <tr class="shopColHeaders">
+                            <td class="col1"></td>
+                            <td class="col2">Cost</td>
+                            <td class="col3">Name</td>
+                            <td class="col4">Description</td>
+                        </tr>
+                        <tr class="row1 buyable">
+                            <td class="col1"></td>
+                            <td class="col2"><span class="dollarGreen">$</span>25</td>
+                            <td class="col3">Forcefield</td>
+                            <td class="col4"><p>Bounces a bullet back in the other direction when placed on an aircraft (not for bases).  Lasts for two turns when on the board.</p></td>
+                        </tr>
+                        <tr class="row2 buyable">
+                            <td class="col1"><span class="darkRed">&#10010;</span></td>
+                            <td class="col2"><span class="dollarGreen">$</span>40</td>
+                            <td class="col3">Healer</td>
+                            <td class="col4"><p>Heals 50% damage when placed on an aircraft or 10 when on a base.</p></td>
+                        </tr>
+                        <tr class="row3 buyable">
+                            <td class="col1">
+                                <img src="https://docs.google.com/drawings/d/15XzN9mv8wFTzbldwzuh-eOyHxyVMcpV3HLt6oXiHrXQ/pub?w=721&amp;h=690"/>
+                            </td>
+                            <td class="col2"><span class="dollarGreen">$</span>50</td>
+                            <td class="col3">Bomb</td>
+                            <td class="col4"><p>Gives 15 damage to all enemy aircrafts.  (The base doesn't count)</p></td>
+                        </tr>
+                        <tr class="row4 buyable">
+                            <td class="col1">
+                                <img src="https://docs.google.com/drawings/d/1XTuW5omrIR-2IHNm7U0mAM3UHLch1GPlS_gMF_wjjXM/pub?w=291&h=667"/>
+                            </td>
+                            <td class="col2"><span class="dollarGreen">$</span>200</td>
+                            <td class="col3">Poison</td>
+                            <td class="col4"><p>Every turn, drains 5 health from all aircrafts (and base) until opponent plays the antidote. </p></td>
+                        </tr>
+                        <tr class="row5 buyable">
+                            <td class="col1">
+                                <img src="https://docs.google.com/drawings/d/102ivmklraSLP1Gd1rtZfRHUHMxaC-w6hG1mmAtvBSYs/pub?w=493&amp;h=641"/>
+                            </td>
+                            <td class="col2"><span class="dollarGreen">$</span>85</td>
+                            <td class="col3">Antidote</td>
+                            <td class="col4"><p>Heals all poisoning on your side when played on the board.</p></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            
+        </div>
+        
+        <script> //draw things in shops, using functions from airWar.js
+			for(var lvl=1; lvl<=5; lvl++){
+				drawAircraft('bAir'+lvl+'-disp-canvas','blue',lvl);
+				drawAircraft('gAir'+lvl+'-disp-canvas','green',lvl);
+				drawBullet('bBul'+lvl+'-disp','blue',lvl);
+				drawBullet('gBul'+lvl+'-disp','green',lvl);
+			}
+        </script>
+        <script> //make handle draggable stuff, functions in battlefield.js (but makeTrashWork() is in in shops.js)
+            locateValidCells();
+            setDraggable("greenBase");
+            setDraggable("blueBase");
+            makeTrashWork();
+        </script>
+        <script>
+            activateIconCanvas(); //in direction.js, 
+            document.getElementsByTagName("body")[0].addEventListener("mousedown",handleClick); //in battlefield.js under 'launch bullet functions'
+        </script>
+        <script> //event listeners for bullet chooser modal
+            addClickListeners();
+        </script>
+        <!-- main ======================================================================-->
+        
+        <div style="width: 256px; margin: auto; margin-top: 6px;"><div id="playerTurnDisplay" onclick="togglePlayerTurn()">Player 1's Turn</div></div>
+        <script>togglePlayerTurn();</script>
+    </body>
+</html>

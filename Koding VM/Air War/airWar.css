@@ -1,0 +1,610 @@
+ul {
+    padding-left: 0;
+}
+
+li {
+    font-family: Gill Sans, Roboto, sans-serif;
+    list-style-type: none;
+}
+
+body {
+    background-color: black;
+	position: relative;
+}
+
+#displayContainer {
+    height: 768px;
+    width: 1024px;
+    background-color: white;
+    margin: auto;
+    margin-top: 7px;
+}
+
+#clickDisabler {
+    display: none;
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    margin-top: -8px;
+    margin-left: -8px;
+    background-color: white;
+    background-color: rgba(255,255,255,0);
+    z-index: 20;
+}
+
+.aircraftContainer-1 {width: 31px;}
+.aircraftContainer-2 {width: 31px;}
+.aircraftContainer-3 {width: 31px;}
+.aircraftContainer-4 {width: 34px;}
+.aircraftContainer-5 {width: 37px;}
+
+/*<<<<< COLORS >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>*/
+.dimYellow {
+    color: #ffcc66;
+}
+
+.yellow {
+    background-color: #ffdd55;
+}
+
+.dollarGreen {
+    color: #66cc33;
+}
+
+.red {
+    color: #cc0000;
+}
+
+.darkRed {
+    color: #990000;
+}
+
+.blue {
+    color: #33ccff;
+}
+
+/*<<<<< BULLET CHOOSER MODAL >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>*/
+.bulletModal {
+    display:none;
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    margin-top: -8px;
+    margin-left: -8px;
+    background-color: white;
+    background-color: rgba(255,255,255,0.7);
+    z-index: 10;
+}
+
+.bulletChooser {
+    margin: auto;
+    height: 250px;
+    width: 450px;
+    position: absolute;
+    top: 0; right: 0; bottom: 24px; left: 0;
+    background-color: #eee;
+    border: 8px solid #ccc;
+    font-family: Gill Sans, Roboto, sans-serif;
+    cursor: default;
+}
+
+.chooseInstructions {
+    margin: 0;
+    margin-top: 5px;
+    margin-left: 5px;
+    font-size: 18px;
+}
+
+.bulletsContainer {
+    margin: auto;
+    margin-top: 15px;
+    width: 413px;
+    height: 75px;
+}
+
+.bulletSlot {
+    height: 75px;
+    width: 75px;
+    margin: 0 2px 0 2px;
+    background-color: white;
+    border-radius: 10px;
+    display: inline-block;
+    position: relative;
+}
+
+.bulletSlot canvas {
+    height: 0;
+    width: 0;
+    position: absolute;
+    top: 0; right: 0; bottom: 0; left: 0;
+    margin: auto;
+}
+
+.bulletSlot p {
+    position: absolute;
+    bottom: 3px;
+    right: 3px;
+    
+    margin: 0;
+    font-weight: bold;
+}
+
+.bulletSlotAvailable {cursor: pointer}
+.bulletSlotAvailable:hover {
+    height: 71px;
+    width: 71px;
+    border: 2px solid gray;
+}
+.bulletSlotAvailable:hover p {
+    bottom: 1px;
+    right: 1px;
+}
+
+.bulletInfo {
+    font-size: 10px;
+    width: 100%;
+    margin-top: 30px;
+}
+
+.infoLabels {
+    width: 222px;
+    text-align: right;
+    float: left;
+    margin: 0;
+}
+
+.actualInfo {
+    width: 222px;
+    float: right;
+    margin: 0;
+}
+
+.chooserButtonContainer {
+    position: absolute;
+    bottom: 10px;
+    width: 100%;
+}
+
+.chooserButton {
+    width: 120px;
+    height: 25px;
+    text-align: center;
+    line-height: 25px;
+    border: 2px solid black;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.fireBullet {
+    float: right;
+    margin-right: 75px;
+    background-color: #42C3FF;
+    opacity: 0.5;
+    cursor: default;
+}
+
+.cancelBullet {
+    float: left;
+    margin-left: 75px;
+    background-color: #999;
+}
+
+/*<<<<< SCREEN CHANGE BUTTONS >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>*/
+#screenChangeButtons {
+    margin: auto;
+    width: 436px;
+}
+
+#screenChangeButtons li {
+    display: inline-block;
+    height: 25px;
+    width: 100px;
+    opacity: 0.5;
+    border: 3px solid white;
+    border-radius: 5px;
+    cursor: pointer;
+    
+    text-align: center;
+    line-height: 25px;
+}
+
+#screenChangeButtons li:hover {opacity: 1;}
+
+#changeMain {background-color: lightblue;}
+#changeAircraft {background-color: lightgreen;}
+#changeBullet {background-color: yellow;}
+#changeItem {background-color: orange;}
+
+/*<<<<< NOTIFICATION BOXES >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>*/
+#playerTurnDisplay {
+    display: table-cell; /*to center text vertically*/
+    height: 50px;
+    width: 250px;
+    background-color: #66ff88;
+    border: 3px solid green;
+    cursor: default;
+    
+    font-size: 24px;
+    font-family: Gill Sans, Roboto, sans-serif;
+    text-align: center;
+    vertical-align: middle;
+}
+
+/*<<<<< MAIN INTERFACE >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>*/
+
+#mainInterface {
+    height: 768px;
+    width: 1024px;
+    margin: auto;
+    cursor: default;
+    display: block;
+}
+
+/*-----COIN-VALUE-INFO---------------------------*/
+#coinValueInfo {
+    height: 730px;
+    width: 140px;
+    border-right: 3px solid black;
+    position: absolute;
+    margin-top: 20px;
+}
+
+#coinValueInfo ul {
+    margin: 0 10px 0 10px;
+    border-bottom: 3px solid black;
+}
+
+#coinValueInfo li {
+    text-align: center;
+    font-size: 30px;
+    margin-bottom: 20px;
+}
+
+#aircraftBay div {
+    padding: 10px;
+    display: inline-block;
+}
+
+#directionIcon {
+    height: 50px;
+    width: 50px;
+    position: absolute;
+    margin-left: 10px;
+    z-index: 3;
+    display: none;
+}
+
+#trash {
+    position: absolute;
+    left: 25px;
+    bottom: 5px;
+    width: 90px;
+}
+
+#trash img {width: 100px;}
+
+/*-----BATTLEFIELD-----------------------------------*/
+#battlefield {
+    position: absolute;
+    margin-left: 140px;
+    height: 768px;
+    border-collapse: collapse;
+    
+    z-index: 2;
+}
+
+#battlefield td {
+    height: 80px;
+    width: 70px;
+    vertical-align: middle;
+    text-align: center;
+    padding: 0 0 0 0;
+}
+#battlefield td:not(.smallCell) { 
+    position: relative; /*so that bullets can be positioned absolutely and also centered during launch*/
+    
+    /*NOTE: I'm not doing this for the cells with dots in them so that bullets will render on top of them,
+    since if something is positioned absolute,relative,or fixed, it will appear on top of something
+    that isn't positioned, aka positioned statically*/
+}
+
+#battlefield .ui-droppable .aircraft {
+    margin: auto;
+}
+
+#battlefield .bullet {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    margin: auto;
+    z-index: 1;
+}
+
+#battlefield td > p {
+    font-size: 42px;
+    margin: 0;
+}
+
+.coordDot {
+    height: 12px;
+    width: 12px;
+    background-color: black;
+    border-radius: 100%;
+}
+
+#battlefield .coordMarkerRow td {
+    font-family: Gill Sans, Roboto, sans-serif;
+    font-size: 21px;
+    font-weight: bold;
+    height: 20px;
+}
+
+#battlefield tbody .rowNumbers {
+    font-family: Gill Sans, Roboto, sans-serif;
+    font-size: 42px;
+    width: 83px;
+}
+
+.numberCoord {
+    text-align: center;
+    margin-left: 8px;
+    width: 30px;
+}
+
+#battlefield tbody .smallCell {
+    width: 12px;
+}
+
+.aircraftHealth {
+    font-size: 10px;
+    font-family: Gill Sans, Roboto, sans-serif;
+    margin: 0;
+    margin-top: -5px;
+    height: 0;
+    text-align: center;
+}
+
+/*DIVIDERS*/
+.tableDivider {
+    position: absolute;
+    height: 639px;
+    width: 5px;
+    background-color: black;
+}
+
+#leftTableDivider {
+    margin-left: 190px;
+    margin-top: 64px;
+}
+
+#rightTableDivider {
+    margin-left: 833px;
+    margin-top: 64px;
+}
+
+/*-----BASES-----------------------------------*/
+
+.base {
+    height: 50px;
+    width: 50px;
+    border: 2px solid black;
+    margin: auto;
+    cursor: -webkit-grab;
+    z-index: 2;
+
+    text-shadow: 1px 1px 3px rgba(0,0,0,0.5);
+    line-height: 50px;
+    font-family: Gill Sans, Roboto, sans-serif;
+    font-size: 24px;
+    text-align: center;
+}
+
+#greenBase {
+    background-color: #66ff88;
+}
+
+#blueBase {
+    background-color: #00ffff;
+}
+
+/*-----INVENTORY--------------------------------*/
+#playerInventory {
+    position: absolute;
+    margin-left: 838px;
+    height: 768px;
+    width: 186px;
+}
+
+#playerInventory #inventoryWord {
+    position: absolute;
+    width: 100%;
+    line-height: 768px;
+    font-family: Gill Sans, Roboto, sans-serif;
+    font-size: 42px;
+    text-align: center;
+    margin: 0;
+}
+
+#p2Moves {
+    position: absolute;
+    top: 0;
+    margin: 0;
+    margin-top: 2px;
+    
+    font-family: Gill Sans, Roboto, sans-serif;
+    font-size: 36px;
+}
+
+#p1Moves {
+    position: absolute;
+    bottom: 0;
+    margin: 0;
+    margin-bottom: 2px;
+    
+    font-family: Gill Sans, Roboto, sans-serif;
+    font-size: 36px;
+}
+
+.moneyDisplay {
+    position: absolute;
+    margin-left: 31px;
+    height: 102px;
+    width: 124px;
+    border: 2px solid black;
+    border-radius: 16px;
+    
+    text-shadow: 1px 1px 3px rgba(0,0,0,0.5);
+    line-height: 102px;
+    font-family: Gill Sans, Roboto, sans-serif;
+    font-size: 40px;
+    text-align: center;
+}
+
+#p2MoneyDisplay {
+    margin-top: 51px;
+}
+
+#p1MoneyDisplay {
+    margin-top: 611px;
+}
+
+.inventory {
+    height: 190px;
+    width: 166px;
+    background-color: blue;
+    position: absolute;
+    margin-left: 10px;
+    z-index: 1;
+}
+
+#p2Inventory {margin-top: 165px;}
+#p1Inventory {margin-top: 413px;}
+/*<<<<< SHOPS >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>*/
+/*-----GENERAL-STYLING--------------------------*/
+.shopInterface {
+    height: 768px;
+    width: 1024px;
+    margin: auto;
+    cursor: default;
+}
+
+.shopName {
+    font-size: 96px;
+    font-family: Herculanum;
+    text-decoration: underline;
+    text-align: center;
+}
+
+.shopTable {
+    margin: auto;
+    margin-top: 33px;
+    border-collapse: collapse;
+}
+
+.shopTable .shopColHeaders td {
+    font-family: Casual, comic sans ms;
+    background-color: white;
+}
+
+.shopTable .shopColHeaders td {
+    border: none;
+}
+
+.shopTable td {
+    /*vertical-align: middle;*/
+    padding: 0 0 0 0;
+    border: 3px solid black;
+    
+    text-align: center;
+    font-size: 42px;
+    font-family: Gill Sans, Roboto, sans-serif;
+}
+
+.col1 {width: 104px;}
+.col2 {width: 132px;}
+.col5 {width: 230px;}
+
+.row1 {height: 126px;}
+.row2 {height: 109px;}
+.row3 {height: 109px;}
+.row4 {height: 109px;}
+.row5 {height: 126px;}
+
+.shopTable tr {
+    background-color: #cccccc;
+}
+
+.shopTable tbody .buyable {
+    cursor: pointer;
+    background-color: white;
+}
+
+.shopTable tbody .buyable:hover {
+    background-color: #fc3;
+    background-color: rgba(255,204,51,0.35);
+}
+
+/*-----AIRCRAFT-SHOP----------------------------------*/
+#aircraftShop {display: none;}
+#aircraftShop .col3 {width: 132px;}
+#aircraftShop .col4 {width: 357px;}
+
+#aircraftShop td p {
+    font-size: 10px;
+    margin: -5px 0 0 0;
+    height: 0;
+}
+
+
+#bAir1-disp {float: left; margin-left: 10px;}
+#gAir1-disp {float: right; margin-right: 10px;}
+
+#bAir2-disp {float: left; margin-left: 10px;}
+#gAir2-disp {float: right; margin-right: 10px;}
+
+#bAir3-disp {float: left; margin-left: 10px;}
+#gAir3-disp {float: right; margin-right: 10px;}
+
+#bAir4-disp {float: left; margin-left: 10px;}
+#gAir4-disp {float: right; margin-right: 10px;}
+
+#bAir5-disp {float: left; margin-left: 5px;}
+#gAir5-disp {float: right; margin-right: 5px;}
+
+/*-----BULLET-SHOP--------------------------------------*/
+#bulletShop {display: none;}
+#bulletShop .col3 {width: 161px;}
+#bulletShop .col4 {width: 328px;}
+
+
+#bBul1-disp {float: left; margin-left: 15px;}
+#gBul1-disp {float: right; margin-right: 15px;}
+
+#bBul2-disp {float: left; margin-left: 15px;}
+#gBul2-disp {float: right; margin-right: 15px;}
+
+#bBul3-disp {float: left; margin-left: 15px;}
+#gBul3-disp {float: right; margin-right: 15px;}
+
+#bBul4-disp {float: left; margin-left: 20px;}
+#gBul4-disp {float: right; margin-right: 20px;}
+
+#bBul5-disp {float: left; margin-left: 20px;}
+#gBul5-disp {float: right; margin-right: 20px;}
+
+/*-----ITEM-SHOP--------------------------------------*/
+#itemShop {display: none;}
+#itemShop .col3 {width: 226px;}
+#itemShop .col4 {width: 496px;}
+
+#itemShop td p {
+    font-size: 24px;
+    margin: 0;
+    padding: 0 25px 0 25px;
+}
+
+#itemShop .row3 .col1 img {height: 55px;}
+#itemShop .row4 .col1 img {height: 70px;}
+#itemShop .row5 .col1 img {height: 57px;}

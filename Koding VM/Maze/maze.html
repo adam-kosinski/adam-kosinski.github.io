@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Maze App</title>
+        <link type="text/css" rel="stylesheet" href="maze.css"/>
+        <script src="maze.js"></script>
+    </head>
+    <body>
+        <p id="instructions"></p>
+        <button id="start">Start Maze</button>
+        <p id="whichMaze">
+            You will be solving <select id="mazeSelector"></select>.
+        </p>
+        <table id="maze" cellspacing="0">
+            <tbody>
+                <tr id="row1"><td id="1a1"></td><td id="1a2"></td><td id="1a3"></td><td id="1a4"></td><td id="1a5"></td></tr>
+                <tr id="row2"><td id="2a1"></td><td id="2a2"></td><td id="2a3"></td><td id="2a4"></td><td id="2a5"></td></tr>
+                <tr id="row3"><td id="3a1"></td><td id="3a2"></td><td id="3a3">X</td><td id="3a4"></td><td id="3a5"></td></tr>
+                <tr id="row4"><td id="4a1"></td><td id="4a2"></td><td id="4a3"></td><td id="4a4"></td><td id="4a5"></td></tr>
+                <tr id="row5"><td id="5a1"></td><td id="5a2"></td><td id="5a3"></td><td id="5a4"></td><td id="5a5"></td></tr>
+            </tbody>
+        </table>
+        <div id="youWon">
+            <p>You Won!</p>
+            <button id="backToStart">Back to Start Screen</button>
+        </div>
+        <button id="quit">Quit</button>
+        
+        <!--Custom maze enter stuff-->
+        <div id="mazeEnterContainer">
+            <p id="mazeEnterInstructions">
+                <b style="font-size: 24px">Custom Maze</b><br>
+                Input maze below.  If you accidentally clicked the custom maze button, reload the page.
+            </p>
+            <textarea id="mazeEnter" rows="40" cols="125" wrap="off"></textarea>
+            <button id="submitMaze">Submit</button>
+            <h1 id="errorNotifier">Something's Wrong<br>With Your Input</h1>
+        </div>
+        
+        <script src="fetchMazes.js"></script>
+    </body>

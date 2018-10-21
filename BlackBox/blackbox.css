@@ -1,0 +1,72 @@
+body {
+	margin: 0;
+}
+
+#scrollContainer {
+	overflow-y: scroll;
+	overflow-x: hidden;
+}
+
+#alignContainer {
+	display: table-cell;
+	vertical-align: bottom;
+}
+
+#outputTable {
+	font-family: Arial,sans-serif;
+	font-size: 18px;
+	width: 100%;
+	border-collapse: collapse;
+}
+
+#outputTable td:first-child {
+	width: 275px;
+}
+
+#outputTable td:nth-child(2) {
+	width: 25px;
+}
+
+#outputTable td {
+	padding: 10px;
+	border-top: 1px solid lightgray;
+}
+
+#footer {
+	position: fixed;
+	bottom: 0;
+	width: 100%;
+	border-top: 5px solid lightgray;
+	background-color: #eee;
+	font-size: 24px;
+	font-family: Arial;
+}
+
+#input {
+	outline: none;
+	margin: 16px;
+	font-size: inherit;
+}
+
+#footer p {
+	display: inline;
+}
+
+#footer p:nth-child(3) { /*the word 'Output'*/
+	margin-left: 8px;
+}
+
+#buttonContainer {
+	display: block;
+	height: 24px;
+	position: absolute;
+	right: 24px;
+	top: 0;
+	bottom: 2.5px;
+	margin: auto;
+	font-size: 14px;
+}
+
+#buttonContainer button {
+	display: inline;
+}

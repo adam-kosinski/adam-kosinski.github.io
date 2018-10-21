@@ -1,0 +1,94 @@
+body {
+	background-color: white;
+	position: relative; /* to allow 100%'s to work */
+}
+
+#preSolveButtonsContainer button {
+	display: inline-block;
+	width: 300px;
+	height: 75px;
+	font-size: 36px;
+}
+
+.part {
+	margin: 10px;
+	padding: 20px;
+	display: inline-block;
+}
+
+.partLabel {
+	font-size: 36px;
+	margin: 0;
+	
+	font-weight: bold;
+	text-decoration: underline;
+	text-align: center;
+}
+
+.tier {
+	background-color: white;
+	border-collapse: collapse;
+	margin: 20px;
+}
+
+.tier tbody tr td {
+	height: 50px;
+	width: 50px;
+	border: 3px solid black;
+	text-align: center;
+	font-size: 24px;
+}
+
+.remover {
+	display: block;
+	width: 100%;
+	text-align: center;
+	color: red;
+	opacity: 0.25;
+}
+
+.remover:hover{
+	opacity: 1;
+}
+
+#solutionsContainer {
+	width: 100%;
+	margin-top: 30px;
+}
+
+.solution {
+	margin: 10px;
+	padding: 20px;
+	border-top: 2px solid lightgray;
+}
+
+.tierContainer {
+	display: inline-block;
+}
+
+.isoContainer {
+	display: inline-block;
+	position: relative;
+	bottom: 38px;
+}
+
+.isoCanvas {
+	height: 500px;
+	width: 500px;
+	border: 2px solid black;
+	display: inline-block;
+}
+
+.partToggle {
+	border: 1px solid black;
+	padding: 10px;
+}
+
+.checkboxLabel {
+	display: inline-block;
+	margin: 0;
+}
+
+.checkbox {
+	display: inline-block;
+}

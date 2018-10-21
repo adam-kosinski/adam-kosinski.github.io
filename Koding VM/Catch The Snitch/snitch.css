@@ -1,0 +1,83 @@
+body {
+	margin:0;
+	overflow: hidden; /*hides scroll bars*/
+}
+
+#field {
+	position: relative;
+	background-color:green;
+}
+
+#snitch { /*width and height set in js file*/
+	position:relative;
+	
+	transition-property: top left; /*every time I change these values w/ javascript, it will be smoothly animated*/
+	transition-duration: 25ms; /*stand-in value, technically set based on fps in js file*/
+	transition-timing-function: linear;
+}
+
+.wing img {
+	width: 40%;
+	opacity: 0.85;
+}
+
+.wing {
+	position: absolute;
+	z-index:4;
+	top: 0;
+	bottom: 0;
+	margin: auto;
+	
+	animation-duration: 500ms;
+	animation-iteration-count: infinite;
+	animation-timing-function: linear;
+}
+
+#leftWing {
+	animation-name: flapLeft;
+}
+
+#rightWing {
+	transform: scaleX(-1);
+	animation-name: flapRight;
+}
+
+#ballPicture {
+	position:absolute;
+	z-index:6;
+}
+
+#ballPicture img {
+	filter: blur(0.5px);
+}
+
+@keyframes flapLeft {
+	from{transform: rotate(0deg);}
+	25%{transform: rotate(-20deg);} /*rotate down (counterclockwise)*/
+	75%{transform: rotate(30deg);} /*rotate up (clockwise)*/
+	to{transform: rotate(0deg);}
+}
+
+@keyframes flapRight {
+	from{transform: rotate(0deg) scaleX(-1);}
+	25%{transform: rotate(20deg) scaleX(-1);}
+	75%{transform: rotate(-30deg) scaleX(-1);}
+	to{transform: rotate(0deg) scaleX(-1);}
+}
+
+#clickAbsorber {
+	width: 4000px;
+	height: 4000px;
+	top: -1000px;
+	left: -1000px;
+	cursor: default; /*otherwise cursor turns into a circle w/ a line through it when try to drag*/
+	
+	position: fixed;
+	z-index: 8;
+}
+
+#clickRegion {
+	
+	position:absolute;
+	z-index:10
+}
