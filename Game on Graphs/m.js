@@ -90,7 +90,7 @@ function m(M_adj){ //M_adj is adjacency matrix
 					
 					//it will be player S's turn now, test if they can force win. By one of our theorems, if they can't force win, C can force win.
 					//if so, then the actual m = this m - 1
-					if(!canPlayerForceWin(M_adj_test, "S", M_saved_test)) {debugger;return m - 1}
+					if(!canPlayerForceWin(M_adj_test, "S", M_saved_test)) {return m - 1}
 				}
 			}
 		}
