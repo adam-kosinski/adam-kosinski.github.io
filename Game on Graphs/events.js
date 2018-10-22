@@ -13,7 +13,8 @@ function calculate(){
 	console.log("Inputted Graph:");
 	console.log(M_adj);
 	
+	output.innerText = "Calculating...";
+	
 	//run function to determine m, and output result
-	console.log("m",m(M_adj))
-	output.innerText = "m = "+m(M_adj);
+	output.innerText = "m = "+get_m(M_adj);
 }

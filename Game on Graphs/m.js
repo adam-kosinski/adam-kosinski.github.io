@@ -23,7 +23,7 @@ function combine(n,r,combinations=[],combo=[]){ //last 2 args are for recursion;
 
 
 //function that determines "m" given an adjacency matrix of a graph
-function m(M_adj){ //M_adj is adjacency matrix
+function get_m(M_adj){ //M_adj is adjacency matrix
 	//get M_saved, adj matrix of only saved edges. Will be all zeros
 	var M_saved = [];
 	//iterate over rows
@@ -64,6 +64,14 @@ function m(M_adj){ //M_adj is adjacency matrix
 	
 	//if S win, m>0
 	else if(S_win && !C_win){
+		//if there is an edge between vertices A and B, Player C must cut it; we can find m for that graph then add one
+		if(M_adj[0][1] > 0){
+			M_adj_modified = copyMatrix(M_adj);
+			M_adj_modified[0][1] = 0; //this won't produce a graph where A and B are disconnected, because then S would also be able to win, and the else if wouldn't be triggered
+			M_adj_modified[1][0] = 0;
+			return get_m(M_adj_modified) + 1;
+		}
+		
 		//keep incrementing m until with m moves C is able to guarantee a victory, then actual m = that m - 1
 		for(m = 1; m <= M_adj.length; m++){
 			console.log("m",m)
@@ -94,10 +102,12 @@ function m(M_adj){ //M_adj is adjacency matrix
 				}
 			}
 		}
+		return Infinity; //"S" won in starting position
 	}
 	
 	//if C win, m<0 - logic very similar to above 'if S win'
 	else if(!S_win && C_win){
+		
 		//keep decrementing m until with |m| moves S is able to guarantee a victory, then actual m = that m + 1
 		for(m = -1; m >= -M_adj.length; m--){
 			//choose |m| edges to save
@@ -127,6 +137,7 @@ function m(M_adj){ //M_adj is adjacency matrix
 				}
 			}
 		}
+		return -Infinity; //"C" won in the starting position
 	}
 	
 }
