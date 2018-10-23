@@ -67,8 +67,8 @@ function get_m(M_adj){ //M_adj is adjacency matrix
 		//if there is an edge between vertices A and B, Player C must cut it; we can find m for that graph then add one
 		if(M_adj[0][1] > 0){
 			M_adj_modified = copyMatrix(M_adj);
-			M_adj_modified[0][1] = 0; //this won't produce a graph where A and B are disconnected, because then S would also be able to win, and the else if wouldn't be triggered
-			M_adj_modified[1][0] = 0;
+			M_adj_modified[0][1]--; //this won't produce a graph where A and B are disconnected, because then S would also be able to win, and the else if wouldn't be triggered
+			M_adj_modified[1][0]--;
 			return get_m(M_adj_modified) + 1;
 		}
 		
