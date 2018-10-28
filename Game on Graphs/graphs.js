@@ -66,7 +66,7 @@ function checkForWin(M_adj, M_saved, player) { //M_adj = adjacency matrix; M_sav
 
 
 
-//a function that deletes all these useless loops and leaves
+//a function that deletes all these useless loops and leaves (vertices of deg 1)
 function removeUselessEdges(M_adj) {
   var M_adjOutput = copyMatrix(M_adj);
 
@@ -99,6 +99,26 @@ function removeUselessEdges(M_adj) {
 }
 
 
+//removes all vertices of deg 2 (not A or B) that aren't incident to unsaved edges; doing this doesn't change winner, but might change m
+function removeDegree2s(M_adj, M_saved){
+  M_adj = copyMatrix(M_adj); //so no reference problems
+  
+  //iterate through vertices
+  for(var v=2; v<M_adj.length; v++){ //vertices 0 and 1 are vertices A and B, so start v at 2
+    var deg = M_adj[v].reduce(function(a,b){return a+b}); //add the row together to get the degree
+    var savedDeg = M_saved[v].reduce(function(a,b){return a+b});
+	if(deg === 2 && savedDeg === 0){ 
+	  //clear vertex connections
+	  for(i=0; i<M_adj.length; i++){
+	    M_adj[v][i] = 0; //clear row
+	    M_adj[i][v] = 0; //clear col
+	  }
+    }
+  }
+  return M_adj;
+}
+
+
 
 
 //pretty self evident actually
@@ -121,6 +141,10 @@ function canPlayerForceWin(M_adj, player, M_saved) {
     }
   }
   
+  //vertices of degree 2 that aren't A or B can be deleted without changing who wins, if not incident to saved edges
+  //NOTE: useless edges have already been deleted in get_m() in m.js
+  M_adj = removeDegree2s(M_adj, M_saved);
+    
   //return true if already won, false if already lost (by the way, only player C could've won or lost already)
   if (checkForWin(M_adj, M_saved, player)) {return true}
   if (checkForWin(M_adj, M_saved, (player==="S"? "C" : "S"))) {return false}
@@ -169,6 +193,7 @@ function makeMove(M_adj, M_saved, player,smv=[],cmv=[]){ //M_adj is the adjacenc
           M_adj_test[c][r]--;
           cmv_test.push([r,c]);
           M_adj_test = removeUselessEdges(M_adj_test);
+		  M_adj_test = removeDegree2s(M_adj_test, M_saved_test);
         }
         //console.log("S Move",r,c,M_adj_test,M_saved_test)
         //check to see if that move won, if so, there was a way to guarantee a win from this position, return true
@@ -201,6 +226,7 @@ function makeMove(M_adj, M_saved, player,smv=[],cmv=[]){ //M_adj is the adjacenc
                 M_adj_2ndTest[cc][rr]--;
                 smv_2ndTest.push([rr,cc])
                 M_adj_2ndTest = removeUselessEdges(M_adj_2ndTest);
+				M_adj_2ndTest = removeDegree2s(M_adj_2ndTest, M_saved_2ndTest);
               }
               if(player === "C"){ //then it's player S's turn now
                 M_saved_2ndTest[rr][cc]++;
