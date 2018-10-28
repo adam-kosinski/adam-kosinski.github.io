@@ -1,12 +1,14 @@
 //no more annoying references created
 function copyMatrix(original) {
   var copy = [];
+  var nVertices = original.length;
+  
   //iterate over rows
-  for (var r = 0; r < original.length; r++) {
+  for (var r = 0; r < nVertices; r++) {
     //erase or create a new row
     copy[r] = [];
     //iterate over columns
-    for (var c = 0; c < original.length; c++) {
+    for (var c = 0; c < nVertices; c++) {
     copy[r][c] = original[r][c];
     }
   }
@@ -45,7 +47,7 @@ function matrixPower(base, index) {
 
 
 //see if a player has won
-function checkForWin(M_adj, M_saved, player) { //M_adj = adjacency matrix; M_saved = adjacency matrix, but only including saved edges, player = "S" or "C"
+/*function checkForWin(M_adj, M_saved, player) { //M_adj = adjacency matrix; M_saved = adjacency matrix, but only including saved edges, player = "S" or "C"
   player = player.toUpperCase();   //in case I'm a derp
   //If a walk exists from A to B, one exists of either length V-1 or V
   var M_toLookAt = player === "S" ? M_saved : M_adj;
@@ -62,6 +64,48 @@ function checkForWin(M_adj, M_saved, player) { //M_adj = adjacency matrix; M_sav
   //if there's a path in M_saved or no path in M_adj
   return (player === "S" && pathExists) ||
        (player === "C" && !pathExists);
+}*/
+
+function checkForWin(M_adj, M_saved, player){
+  player = player.toUpperCase();   //in case I'm a derp
+  //If a walk exists from A to B, one exists of either length V-1 or V
+  var M_toLookAt = player === "S" ? M_saved : M_adj;
+  
+  //if a path exists in M_toLookAt
+  var pathExists = false;
+  
+  //assume vertex A is [0] and vertex B is [1]
+  //use gas method by marking all vertices adjacent to A, then all vertices adjacent to those vertices, etc. - See if ever reach Boolean
+  var somethingChanged = true; //stop marking when nothing changed in last iteration of marking - means all vertices w/ a path to A were marked
+  var marker = -2; //decrements each iteration
+  var vertices = M_toLookAt[0].slice(); //create an array of correct length w/o for loop; it doesn't matter what the values are (which will be positive), since the markers are negative integers
+  vertices[0] = -1; //mark vertex A
+  //do marking iteration
+  while(somethingChanged){
+	somethingChanged = false; //assume nothing changes until we mark a vertex
+	//iterate through vertices ("rows")
+	for(var v=0, v_max=M_toLookAt.length; v<v_max; v++){
+	  if(vertices[v] === marker+1){ //this vertex was marked last round
+	  	//iterate through adjacent vertices
+	  	for(var c=0, c_max=M_toLookAt.length; c<c_max; c++){
+	  	  if(M_toLookAt[v][c] > 0 && vertices[c] >= 0){ //second check sees if this vertex hasn't been marked
+	  		//mark it
+	  		vertices[c] = marker;
+	  		somethingChanged = true;
+	  	  }
+	  	}
+	  }
+	}
+	marker--;
+  }
+  
+  if(vertices[1] < 0){ //if vertex B was marked
+    pathExists = true;
+  }
+  
+  //if there's a path in M_saved or no path in M_adj
+  return (player === "S" && pathExists) ||
+		 (player === "C" && !pathExists);
 }
 
 
@@ -104,12 +148,13 @@ function removeDegree2s(M_adj, M_saved){
   M_adj = copyMatrix(M_adj); //so no reference problems
   
   //iterate through vertices
-  for(var v=2; v<M_adj.length; v++){ //vertices 0 and 1 are vertices A and B, so start v at 2
+  var nVertices = M_adj.length;
+  for(var v=2; v<nVertices; v++){ //vertices 0 and 1 are vertices A and B, so start v at 2
     var deg = M_adj[v].reduce(function(a,b){return a+b}); //add the row together to get the degree
     var savedDeg = M_saved[v].reduce(function(a,b){return a+b});
 	if(deg === 2 && savedDeg === 0){ 
 	  //clear vertex connections
-	  for(i=0; i<M_adj.length; i++){
+	  for(i=0; i<nVertices; i++){
 	    M_adj[v][i] = 0; //clear row
 	    M_adj[i][v] = 0; //clear col
 	  }
@@ -150,7 +195,7 @@ function canPlayerForceWin(M_adj, player, M_saved) {
   if (checkForWin(M_adj, M_saved, (player==="S"? "C" : "S"))) {return false}
   
   
-  //call makeMove() to determine whether it's possible to guarantee a win from the starting position
+  //call makeMove() - defined below - to determine whether it's possible to guarantee a win from the starting position
   return makeMove(M_adj, M_saved, player);
 }
 
@@ -176,20 +221,25 @@ function makeMove(M_adj, M_saved, player,smv=[],cmv=[]){ //M_adj is the adjacenc
       //test if can move here
       if((M_adj[r][c] > 0) && (M_saved[r][c] < M_adj[r][c])) { //if there are edges, and not all the edges are in M_saved
         //try moving on this edge
-          //copy matrices so we don't screw up references
-        var M_adj_test = copyMatrix(M_adj);
-        var M_saved_test = copyMatrix(M_saved);
         var smv_test = copyMatrix(smv)
         var cmv_test = copyMatrix(cmv)
         //console.log("M_saved test after copy",M_saved_test)
         if(player === "S"){
-          M_saved_test[r][c]++;
+          //no weird reference issues
+		  var M_adj_test = M_adj; //we don't change this, so can just pass reference
+          var M_saved_test = copyMatrix(M_saved);
+		  
+		  M_saved_test[r][c]++;
           M_saved_test[c][r]++;
           smv_test.push([r,c])
           //console.log("smv_test after move",smv_test)
         }
         if(player === "C"){
-          M_adj_test[r][c]--;
+          //no weird reference issues
+		  var M_adj_test = copyMatrix(M_adj);
+          var M_saved_test = M_saved; //we don't change this, so can just pass reference
+		  
+		  M_adj_test[r][c]--;
           M_adj_test[c][r]--;
           cmv_test.push([r,c]);
           M_adj_test = removeUselessEdges(M_adj_test);
@@ -206,6 +256,7 @@ function makeMove(M_adj, M_saved, player,smv=[],cmv=[]){ //M_adj is the adjacenc
         //if find such an opponent move, return false
         
         //iterate through all possible moves for the opponent
+		opponentMoveIteration:
         for(var rr=0; rr<M_adj.length; rr++){ //iterate through rows 'rr' to avoid naming conflict with the other for loop
           //console.log("rr",rr);
           for(cc=0; cc<M_adj[0].length; cc++){ //iterate through cols 'cc' to avoid naming conflict with the other for loop
@@ -215,21 +266,26 @@ function makeMove(M_adj, M_saved, player,smv=[],cmv=[]){ //M_adj is the adjacenc
             //test if can move here
             if((M_adj_test[rr][cc] > 0) && (M_saved_test[rr][cc] < M_adj_test[rr][cc])) { //if there are edges, and not all the edges are in M_saved_test
               //make a move for the opponent here
-                //copy matrices so we don't screw up references
-              var M_adj_2ndTest = copyMatrix(M_adj_test); //'2ndTest' to avoid naming conflict
-              var M_saved_2ndTest = copyMatrix(M_saved_test); //'2ndTest' to avoid naming conflict
               var smv_2ndTest = copyMatrix(smv_test)
               var cmv_2ndTest = copyMatrix(cmv_test)
             
               if(player === "S"){ //then it's player C's turn now
-                M_adj_2ndTest[rr][cc]--;
+                //no weird reference problems
+				var M_adj_2ndTest = copyMatrix(M_adj_test); //'2ndTest' to avoid naming conflict
+                var M_saved_2ndTest = M_saved_test; //we don't modify this, so it's OK to just pass reference
+				
+				M_adj_2ndTest[rr][cc]--;
                 M_adj_2ndTest[cc][rr]--;
                 smv_2ndTest.push([rr,cc])
                 M_adj_2ndTest = removeUselessEdges(M_adj_2ndTest);
 				M_adj_2ndTest = removeDegree2s(M_adj_2ndTest, M_saved_2ndTest);
               }
               if(player === "C"){ //then it's player S's turn now
-                M_saved_2ndTest[rr][cc]++;
+			    //no weird reference problems
+				var M_adj_2ndTest = M_adj_test; //we don't modify this, so it's OK to just pass reference
+                var M_saved_2ndTest = copyMatrix(M_saved_test); //'2ndTest' to avoid naming conflict
+                
+				M_saved_2ndTest[rr][cc]++;
                 M_saved_2ndTest[cc][rr]++;
                 cmv_2ndTest.push([rr,cc]);
               }
@@ -239,12 +295,13 @@ function makeMove(M_adj, M_saved, player,smv=[],cmv=[]){ //M_adj is the adjacenc
               //see if the player can't guarantee a win in this position
               if(!makeMove(M_adj_2ndTest, M_saved_2ndTest, player,smv_2ndTest,cmv_2ndTest)){
                 canWinAllBranchingPositions = false;
+				//break opponentMoveIteration; -This line SHOULD make the program faster, but it actually slows it down tremendously... why?
               }
             }
           }
         }
         
-        //if for all opponent moves given this certain player move, the position is a guaranteed win for the player, player can guarantee win
+        //if for all opponent moves given this certain player move, the position is a guaranteed win for the player
         if(canWinAllBranchingPositions){return true}
         
       } //end check if player could make a move in the row col location

@@ -15,6 +15,8 @@ function calculate(){
 	
 	output.innerText = "Calculating...";
 	
-	//run function to determine m, and output result
-	output.innerText = "m = "+get_m(M_adj);
+	setTimeout(function(){ //timeout delays start of calculation (5ms), so that "Calculating..." can actually be displayed before calculation starts
+		//run function to determine m, and output result
+		output.innerText = "m = "+get_m(M_adj);
+	},5);
 }
