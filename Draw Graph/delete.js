@@ -34,6 +34,8 @@ function deleteEdge(){
 		M_adj[v2][v1]--;
 	}
 	
+	shadowedEdge = undefined; //so we don't accidentally delete an edge that was already deleted
+	
 	//remove edge from HTML
 		//clear all the edge hit canvases - updateCanvas() will regenerate these for edges present in M_adj
 	updateCanvas("updateVertexEdgeAngles");
