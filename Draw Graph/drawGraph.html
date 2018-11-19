@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Draw Graph</title>
+		<link type="text/css" rel="stylesheet" href="drawGraph.css"/>
+	</head>
+	<body>
+		<canvas id="canvas"></canvas>  <!--this will display edges; vertices will be displayed with divs-->
+		<p id="info">Move Vertex</p> <!--move vertex is the default mode-->
+		<div id="instructions">
+			<p>Instructions:</p>
+			<table>
+				<tbody>
+					<tr id="header">
+						<td class="key">Press Key</td><td>Description</td>
+					</tr>
+					<tr>
+						<td class="key">i</td><td>Toggle the instructions screen</td>
+					</tr>
+					<tr>
+						<td class="key">m</td><td>Show/hide the adjacency matrix of the graph</td>
+					</tr>
+					<tr>
+						<td class="key">v</td><td>Enter/exit "Add Vertex" mode. Click to create a vertex.</td>
+					</tr>
+					<tr>
+						<td class="key">e</td><td>Enter/exit "Add Edge" mode. Select 2 vertices (can be the same) to add an edge between them.</td>
+					</tr>
+					<tr>
+						<td class="key">d</td><td>Enter/exit "Delete" mode. Click vertices or edges to delete them.</td>
+					</tr>
+					<tr>
+						<td class="key">Any Other Key</td><td>Enter "Move Vertex" mode (default). Vertices can be moved by dragging and dropping.</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div id="M_adj_display">
+			<p></p>
+		</div>
+		
+		<canvas id="mainHitCanvas"></canvas> <!--an invisible version of the main canvas where all the edges have blurring-->
+		<div id="hitCanvases"></div> <!--each canvas has one edge corresponding to an edge in the main canvas, used for deleting edges-->
+		<!--the canvas ids are of form 'v1-v2-n' where v1<=v2 and n is the # edge between the 2 vertices (given the drawing order - see updateCanvas)-->
+		
+		<script src="globals.js"></script>
+		<script src="eventHandling.js"></script>
+		<script src="addStuff.js"></script>
+		<script src="delete.js"></script>
+		<script src="updateCanvas.js"></script>
+		<script src="deepCopy.js"></script>
+		<script src="vertexEdgeAngles.js"></script>
+		<script src="loopLocations.js"></script>
+		<script>
+			//initialize canvas dimensions
+			canvas.width = window.innerWidth;
+			canvas.height = window.innerHeight;
+			canvas.style.width = window.innerWidth + "px";
+			canvas.style.height = window.innerHeight + "px";
+			
+			mainHitCanvas.width = window.innerWidth;
+			mainHitCanvas.height = window.innerHeight;
+			mainHitCanvas.style.width = window.innerWidth + "px";
+			mainHitCanvas.style.height = window.innerHeight + "px";
+		</script>
+	</body>
+</html>
