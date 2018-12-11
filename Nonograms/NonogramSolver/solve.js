@@ -39,7 +39,7 @@ function solve(initialCall=true,testingGuess=false){
 	
 	//check for contradiction
 	if(contradiction){
-		contradiction = false; //reset
+		contradiction = false; //reset, since it's a global variable
 		return "contradiction"; //this will let the function that called solve() know that a contradiction was found
 	}
 	
@@ -66,11 +66,11 @@ function solve(initialCall=true,testingGuess=false){
 	}
 	//from now on, we have the knowledge that empty spaces are present - the nonogram isn't finished
 	
-	//use advanced logic - make a guess and see if results in a contradiction - do this for all spots with both a block and an X to be comprehensive
+	//use advanced logic - make a guess and see if results in a contradiction - for all empty spots, guess with both a block and an X to be comprehensive
 	var savedNonogram = deepCopy(nonogram); //store current state so we can come back to it
 	var whatToGuess = 1;
 	parentLoop:
-	while(whatToGuess === 1){
+	while(whatToGuess === 1){ //the 1st time this runs, we're guessing that there's a block, and then we set whatToGuess to -1, to guess X the 2nd time
 		for(var r=0; r<nOfRows; r++){
 			for(var c=0; c<nOfCols; c++){
 				if(nonogram[r][c] === 0){

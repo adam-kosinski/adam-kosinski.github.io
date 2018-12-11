@@ -15,6 +15,7 @@ var dialogOpen = true; //create/upload/download, theme choosing, info screen, et
 var nonogramLoaded = false; //flags whether there's currently a nonogram to work with, so stuff like keypress doesn't trigger prematurely
 var hoveringOverBorder = false; //used in enterNonogram.js to decide whether a click is for inserting a row/col or for entering clue data
 
+//stuff for undo and redo actions
 var nonogramHistory = [];
 var nonogramFuture = [];
 
