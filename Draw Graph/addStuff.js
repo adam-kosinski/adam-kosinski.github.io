@@ -3,10 +3,21 @@ function addVertex(e){ //eventHandling.js passed the click event to this functio
 	//html stuff
 	
 	let newVertex = document.createElement("div");
+	newVertex.id = "vertex-"+vertices.length;
 	newVertex.className = "vertex";
 	newVertex.style.top = (e.pageY - 8) + "px"; //the vertices are 16px tall and wide, so -8 is for centering vertex on click location
 	newVertex.style.left = (e.pageX - 8) + "px"; //same reason as above
 	document.body.appendChild(newVertex); //add vertex to the body
+	
+	let newLabel = document.createElement("div"); //it's a div so I can set the width to properly center the label on the vertex
+	newLabel.id = "label-"+vertices.length;
+	newLabel.className = "vertexLabel";
+	newLabel.textContent = vertices.length;
+	newLabel.style.width = "16px";
+	if(showLabels){newLabel.style.display = "block"} //override default of not showing them
+	newLabel.style.top = (e.pageY - 32) + "px"; //labels are positioned above vertices
+	newLabel.style.left = (e.pageX - 8) + "px"; //labels are centered horizontally w/ vertices
+	document.body.appendChild(newLabel);
 	
 	//data stuff
 	

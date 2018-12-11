@@ -13,7 +13,10 @@ var M_adj = []; //adjacency matrix
 var vertices = []; //stores html divs that are vertices, with the same index as in M_adj - so we can identify their index in M_adj
 
 //mode
-var mode = "move vertex"; //this is the default mode. Other modes: "add vertex" "add edge" "delete"
+var mode = "move vertex"; //this is the default mode. Other modes: "add vertex" "add edge" "delete" "change label"
+
+//flag for showing labels or not
+var showLabels = false;
 
 //for deleting
 var shadowedEdge; //stores which edge is shadowed red for the delete mode, of form [v1,v2,n] (same as hit canvas ids - see HTML file)

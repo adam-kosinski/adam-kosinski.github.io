@@ -45,6 +45,20 @@ function handleKeypress(e){
 			if(mode === "delete"){switchMode("move vertex")}
 			else {switchMode("delete")}
 			break;
+		case "l":
+			if(mode === "change label"){switchMode("move vertex")}
+			else {switchMode("change label")}
+			break;
+		case "L": //toggle label display
+			showLabels = showLabels? false : true;
+			let labels = document.getElementsByClassName("vertexLabel");
+			for(let i=0; i<labels.length; i++){
+				if(showLabels){
+					labels[i].style.display = "block";
+				}
+				else {labels[i].style.display = "none"}
+			}
+			break;
 		default:
 			switchMode("move vertex"); //this is the default mode
 	}
@@ -76,6 +90,9 @@ function switchMode(targetMode){ //targetMode is a string
 			break;
 		case "delete":
 			info.innerText = "Delete";
+			break;
+		case "change label":
+			info.innerText = "Change Label";
 			break;
 	}
 	
@@ -115,6 +132,13 @@ function handleClick(e){
 			if(e.target.className === "vertex"){deleteVertex(e)}
 			else if(shadowedEdge){deleteEdge()}
 			break;
+		case "change label":
+			if(e.target.className === "vertexLabel"){
+				let newLabel = prompt("Enter custom label for this vertex:",e.target.textContent);
+				if(newLabel && newLabel.length > 0){
+					e.target.textContent = newLabel;
+				}
+			}
 	}
 }
 
@@ -217,6 +241,12 @@ function handleMousemove(e){
 	if(mode === "move vertex" && draggedVertex){ //if draggedVertex has a value (HTML vertex), then we're dragging
 		draggedVertex.style.left = e.pageX - 8 + "px"; //-8 b/c vertices are 16px square
 		draggedVertex.style.top = e.pageY - 8 + "px";
+		
+		let label_id = "label-"+draggedVertex.id.split("-")[1];
+		let label = document.getElementById(label_id);
+		label.style.left = e.pageX - 8 + "px";
+		label.style.top = e.pageY - 32 + "px";
+		
 		updateCanvas("updateVertexEdgeAngles");
 	}
 }
