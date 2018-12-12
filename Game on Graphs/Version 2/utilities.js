@@ -22,7 +22,7 @@ function contract(M_adj, v1, v2){ //v1 & v2 are vertex indices; the edge to cont
 	
 	//check if I'm being stupid
 	if(M_adj[v1][v2] === 0){
-		console.warn("M_adj",M_adj);
+		console.warn("M_adj",copyMatrix(M_adj));
 		console.warn("v1, v2",v1,v2);
 		throw new Error("There's no edge to contract");
 	}
@@ -59,12 +59,19 @@ function contract(M_adj, v1, v2){ //v1 & v2 are vertex indices; the edge to cont
 
 //function for contracting along multiple edges simultaneously; will call contract() multiple times after doing some manipulation
 function contractMultipleEdges(M_adj, edgesToContract){ //edgesToContract is an array of 2-element arrays containing the args v1 and v2 to pass to contract
-	M_adj = copyMatrix(M_adj);
+	//2 return values: if contracting will cause player S to win, returns "S wins"
+	//else, returns the resulting adjacency matrix
 	
+	M_adj = copyMatrix(M_adj);
 	while(edgesToContract.length > 0){ //each time we contract, will remove the corresponding item from edgesToContract, until none are left
 		//grab the first entry in edgesToContract
 		let v1 = edgesToContract[0][0];
 		let v2 = edgesToContract[0][1];
+		
+		//test if we're about to contract vertices A and B
+		if(Math.min(v1,v2)===0 && Math.max(v1,v2)===1){
+			return "S wins";
+		}
 		
 		//contract and remove the corresponding entry in edgesToContract
 		M_adj = contract(M_adj, v1, v2);

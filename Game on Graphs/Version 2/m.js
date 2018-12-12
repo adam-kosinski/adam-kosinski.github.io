@@ -21,12 +21,12 @@ function combine(n,r,combinations=[],combo=[]){ //last 2 args are for recursion;
 
 
 
-
+var get_m_called_recursively = false; //flag for logging correct console messages when get_m is called recursively once
 
 //function that determines "m" given an adjacency matrix of a graph
 function get_m(M_adj){ //M_adj is adjacency matrix
-  M_adj = simplify(M_adj, true);
-  console.log("M_adj",M_adj);
+  //M_adj = simplify(M_adj, true);
+  console.log("m(): M_adj",M_adj);
   //get array of edges; each element in the array is of form [r,c] to denote where the edge is found in the adjacency matrix
   //this array is useful when trying to pick combinations of edges
   var edges = [];
@@ -60,12 +60,13 @@ function get_m(M_adj){ //M_adj is adjacency matrix
       M_adj_modified = copyMatrix(M_adj);
       M_adj_modified[0][1]--; //this won't produce a graph where A and B are disconnected, because then S would also be able to win, and the else if wouldn't be triggered
       M_adj_modified[1][0]--;
+	  get_m_called_recursively = true;
       return get_m(M_adj_modified) + 1;
     }
     
     //keep incrementing m until with m moves C is able to guarantee a victory, then actual m = that m - 1
     for(m = 1; m <= M_adj.length; m++){
-      console.log("m",m)
+      console.log("Testing if player C can win with "+(get_m_called_recursively? m+1 : m)+" initial moves");
       //choose m edges to cut
       //get combinations of m edges
       var combinations = [];
@@ -89,8 +90,12 @@ function get_m(M_adj){ //M_adj is adjacency matrix
 		
 		//it will be player S's turn now, test if they can force win. By one of our theorems, if they can't force win, C can force win.
         //if so, then the actual m = this m - 1
-        if(!canPlayerForceWin(M_adj_test, "S")) {return m - 1}
+        if(!canPlayerForceWin(M_adj_test, "S")) {
+			console.log("Player C can win with "+(get_m_called_recursively? m+1 : m)+" initial moves");
+			return m - 1;
+		}
       }
+	  console.log("can't win");
     }
     return Infinity; //"S" won in starting position
   }
@@ -101,6 +106,7 @@ function get_m(M_adj){ //M_adj is adjacency matrix
     //keep decrementing m until with |m| moves S is able to guarantee a victory, then actual m = that m + 1
     for(m = -1; m >= -M_adj.length; m--){
       //choose |m| edges to save
+	  console.log("Testing if player S can win with "+(-m)+" initial moves");
       //get combinations of |m| edges
       var combinations = [];
       combine(edges.length, Math.abs(m), combinations);
@@ -120,12 +126,17 @@ function get_m(M_adj){ //M_adj is adjacency matrix
 		  edgesToContract.push([r,c]);
         }
 		//save (contract) all edges
-		contractMultipleEdges(M_adj_test, edgesToContract);
+		result = contractMultipleEdges(M_adj_test, edgesToContract);
 		
+		//Test if player S has won or can win
 		//it will be player C's turn now, test if they can force win. By one of our theorems, if they can't force win, S can force win.
         //if so, then the actual m = this m + 1
-        if(!canPlayerForceWin(M_adj_test, "C")) {return m + 1}
+        if(result==="S wins" || !canPlayerForceWin(result, "C")) { //note: if result is "S wins", the canPlayerForceWin function won't be called
+			console.log("Player S can win with "+(-m)+" initial moves");
+			return m + 1;
+		}
       }
+	  console.log("can't win");
     }
     return -Infinity; //"C" won in the starting position
   }

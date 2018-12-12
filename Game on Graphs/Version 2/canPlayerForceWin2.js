@@ -6,10 +6,10 @@ function canPlayerForceWin(M_adj, player) {
   
   player = player.toUpperCase(); //in case we accidentally input a lower case
   
-  //simplify graph without changing who wins
+  /*/simplify graph without changing who wins
   result = simplify(M_adj); //this might change m, by the way
   if(result === "S wins"){return player==="S"? true : false}
-  
+  */
   //check if player C won already (player S will be taken care of the best I can do by simplify() above)
   if(!pathExists(M_adj) && player==="C"){return true}
   
