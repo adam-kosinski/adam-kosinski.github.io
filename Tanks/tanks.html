@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Tank Game</title>
+		<link type="text/css" rel="stylesheet" href="tanks.css"/>
+	</head>
+	<body>
+		<canvas id="canvas"></canvas>
+		
+		<!--SCRIPTS-->
+		<script src="globals.js"></script>
+		
+		<script src="tanks.js"></script>
+		<script src="bullets.js"></script>
+		<script src="explosions.js"></script>
+		<script src="obstacles.js"></script>
+		
+		<script src="tests.js"></script>
+		<script src="mainLoop.js"></script>
+		<script src="events.js"></script>
+		<script src="match.js"></script>
+		<script>
+			//page onload stuff
+			canvas.width = 500;
+			canvas.height = 500;
+			
+			startMatch();
+		</script>
+	</body>
+</html>
