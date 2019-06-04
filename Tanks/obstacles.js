@@ -1,12 +1,27 @@
 //obstacles are polygons - must be convex (for the collision function to work). Construct concave obstacles out of multiple convex ones
-function Obstacle(...vertices){ //must be at least 3 vertices, going around the polygon, of form [x,y]
-	//this notation means 'vertices' will be an array containing all the arguments
+function Obstacle(){ //must be at least 3 vertices (separate arguments), going around the polygon, of form [x,y]
+	//we will use the 'arguments' object to get arguments
+	//to disable fun version for this obstacle, pass the last argument after all the vertices as 'false'
 	
-	if(vertices.length < 3){
+	//convert arguments object to an array
+	args = Array.from(arguments);
+	
+	//check if we should disable fun version
+	if(typeof args[args.length-1] !== "object" && args[args.length-1] === false){
+		this.fun_version_disabled = true;
+		
+		//now remove that arg out of the vertices list
+		args.splice(args.length-1, 1);
+	} else {
+		this.fun_version_disabled = false;
+	}
+
+	
+	this.vertices = args;
+	if(this.vertices.length < 3){
 		throw new Error("Obstacle objects must have at least 3 vertices");
 	}
 	
-	this.vertices = vertices;
 	this.color = obstacleColor; //global config value
 	
 	//determine center of obstacle by averaging vertices
@@ -18,196 +33,45 @@ function Obstacle(...vertices){ //must be at least 3 vertices, going around the 
 	this.center[0] /= this.vertices.length;
 	this.center[1] /= this.vertices.length;
 	
-	//methods
-	this.detectLineCollision = function(seg,circleRadius=undefined){
-		//seg is a line segment representing the path of the object that might collide, of form [[x1,y1], [x2,y2]]
-		//circleRadius is optional, used for detecting collisions of circular objects (bullets) with their center traveling along seg; collision point returned still refers to the center of the object
-		//returns false if no collision, or an object representing the collision: {theta_normal:0-2pi, point:[x,y]} //theta of the vector normal to the surface of collision
-		
-		let collisions = []; //put collision objects here
-		
-		//loop through edges and see if they intersect with seg
-		for(let e=0; e<this.vertices.length; e++){
-			//get the 2 points making up the edge
-			let p1 = this.vertices[e];
-			let p2 = this.vertices[(e+1)%this.vertices.length];
-			
-			
-			//determine direction of normal vector from collided edge (points to the side of the edge the object came from)
-			//note: doing this now instead of after confirmed collision b/c of the possibility of testing circular object collision
-			
-				//get the direction opposite to the movement of the object colliding with the obstacle edge
-			let theta_antimovement = getAngle(seg[1], seg[0]); //getAngle() in tests.js
-			
-				//get direction of the edge of the obstacle
-			let theta_edge = getAngle(p1, p2);
-			
-				//get possible directions for the normal (perpendicular to edge of obstacle)
-			let theta_normal_1 = (theta_edge + Math.PI/2) % (2*Math.PI);
-			let theta_normal_2 = (theta_edge + 3*Math.PI/2) % (2*Math.PI);
-							
-				//figure out which direction for the normal is closer to theta_antimovement, that's the correct one
-			let theta_normal;
-			if( Math.abs(angleDiff(theta_normal_1, theta_antimovement)) < Math.abs(angleDiff(theta_normal_2, theta_antimovement)) ) { //angleDiff() defined in tests.js
-				theta_normal = theta_normal_1;
-			} else {
-				theta_normal = theta_normal_2;
-			}
-			
-			//modify seg if testing circular object collision
-			let x_offset = 0;
-			let y_offset = 0;
-			if(circleRadius){
-				x_offset = circleRadius*Math.cos(theta_normal+Math.PI);
-				y_offset = circleRadius*Math.sin(theta_normal+Math.PI);
-				
-				seg[0][0] += x_offset;
-				seg[1][0] += x_offset;
-				seg[0][1] += y_offset;
-				seg[1][1] += y_offset;
-			}
-			
-			
-			let intersection = lineSegmentIntersection(seg, [p1,p2]); //lineSegmentIntersection() defined in tests.js
-			if(circleRadius){ //if doing circular object collision, reset seg to original
-				seg[0][0] -= x_offset;
-				seg[1][0] -= x_offset;
-				seg[0][1] -= y_offset;
-				seg[1][1] -= y_offset;
-			}
-			
-			if(intersection !== false && intersection !== Infinity){ //if just one intersection point
-				//if we're doing circular object detection, fix the coordinate to be the center of the circular object
-				if(circleRadius){
-					intersection[0] -= x_offset;
-					intersection[1] -= y_offset;
-				}
-				
-				collisions.push({theta_normal:theta_normal, point:intersection});
-			}
-		}
-		//if multple collisions, use the first one
-		if(collisions.length > 1){
-			//calculate distance from collision to starting point of each collision, and take the one with min distance
-			let best;
-			let minDist = Infinity;
-			for(let c=0; c<collisions.length; c++){
-				let newDist = Math.sqrt( (collisions[c].point[0]-seg[0][0])**2 + (collisions[c].point[1]-seg[0][1])**2 );
-				if(newDist < minDist){
-					best = collisions[c];
-					minDist = newDist;
-				}
-			}
-			
-			collisions = [best];
-		}
-		
-		if(collisions.length > 0){
-			return collisions[0];
-		}
-		else {
-			return false;
-		}
-	}
 	
-	//function for detecting if objects moving on a circular arc collide with this obstacle
-	this.detectArcCollision = function(x,y,radius,theta_start,theta_end,counterclockwise=true){ //counterclockwise determined by math, not visual
-		//if there's a collision, returns the theta of the collision (on the circle defined by the given x,y,radius)
-		//returns false if no collision
+	
+	//fun version stuff!!(updatePosition only called by main loop if global far fun_version is true)
+	//------------------------------------------------------------------------
+	//store where the obstacle normally is in unchanging variables
+	this.normal_vertices = deepCopy(this.vertices);
+	this.normal_center = deepCopy(this.center)
+	
+	//movement (oscillation) variables
+	this.movement_angle = 2*Math.PI*Math.random();
+	this.initial_phase = 2*Math.PI*Math.random();
+	this.cycle_duration = (max_cycle_duration-min_cycle_duration)*Math.random() + min_cycle_duration; //variables are global config
+	this.max_offset = (max_offset-min_offset)*Math.random() + min_offset; //variables are global config
+	this.t0 = performance.now(); //the time right now in milliseconds
+	
+	//then in the function below which will be called by the main loop,
+	//we'll do sin(function of time passed + initial_phase) to get distance from normal position, and then use movement_angle to figure out which way to go
+	//we'll then add the x and y displacement to all the vertices and the center
+	//the main loop will then call the draw function
+	
+	this.updatePosition = function(){
+		if(this.fun_version_disabled){return}
 		
-		let collisions = []; //put theta of collision(s) here
+		let n_cycles_completed = (performance.now() - this.t0)/this.cycle_duration;
+		let phase = 2*Math.PI*n_cycles_completed + this.initial_phase;
+		let offset = this.max_offset*Math.sin(phase);
+		let dx = offset*Math.cos(this.movement_angle);
+		let dy = offset*Math.sin(this.movement_angle);
 		
-		//loop through edges and see if they intersect with seg
-		for(let e=0; e<this.vertices.length; e++){
-			//get the 2 points making up the edge
-			let p1 = this.vertices[e];
-			let p2 = this.vertices[(e+1)%this.vertices.length];
-			
-			//get point on obstacle edge that's min distance from circle center, and that min distance
-				//get 2 lines then do lineIntersection(); get another point on the line containing the circle center and the desired point
-			let otherPoint = [x -(p2[1]-p1[1]), y +(p2[0]-p1[0]) ];
-			let min_dist_point = lineIntersection([p1,p2], [[x,y], otherPoint]);
-			if(min_dist_point===false || min_dist_point===Infinity){ //the other possible return values besides a point
-				throw new Error("Something went wrong when finding min_dist_point in Obstacle.detectArcCollision()");
-			}
-			let dist_to_edge = Math.sqrt( (x-min_dist_point[0])**2 + (y-min_dist_point[1])**2 );
-			
-			//if the min distance from the circle center to the edge is greater than the radius, no intersection
-			if(dist_to_edge > radius){continue} //check next edge
-			
-			//full circle is guaranteed to intersect line that the obstacle edge is on once or twice
-			//get distance along the obstacle edge's line from min_dist_point to the intersection points (if only 1 intersection point, this distance will be 0)
-			//pythag theorem
-			let offset_dist = Math.sqrt( radius**2 - dist_to_edge**2 );
-			
-			//get points of intersection
-				//get angle from p1 to p2 so we know which way to go with distance offset_dist
-			let theta_edge = getAngle(p1,p2);
-				//get points and put angles into collisions array
-			let pointsChecked = 0;
-			do {
-				pointsChecked++;
-				theta_edge += Math.PI; //flip this direction every time we try to find a point (needs to be at beginning of loop so continue statements trigger it)
-				
-				let collisionPoint = [min_dist_point[0] + offset_dist*Math.cos(theta_edge),  min_dist_point[1] + offset_dist*Math.sin(theta_edge)];
-				let theta_collision = getAngle([x,y], collisionPoint); //getAngle() in tests.js
-								
-				//verify point is on the obstacle edge, not just on that line
-				if( ! onSegment(p1, collisionPoint, p2) ){continue} //onSegment() in tests.js
-								
-				//verify point is on the arc traveled by the object, not just on the full circle
-					//convert all relevant thetas to 0-2pi
-				while(theta_collision < 0){theta_collision += 2*Math.PI}
-				while(theta_start < 0){theta_start += 2*Math.PI}
-				while(theta_end < 0){theta_end += 2*Math.PI}
-				theta_collision %= (2*Math.PI);
-				theta_start %= (2*Math.PI);
-				theta_end %= (2*Math.PI);
-					//convert theta_collision and theta_end to greater than theta_start
-				while(theta_collision <= theta_start){theta_collision += 2*Math.PI}
-				while(theta_end <= theta_start){theta_end += 2*Math.PI}
-					//fix floating point error on all angles
-				theta_collision_rounded = Number(theta_collision.toFixed(2));
-				theta_start = Number(theta_start.toFixed(2));
-				theta_end = Number(theta_end.toFixed(2));
-					//check
-				if ( ! (
-					(counterclockwise && theta_start <= theta_collision_rounded && theta_collision_rounded <= theta_end) ||
-					(!counterclockwise && theta_collision_rounded >= theta_end) 
-					) )
-				{
-					continue;
-				}
-				
-				collisions.push(theta_collision);
-			} while (pointsChecked<2 && offset_dist>0);
+		//now update the coordinates
+		for(let v=0; v<this.vertices.length; v++){
+			this.vertices[v][0] = this.normal_vertices[v][0] + dx;
+			this.vertices[v][1] = this.normal_vertices[v][1] + dy;
 		}
-		
-		//if multiple collisions, use the first one
-		if(collisions.length > 1){
-			//calculate angle from collision to starting point of each collision, and take the one with min angle
-			let best;
-			let minAngle = Infinity;
-			for(let c=0; c<collisions.length; c++){
-				let newAngle = counterclockwise ? angleDiff(theta_start, collisions[c]) : angleDiff(collisions[c], theta_start);
-				if(newAngle < 0){newAngle += 2*Math.PI}
-				
-				if(newAngle < minAngle){
-					best = collisions[c];
-					minAngle = newAngle;
-				}
-			}
-			
-			collisions = [best];
-		}
-		
-		if(collisions.length > 0){
-			return collisions[0];
-		}
-		else {
-			return false;
-		}
+		this.center[0] = this.normal_center[0] + dx;
+		this.center[1] = this.normal_center[1] + dy;
 	}
+	//end of fun version stuff ----------------------------------------
+	
 	
 	//function to detect collision between this obstacle and another convex polygon or circle
 	//if collision, returns the theta_normal of the collision, and the overlap in that direction: {theta_normal:?, overlap:?}
@@ -223,7 +87,7 @@ function Obstacle(...vertices){ //must be at least 3 vertices, going around the 
 		//if there's a gap on one of the axes, no collision. If no gap on all axes, collision.
 		
 		let overlaps = [
-			//format of overlap object: {axis: [?,?], overlap: ?}
+			//format of overlap object: {axis: [?,?], overlap: ?} //overlap is distance along axis of overlap
 		];
 		//overlapExists() will fill this array with overlaps if it finds them
 		//if there is definitely a collision, we will then determine which overlap has the smallest size ('overlap') so we can return it
@@ -359,7 +223,7 @@ function Obstacle(...vertices){ //must be at least 3 vertices, going around the 
 		let theta_axis = getAngle([0,0], overlap_obj.axis); //getAngle() defined in tests.js
 		let theta_normal; //can be equal to theta_axis or theta_axis+pi
 		
-			//figure out which direction for the normal is closer to center-of-obstacle -> center-of-shape, that's the correct one
+			//figure out which direction for the normal is closer to going: center-of-obstacle -> center-of-shape, that's the correct one
 			//determine the center of the shape if we don't know it, by averaging the vertices
 		if(!shape.center){
 			if(!shape.vertices){throw new Error("Can't find center of shape b/c there are no vertices")}
@@ -391,10 +255,303 @@ function Obstacle(...vertices){ //must be at least 3 vertices, going around the 
 		ctx.beginPath();
 		ctx.moveTo(this.vertices[0][0], this.vertices[0][1]);
 		for(let v=1; v<this.vertices.length; v++){
-			ctx.lineTo(vertices[v][0], vertices[v][1]);
+			ctx.lineTo(this.vertices[v][0], this.vertices[v][1]);
 		}
 		ctx.closePath();
 		ctx.fill();
 		ctx.stroke();
+	}
+}
+
+
+//OBSTACLE GENERATION -----------------------------------------------------------------------------
+//obstacles will be generated along a grid laid over the canvas
+//2 types of obstacles: LargeObstacles, which take up whole or parts of grid squares, and WallObstacles, which take up grid lines
+//both types are subsets of the generic CustomObstacle class defined below
+	//obstacle.place(r,c) is defined differently for LargeObstacles vs WallObstacles
+
+//for both LargeObstacles and WallObstacles:
+//vertex_array is an array, [r][c], of grid intersections.
+	//Consecutive numbers are placed where vertices are to be drawn, in the order of drawing them
+	//0s are placed where nothing is to be drawn
+//footprint is an array representing the smallest box that can fit around this obstacle AND its surrounding -1s
+	//1=this obstacle there, 0=unused spot, -1=no other obstacle can be there in order to place this one
+
+
+function LargeObstacle(vertex_array,footprint){
+	
+	this.vertex_array = vertex_array;
+	this.footprint = footprint;
+	
+	//function to place the obstacle; this function will give the obstacle all of the properties of an Obstacle and add it to the obstacles array
+	//r,c, is the top-left row and column of the footprint
+	this.place = function(r,c){
+		let square_width = canvas.width/nCols;
+		let square_height = canvas.height/nRows;
+		//get reference x and y (top left of box containing this obstacle
+		let x_ref = c * square_width;
+		let y_ref = r * square_height;
+		
+		//get vertices
+		let vertices = [];
+		let v_cur = 1; //number of current vertex: 1,2,3, etc. (see vertex_array syntax above)
+		//iterate through vertices
+		console.log("varr",vertex_array);
+		vertex_iteration:
+		while(true){
+			//iterate through vertex_array, searching for current vertex
+			for(let i=0; i<vertex_array.length; i++){
+				for(let j=0; j<vertex_array[0].length; j++){
+					if(vertex_array[i][j] === v_cur){
+						let x = j*square_width + x_ref;
+						let y = i*square_height + y_ref;
+						vertices.push([x,y]);
+						
+						v_cur++;
+						continue vertex_iteration;
+					}
+				}
+			}
+			//if got through vertex_array without finding it, then no more vertices
+			break;
+		}
+		
+		//mark this obstacle in the obstacleGrid
+		for(let r_foot=0; r_foot<footprint.length; r_foot++){
+			for(let c_foot=0; c_foot<footprint[0].length; c_foot++){
+				if(r+r_foot >=0 && r+r_foot < obstacleGrid.length && c+c_foot >=0 && c+c_foot < obstacleGrid[0].length){
+					obstacleGrid[r+r_foot][c+c_foot] = footprint[r_foot][c_foot];
+				}
+			}
+		}
+		console.log("obstacle grid",obstacleGrid);
+		
+		//call parent constructor
+		Obstacle.apply(this,vertices);
+		console.log(this);
+	}
+	
+	//function to search the obstacle grid for a place to put this obstacle, and will call this.place() if it finds a place
+	//will return true if found a spot to place the obstacle, false if not
+	this.tryToPlace = function(){
+		//find top-left coords of smallest box surrounding obstacle, in terms of r,c in the footprint array
+		let r_offset;
+		let c_offset;
+		for(let r=0; r<footprint.length && r_offset===undefined; r++){
+			for(let c=0; c<footprint[0].length && c_offset===undefined; c++){
+				if(footprint[r][c] === 1){
+					r_offset = r;
+					c_offset = c;
+				}
+			}
+		}
+		//find bottom_right coords of smallest box surrounding obstacle, in terms of r,c in the footprint array
+		let r_max_offset;
+		let c_max_offset;
+		for(let r = footprint.length-1; r>=0 && r_max_offset===undefined; r--){
+			for(let c = footprint[0].length-1; c>=0 && c_max_offset===undefined; c--){
+				if(footprint[r][c] === 1){
+					r_max_offset = r;
+					c_max_offset = c;
+				}
+			}
+		}
+		if(r_offset===undefined || c_offset===undefined || r_max_offset===undefined || c_max_offset===undefined){
+			console.log(r_offset,c_offset,r_max_offset,c_max_offset);
+			throw new Error("Could not find footprint offsets in LargeObstacle");
+		}
+		console.log("offset",r_offset,c_offset);
+		console.log("max_offset", r_max_offset, c_max_offset);
+		
+		//method:
+		//1 - pick random location 
+		//2 - test if obstacle can go there
+			//if yes, call this.place(), return true
+			//if no, try again
+		//3 - end loop if exceeded nAttemptsToPlaceObstacle (global config), return false
+		
+		let height = r_max_offset - r_offset + 1;
+		let width = c_max_offset - c_offset + 1;
+		
+		attempt_loop:
+		for(let attempt = 0; attempt < nAttemptsToPlaceObstacle; attempt++){
+			console.log("attempt "+attempt+" to place obstacle");
+			//pick random location (top left coord of footprint)
+			let r_try = Math.floor( (nRows+1 - height) * Math.random() ) - r_offset; //nRows and nCols are global config
+			let c_try = Math.floor( (nCols+1 - width) * Math.random() ) - c_offset;
+			
+			//test if we can go there - iterate over footprint
+			for(let r_foot=0; r_foot<footprint.length; r_foot++){
+				for(let c_foot=0; c_foot<footprint[0].length; c_foot++){
+					
+					//do a buffer for indexing into the obstacleGrid because some of the footprint might not be in the grid - don't want an error
+					let gridsquare = obstacleGrid[r_try+r_foot]===undefined ? undefined : obstacleGrid[r_try+r_foot][c_try+c_foot];
+					if(gridsquare === undefined){continue}
+					
+					//if footprint is 1, obstacleGrid needs to be 0
+					if(footprint[r_foot][c_foot] === 1 && gridsquare !== 0){ //obstacleGrid is global var
+						continue attempt_loop;
+					}
+					
+					//if footprint is 0, it doesn't matter what obstacleGrid is
+					
+					//if footprint is -1, obstacleGrid needs to be 0 or -1
+					if(footprint[r_foot][c_foot] === -1 && gridsquare === 1){
+						continue attempt_loop;
+					}
+				}
+			}
+			//if made it here without continuing attempt loop, we can place!
+			console.log("Can place at: "+r_try+", "+c_try+"!");
+			this.place(r_try,c_try); //defined in LargeObstacle or WallObstacle
+			return true;
+		}
+		return false;
+	}
+}
+
+
+function WallObstacle(vertex_array, footprint){ //difference from LargeObstacle: vertex_array should only contain 2 vertices, which the wall will be drawn between
+	
+	//function to place the obstacle; this function will give the obstacle all of the properties of an Obstacle and add it to the obstacles array
+	//r,c, is the top-left row and column of the footprint
+	this.place = function(r,c){
+		let square_width = canvas.width/nCols;
+		let square_height = canvas.height/nRows;
+		//get reference x and y (top left of footprint)
+		let x_ref = c * square_width;
+		let y_ref = r * square_height;
+		
+		//get vertices
+		let points = []; //2 of these, they are the endpoints of the wall
+		let vertices = []; //4 of these, form a skinny rectangle, what's actually used to draw the wall
+		let p_cur = 1; //number of current point: 1,2,3, etc. (see vertex_array syntax above)
+		//iterate through points
+		point_iteration:
+		while(p_cur <= 2){
+			//iterate through vertex_array, searching for current point
+			for(let i=0; i<vertex_array.length; i++){
+				for(let j=0; j<vertex_array[0].length; j++){
+					if(vertex_array[i][j] === p_cur){
+						let x = j*square_width + x_ref;
+						let y = i*square_height + y_ref;
+						points.push([x,y]);
+						
+						p_cur++;
+						continue point_iteration;
+					}
+				}
+			}
+		}
+		//get vertices using points
+		let dx = Math.abs(points[1][0] - points[0][0]);
+		let dy = Math.abs(points[1][1] - points[0][1]);
+		let horiz_orient = dx > dy;
+		
+		if(horiz_orient){
+			vertices.push( [points[0][0], points[0][1]+0.5*wallWidth] );
+			vertices.push( [points[0][0], points[0][1]-0.5*wallWidth] );
+			vertices.push( [points[1][0], points[1][1]-0.5*wallWidth] );
+			vertices.push( [points[1][0], points[1][1]+0.5*wallWidth] );
+		}
+		else {
+			vertices.push( [points[0][0]+0.5*wallWidth, points[0][1]] );
+			vertices.push( [points[0][0]-0.5*wallWidth, points[0][1]] );
+			vertices.push( [points[1][0]-0.5*wallWidth, points[1][1]] );
+			vertices.push( [points[1][0]+0.5*wallWidth, points[1][1]] );
+		}
+		
+		console.log("footprint",footprint);
+		//mark this obstacle in the obstacleGrid
+		for(let r_foot=0; r_foot<footprint.length; r_foot++){
+			for(let c_foot=0; c_foot<footprint[0].length; c_foot++){
+				if(r+r_foot < obstacleGrid.length && c+c_foot < obstacleGrid[0].length){
+					obstacleGrid[r+r_foot][c+c_foot] = footprint[r_foot][c_foot];
+				}
+			}
+		}
+		console.log("obstacle grid",obstacleGrid);
+		
+		//call parent constructor
+		Obstacle.apply(this,vertices);
+		//console.log(this);
+	}
+	
+	
+	//function to search the obstacle grid for a place to put this obstacle, and will call this.place() if it finds a place
+	//will return true if found a spot to place the obstacle, false if not
+	this.tryToPlace = function(){
+		
+		//method:
+		//1 - pick random location 
+		//2 - test if obstacle can go there
+			//if yes, call this.place(), return true
+			//if no, try again
+		//3 - end loop if exceeded nAttemptsToPlaceObstacle (global config), return false
+		
+		let height = footprint.length;
+		let width = footprint[0].length;
+		
+		attempt_loop:
+		for(let attempt = 0; attempt < nAttemptsToPlaceObstacle; attempt++){
+			console.log("attempt "+attempt+" to place obstacle");
+			//pick random location (top left coord of footprint)
+			let r_try = Math.floor( (nRows+1 - height) * Math.random() ); //nRows and nCols are global config
+			let c_try = Math.floor( (nCols+1 - width) * Math.random() );
+			
+			//test if we can go there - iterate over footprint
+			for(let r_foot=0; r_foot<footprint.length; r_foot++){
+				for(let c_foot=0; c_foot<footprint[0].length; c_foot++){
+					
+					let gridsquare = obstacleGrid[r_try+r_foot][c_try+c_foot]; //shouldn't run into indexing problems b/c the footprint should be entirely in the obstacle grid
+					
+					//if footprint is 1, obstacleGrid needs to be 0 - shouldn't usually be needed for wall obstacles, but in case the user decides to make interesting footprints
+					if(footprint[r_foot][c_foot] === 1 && gridsquare !== 0){ //obstacleGrid is global var
+						continue attempt_loop;
+					}
+					
+					//if footprint is 0, it doesn't matter what obstacleGrid is
+					
+					//if footprint is -1, obstacleGrid needs to be 0 or -1
+					if(footprint[r_foot][c_foot] === -1 && gridsquare === 1){
+						continue attempt_loop;
+					}
+				}
+			}
+			//if made it here without continuing attempt loop, we can place!
+			console.log("Can place at: "+r_try+", "+c_try+"!");
+			this.place(r_try,c_try); //defined in LargeObstacle or WallObstacle
+			return true;
+		}
+		return false;
+	}
+}
+
+
+
+function generateObstacles(n){ //n is number of obstacles to generate
+	//if it's impossible to place n obstacles, we want the program to time out instead of trying infinitely to do it; set that up here
+	let timed_out = false;
+	setTimeout(function(){timed_out = true},500); //500 ms timeout
+	
+	//place the obstacles!
+	let obstacles_placed = 0;
+	while(!timed_out && obstacles_placed < n){
+		//pick a random obstacle to place - obstacle_demographic and obstacle_types are global config vars
+		let o_name = obstacle_demographic[ Math.floor(Math.random()*obstacle_demographic.length) ];
+		let o_data = obstacle_types[o_name];
+		
+		console.log(o_name);
+		
+		//create and try to place obstacle
+		let o = o_data.type==="large" ?
+			new LargeObstacle(o_data.v_array, o_data.footprint) :
+			new WallObstacle(o_data.v_array, o_data.footprint);
+		
+		if(o.tryToPlace()){
+			obstacles.push(o);
+			obstacles_placed++;
+		}
+		//otherwise do the loop again and keep trying
 	}
 }

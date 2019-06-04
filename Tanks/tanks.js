@@ -12,9 +12,11 @@ function Tank(x,y,theta,color,keyControls){
 	this.width = tankWidth; //global config value
 	this.length = tankLength; //global config value (not overriding anything by the way)
 		//note: length is the forward-backward direction
+	this.nozzleWidth = 0.3*this.width;
+	this.nozzleLength = this.length/2 + tankNozzleExtension; //tankNozzleExtension is a global config value
 	
 	//other information
-	this.n_bullets = 5;
+	this.n_bullets = nBullets; //global config
 	this.destroyed = false; //when set to true, the mainLoop will delete the tank and create an explosion to animate the tank's destruction
 	this.moving = 0; //alternate values: 1 (forward) or -1 (backward)
 	this.rotating = 0; //alternate values: 1 (clockwise) or -1 (counterclockwise)
@@ -41,7 +43,7 @@ function Tank(x,y,theta,color,keyControls){
 		this.n_bullets--;
 		
 		//fire bullet
-		let newBullet = new Bullet(b_x, b_y, this.theta, this);
+		let newBullet = new Bullet(b_x, b_y, this.theta);
 		bullets.push(newBullet);
 		
 		//set timeout for bullet to go away, and for this tank to get an extra bullet
@@ -53,8 +55,46 @@ function Tank(x,y,theta,color,keyControls){
 		console.log("firebullet",this,bullets);
 	}
 	
-	this.getHitboxCoords = function(nozzleToo=false){ //if nozzleToo is true, return the 2 coordinates of the tip of the nozzle as well
-		return getRectCoords(this.x, this.y, this.width, this.length, this.theta); //function in tests.js
+	this.getHitboxCoords = function(part="body"){ //part can be "body" or "nozzle"
+		//variables to describe a rectangle to get coords of corners
+		let width;
+		let length;
+		let center_x;
+		let center_y;
+		
+		if(part === "body"){
+			width = this.width;
+			length = this.length;
+			center_x = this.x;
+			center_y = this.y;
+		}
+		else if(part === "nozzle"){
+			width = this.nozzleWidth;
+			length = this.nozzleLength;
+			center_x = this.x + (this.nozzleLength/2)*Math.cos(this.theta);
+			center_y = this.y + (this.nozzleLength/2)*Math.sin(this.theta);
+		}
+		else {
+			throw new Error("invalid argument to Tank.getHitboxCoords()");
+		}
+		
+		let radius = Math.sqrt((width/2)*(width/2) + (length/2)*(length/2));
+		let ang = Math.atan(width/length); //angle from horizontal that each of the vertices are, ang will be between 0 and pi/2
+		
+		//get rotated angles of the 4 vertices
+		let angles = [
+			[ang + this.theta],
+			[(Math.PI-ang) + this.theta],
+			[(Math.PI+ang) + this.theta],
+			[-ang + this.theta]
+		];
+		
+		let vertices = [];
+		for(var i=0; i<4; i++){
+			vertices.push([radius*Math.cos(angles[i]) + center_x, radius*Math.sin(angles[i]) + center_y]);
+		}
+		
+		return vertices;
 	}
 	
 	this.draw = function(ctx){
@@ -70,8 +110,8 @@ function Tank(x,y,theta,color,keyControls){
 		ctx.strokeRect(-this.length/2, -this.width/2, this.length, this.width);
 		//nozzle
 		ctx.beginPath();
-		ctx.fillRect(0, -0.15*this.width, this.length/2 + tankNozzleExtension, 0.3*this.width); //tankNozzleExtension is a global config value
-		ctx.strokeRect(0, -0.15*this.width, this.length/2 + tankNozzleExtension, 0.3*this.width);
+		ctx.fillRect(0, -0.5*this.nozzleWidth, this.nozzleLength, this.nozzleWidth); //tankNozzleExtension is a global config value
+		ctx.strokeRect(0, -0.5*this.nozzleWidth, this.nozzleLength, this.nozzleWidth);
 		//cabin (circle)
 		ctx.beginPath();
 		ctx.arc(0, 0, 0.375*this.width, 0, 2*Math.PI);
@@ -95,6 +135,6 @@ function Tank(x,y,theta,color,keyControls){
 		
 		//apply binding - keyConfig is defined in globals.js, and the functions in it are called in events.js
 		keyConfig[key] = {keydown:this[prop].bind(this), keyup:keyupFunction.bind(this), prevEvent:undefined}
-			//NOTE: the .bind(this) is required so the function uses this Tank as its this, not the caller's this (the object we define here)
+			//NOTE: the .bind(this) is required so the function uses this Tank as its this, not the caller's this
 	}
 }

@@ -49,28 +49,6 @@ function numLineSegmentIntersections(seg, poly){ //seg of form [[x1,y1], [x2,y2]
 */
 
 
-//utility function for using pointInPolygon; converts center_x,center_y,width,height,theta of a rectangle into coordinates of 4 vertices
-function getRectCoords(x,y,width,length,theta){
-	let radius = Math.sqrt((width/2)*(width/2) + (length/2)*(length/2));
-	let ang = Math.atan(width/length); //angle from horizontal that each of the vertices are, ang will be between 0 and pi/2
-	
-	//get rotated angles of the 4 vertices
-	let angles = [ //format [r,theta]
-		[ang + theta],
-		[(Math.PI-ang) + theta],
-		[(Math.PI+ang) + theta],
-		[-ang + theta]
-	];
-	
-	let vertices = [];
-	for(var i=0; i<4; i++){
-		vertices.push([radius*Math.cos(angles[i]) + x, radius*Math.sin(angles[i]) + y]);
-	}
-	
-	return vertices;
-}
-
-
 //this function and reorderVertices used to be useful for obstacle collision detection, but not so anymore
 
 //function to determine if orientation of points p1->p2->p3 is counterclockwise, colinear, or clockwise
