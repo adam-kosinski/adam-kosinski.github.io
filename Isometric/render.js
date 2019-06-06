@@ -28,9 +28,9 @@ function drawPolygon(polygon)
 {
 	let p = []; //get array of vertices
 	//transform points from 3-space to canvas
-	for(let i=0; i<polygon.p.length; i++)
+	for(let i=0; i<polygon.v.length; i++)
 	{
-		p[i] = transformPoint(polygon.p[i]);
+		p[i] = transformPoint(polygon.v[i]);
 	}
 	//draw the polygon
 	ctx.fillStyle = polygon.color;
@@ -48,8 +48,8 @@ function pointInPolygon(point,poly){
 	//process input, since this was copied from tanks
 	p = [point.x,point.y];
 	polygon = [];
-	for(let i=0; i<poly.p.length; i++){
-		polygon.push([poly.p[i].x,poly.p[i].y]);
+	for(let i=0; i<poly.v.length; i++){
+		polygon.push([poly.v[i].x,poly.v[i].y]);
 	}
 	poly = polygon;
 		
@@ -112,9 +112,9 @@ function getRenderOrder(...polygons)
 		{
 			let poly = polys[i];
 			let proj_points = [];
-			for(let n=0; n<poly.p.length; n++)
+			for(let n=0; n<poly.v.length; n++)
 			{
-				proj_points.push(transformPoint(poly.p[n]));
+				proj_points.push(transformPoint(poly.v[n]));
 			}
 			proj_polygons.push(new Polygon(poly.color,proj_points));
 		}
@@ -122,23 +122,23 @@ function getRenderOrder(...polygons)
 		let proj_poly2 = proj_polygons[1];
 		
 		//iterate through vertices of proj_poly1
-		for(let n=0; n<proj_poly1.p.length; n++){
-			let p = proj_poly1.p[n];
+		for(let n=0; n<proj_poly1.v.length; n++){
+			let p = proj_poly1.v[n];
 			//check if vertex is in proj_poly2
 			console.log(p,proj_poly2);
 			if(pointInPolygon(p,proj_poly2))
 			{
 				//do depth test (0 = at viewplane, + = away from viewpoint, - = towards viewpoint direction)
 					//same as distance from vertex to viewplane
-				let dist_poly1 = new Vector(viewplane_origin,poly1.p[n]).dot(viewplane.normal)/viewplane.normal.mag; //viewplane.normal comes towards viewer 
+				let dist_poly1 = new Vector(viewplane_origin,poly1.v[n]).dot(viewplane.normal)/viewplane.normal.mag; //viewplane.normal comes towards viewer 
 				
 					//see below this function for the math derivation
-				let num = poly2.normal.dot(new Vector(poly1.p[n], poly2.p[0]));
+				let num = poly2.normal.dot(new Vector(poly1.v[n], poly2.v[0]));
 				let denom = poly2.normal.dot(viewplane.normal);
 				let t = num/denom;
-				let x = viewplane.normal.i*t + poly1.p[n].x;
-				let y = viewplane.normal.j*t + poly1.p[n].y;
-				let z = viewplane.normal.k*t + poly1.p[n].z;
+				let x = viewplane.normal.i*t + poly1.v[n].x;
+				let y = viewplane.normal.j*t + poly1.v[n].y;
+				let z = viewplane.normal.k*t + poly1.v[n].z;
 				let intersect = new Point(x,y,z);
 				let dist_poly2 = new Vector(viewplane_origin,intersect).dot(viewplane.normal)/viewplane.normal.mag;
 				
@@ -150,23 +150,23 @@ function getRenderOrder(...polygons)
 		}
 		
 		//iterate through vertices of proj_poly2
-		for(let n=0; n<proj_poly2.p.length; n++){
-			let p = proj_poly2.p[n];
+		for(let n=0; n<proj_poly2.v.length; n++){
+			let p = proj_poly2.v[n];
 			//check if vertex is in proj_poly1
 			if(pointInPolygon(p,proj_poly1))
 			{
 				console.log("Boo");
 				//do depth test (0 = at viewplane, + = away from viewpoint, - = towards viewpoint direction)
 					//same as distance from vertex to viewplane
-				let dist_poly2 = new Vector(viewplane_origin,poly2.p[n]).dot(viewplane.normal)/viewplane.normal.mag; //viewplane.normal comes towards viewer 
+				let dist_poly2 = new Vector(viewplane_origin,poly2.v[n]).dot(viewplane.normal)/viewplane.normal.mag; //viewplane.normal comes towards viewer 
 				
 					//see below this function for the math derivation
-				let num = poly1.normal.dot(new Vector(poly2.p[n], poly1.p[0]));
+				let num = poly1.normal.dot(new Vector(poly2.v[n], poly1.v[0]));
 				let denom = poly1.normal.dot(viewplane.normal);
 				let t = num/denom;
-				let x = viewplane.normal.i*t + poly2.p[n].x;
-				let y = viewplane.normal.j*t + poly2.p[n].y;
-				let z = viewplane.normal.k*t + poly2.p[n].z;
+				let x = viewplane.normal.i*t + poly2.v[n].x;
+				let y = viewplane.normal.j*t + poly2.v[n].y;
+				let z = viewplane.normal.k*t + poly2.v[n].z;
 				let intersect = new Point(x,y,z);
 				let dist_poly1 = new Vector(viewplane_origin,intersect).dot(viewplane.normal)/viewplane.normal.mag;
 				
@@ -190,14 +190,17 @@ function getRenderOrder(...polygons)
 /*distance logic for above function:
 
 line orthogonal to viewplane, through vertex of one polygon
+
+get unit vector <a,b,c> pointing away from viewer, (x0,y0,z0) is point on viewplane
+
 x = at + x0
 y = bt + y0
 z = ct + z0
 
-plane of second polygon
+plane of polygon
 i(x-x1) + j(y-y1) + k(z-z1) = 0
 
-Find intersection point:
+Solve for the t that gives the intersection point:
 
 dx = x0 - x1
 dy = y0 - y1
@@ -211,7 +214,7 @@ t(ia + jb + kc) = -(idx + jdy + kdz)
 t = i(x1-x0) + j(y1-y0) + k(z1-z0) / ia + jb + kc
 t = <i,j,k> * <p0 to p1> / <i,j,k> * <a,b,c>
 
-Plug into line to finish
+t will be the signed distance from (x0,y0,z0) to the point
 
 */
 
@@ -232,10 +235,13 @@ function renderCube(x,y,z,size) //x,y,z are coords of vertex of cube with most n
 	//get polygons
 	
 	polygons = [];
-	//polygons.push(new Polygon("red",[p[0], p[1], p[3], p[2]])); //bottom square
+	polygons.push(new Polygon("red",[p[0], p[1], p[3], p[2]])); //bottom square
 	polygons.push(new Polygon("red",[p[4], p[5], p[7], p[6]])); //top square
-	polygons.push(new Polygon("green",[p[0], p[1], p[5], p[4]])); //back left square
-	
+	polygons.push(new Polygon("red",[p[0], p[1], p[5], p[4]])); //back left square
+	polygons.push(new Polygon("red",[p[0], p[2], p[6], p[4]])); //back right square
+	polygons.push(new Polygon("red",[p[1], p[3], p[7], p[5]])); //front left square
+	polygons.push(new Polygon("red",[p[2], p[3], p[7], p[6]])); //front right square
+	/*
 	//draw polygons
 	console.log(polygons);
 		//get render order
@@ -248,7 +254,7 @@ function renderCube(x,y,z,size) //x,y,z are coords of vertex of cube with most n
 		drawPolygon(polygons[n]);
 	}
 	
-	
+	*/
 	
 	
 	//draw lines

@@ -5,6 +5,16 @@
 //DOM references
 let canvas = document.getElementById("canvas");
 let ctx = canvas.getContext("2d");
+//translate origin location on canvas
+ctx.translate(250,250);
+
+//make an offscreen canvas that will be used for testing in the rasterization algorithm
+let test_canvas = document.createElement("canvas");
+test_canvas.width = canvas.width;
+test_canvas.height = canvas.height;
+let test_ctx = test_canvas.getContext("2d");
+test_ctx.translate(250,250);
+
 
 //directions of the axes
 let x_dir = new Vector(1,0,0);
@@ -32,25 +42,25 @@ let viewplane_origin = centerpoint;
 //scalar for canvas
 let px_per_unit = 50; //how many pixels on the canvas corresponds to one unit in 3-space
 
-//translate origin location on canvas
-ctx.translate(250,250);
 
 updateViewpoint(viewpoint); //will define viewplane, all proj_dir. See below for func definition
 renderCube(0,0,0,1);
 
 //animate rotation
 let time = 0; //in seconds
-let fps = 30;
-/*setInterval(function(){
+let fps = 50;
+setInterval(function(){
 	ctx.clearRect(-canvas.width,-canvas.height,2*canvas.width,2*canvas.height);
 	
-	let newViewpoint = new Point(Math.cos(time),Math.sin(time),0.5);
+	let newViewpoint = new Point(Math.cos(time),Math.sin(time),0.5*Math.sin(time+Math.PI/4));
 	updateViewpoint(newViewpoint);
 	
-	renderCube(-.5,-.5,-.5,1);
+	render(ctx,polygons);
+	
+	console.log(performance.now());
 	
 	time += 1/fps;
-}, 1000/fps);*/
+}, 1000/fps);
 
 //function declarations -----------------------------------
 
@@ -72,7 +82,7 @@ function updateViewpoint(newViewpoint)
 	//get vector perpendicular to grad_proj, rotated 90 deg clockwise with respect to viewer
 	//cross: grad_proj x vector_from_centerpoint_to_viewer
 	//x_draw_dir will be the unit vector of this cross product
-	x_draw_dir = grad_proj.cross(normal).unit();
+	x_draw_dir = grad_proj.cross(viewplane.normal).unit();
 }
 
 
