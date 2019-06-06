@@ -23,6 +23,20 @@ function Tank(x,y,theta,color,keyControls){
 		//note: to calculate rotation, mainLoop.js will multiply this.rotating by angular speed and add that to theta
 		//however, b/c of canvas coordinates, counterclockwise rotation in math will appear like clockwise rotation on the canvas
 	
+	//generate score display
+	if(!score_display_generated){
+		let score_td = document.createElement("td");
+		let score_div = document.createElement("div");
+		let icon = generateTankIcon(this.color);
+		let score = document.createElement("p");
+		score.innerText = "0";
+		scores[color] = score; //scores is a global object
+		score_div.appendChild(icon);
+		score_div.appendChild(score);
+		score_td.appendChild(score_div);
+		score_tr.appendChild(score_td); //score_tr is a global reference
+	}
+	
 	//methods
 	this.moveForward = function(){this.moving = 1; console.log("moving",this,this.moving)}
 	this.moveBackward = function(){this.moving = -1; console.log("moving",this,this.moving)}
@@ -137,4 +151,54 @@ function Tank(x,y,theta,color,keyControls){
 		keyConfig[key] = {keydown:this[prop].bind(this), keyup:keyupFunction.bind(this), prevEvent:undefined}
 			//NOTE: the .bind(this) is required so the function uses this Tank as its this, not the caller's this
 	}
+}
+
+
+//function to generate a tank icon of the right color that will sit next to the player's score
+//returns a img html element
+function generateTankIcon(color){
+	
+	let img = document.createElement("img");
+	img.src = "tank.png";
+	img.width = tankIconWidth;
+	
+	let hue = colorToHsl(color)[0] * 360; //see function below
+	img.style.filter = "hue-rotate("+hue+"deg)";
+	
+	return img;
+}
+
+function colorToHsl(color){
+	//stolen from stack overflow - returns hsl in the set [0,1]
+	var rgbToHsl = function(r, g, b){
+		r /= 255, g /= 255, b /= 255;
+		var max = Math.max(r, g, b), min = Math.min(r, g, b);
+		var h, s, l = (max + min) / 2;
+
+		if(max == min){
+			h = s = 0; // achromatic
+		}else{
+			var d = max - min;
+			s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
+			switch(max){
+				case r: h = (g - b) / d + (g < b ? 6 : 0); break;
+				case g: h = (b - r) / d + 2; break;
+				case b: h = (r - g) / d + 4; break;
+			}
+			h /= 6;
+		}
+
+		return [h, s, l];
+	}
+	
+	//draw color on canvas to convert to rgb, plug into top function
+	let off_canvas = document.createElement("canvas");
+	let off_ctx = off_canvas.getContext("2d");
+	off_ctx.fillStyle = color;
+	off_ctx.fillRect(0,0,off_canvas.width,off_canvas.height);
+	let data = off_ctx.getImageData(0,0,1,1).data;
+	let r = data[0];
+	let g = data[1];
+	let b = data[2];
+	return rgbToHsl(r,g,b);
 }

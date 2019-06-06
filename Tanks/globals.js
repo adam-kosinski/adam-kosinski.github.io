@@ -1,9 +1,11 @@
 var canvas = document.getElementById("canvas");
 var ctx = canvas.getContext("2d");
-var score_container = document.getElementById("scores");
+var score_table = document.getElementById("scores");
+var score_tr = document.getElementById("score_tr");
 
-//variable to store players' score
-var scores = [];
+//variable to store the p elements displaying players' score
+var scores = {}; //color:score
+var score_display_generated = false; //only want to generate the score display once, not every match
 
 //variables to store objects
 var tanks = []; //Tank objects, defined in tanks.js
@@ -26,23 +28,33 @@ var fun_version = false;
 var tried_to_leave; //see events.js with fun version stuff and page unloading logic
 
 //config stuff ----------------------------------------------
-var tankSpeed = 100; //px per second
-var tankAngularSpeed = Math.PI; //radians per second
+
+var fps = 30;
+
+//bullet stuff
 var bulletSpeed = 120; //px per second
-
 var nBullets = 10;
-
 var bulletLife = 8000; //milliseconds until the bullet is removed and the tank that shot it is restocked
+var bulletRadius = 3; //px
+
+
+//explosion stuff
 var explosionDuration = 1000; //milliseconds
 
+
+//tank stuff
+var tankSpeed = 100; //px per second
+var tankAngularSpeed = Math.PI; //radians per second
 var tankHitTimerTimeout = 3000; //milliseconds after first tank is destroyed before game ends
 
 var tankWidth = 20; //px, sideways direction
 var tankLength = 30; //px, the forward-backward direction
 //note: length must be >= width for non-weird drawings
 var tankNozzleExtension = 10; //px the nozzle extends over the base of the tank, must be > 0
-var bulletRadius = 3; //px
+var tankIconWidth = 50; //px, width of image sitting next to scores
 
+
+//obstacle stuff
 var obstacleColor = "gray";
 var wallWidth = 8; //px; for WallObstacles
 var obstacleGrid = []; //filled with 1s (obstacle there), 0s (unused), and -1s (no obstacle allowed there)
@@ -65,7 +77,6 @@ var max_cycle_duration = 15000; //milliseconds
 var min_offset = 20; //in pixels
 var max_offset = 200; //in pixels
 
-var fps = 30;
 
 
 //obstacle type and random generation data

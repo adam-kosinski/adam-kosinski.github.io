@@ -194,7 +194,7 @@ function mainLoop(){
 	}
 	
 	//check if game ended
-	if(tankHitTimer > tankHitTimerTimeout){
+	if(tankHitTimer > tankHitTimerTimeout && tanks.length <= 1){
 		//note: tankHitTimer is reset to 0 after any tank explodes (i.e. will cause a display even after all tanks explode, to let the animation finish)
 		
 		tankHitTimer = undefined;

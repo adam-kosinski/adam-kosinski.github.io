@@ -5,7 +5,7 @@ function startGame(...player_colors){ //length of arguments list is
 function startMatch(){
 	//just in case we didn't call endMatch()
 	clearInterval(mainLoopID);
-	
+		
 	//set up objects
 	tanks = [];
 	let red_x = canvas.width*Math.random();
@@ -16,6 +16,8 @@ function startMatch(){
 	let green_y = canvas.height*Math.random();
 	let green_theta = 0.25*Math.PI*Math.floor(8*Math.random());
 	tanks.push(new Tank(green_x,green_y,green_theta,"green",{moveForward:"ArrowUp",moveBackward:"ArrowDown",rotateClockwise:"ArrowRight",rotateCounterclockwise:"ArrowLeft",fireBullet:"m"}));
+	
+	if(!score_display_generated){score_display_generated = true}
 	
 	bullets = [];
 	
@@ -44,7 +46,33 @@ function startMatch(){
 function endMatch(){
 	clearInterval(mainLoopID);
 	
+	//increment score
+	if(tanks.length === 1){ //double checking
+		let color = tanks[0].color;
+		
+		//do a little animation
+		let duration = 1000;
+		let t_step = 50;
+		let t = 0;
+		
+		let div = scores[color].parentElement;
+		
+		let id = setInterval(function(){
+			if(t >= duration){clearInterval(id)}
+						
+			//fading yellow background
+			div.style.backgroundColor = "rgba(255,255,0,"+(duration-t)/duration+")";
+			
+			
+			t += t_step;
+		}, t_step);
+		
+		//increment the number
+		scores[color].innerText = Number(scores[color].innerText) + 1;
+	}
+	
+	
 	//pause for a little to change the score and to let the players see it
-	setTimeout(startMatch,1000);	
+	setTimeout(startMatch,1500);	
 }
 

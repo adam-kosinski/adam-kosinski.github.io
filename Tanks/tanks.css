@@ -1,5 +1,24 @@
-canvas {
+#canvas {
 	width: 500px;
 	height: 500px;
 	border: 1px solid black;
+}
+
+table {
+	width: 500px;
+}
+
+table td {
+	text-align: center; /*this apparently centers the inline-block div in the td*/
+}
+
+table td div {
+	display: inline-block;
+}
+
+table td div * {
+	font-family: sans-serif;
+	display: inline-block;
+	vertical-align: middle;
+	margin: 5px;
 }
