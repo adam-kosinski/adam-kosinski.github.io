@@ -1,3 +1,6 @@
+let name = prompt("Please enter a name:");
+if(!name || name===""){name = "unnamed"}
+
 let canvas = document.getElementById("canvas");
 //setup canvas display
 canvas.width = window.innerWidth;

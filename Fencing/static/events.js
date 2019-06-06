@@ -1,10 +1,10 @@
 document.addEventListener("mousemove",handleMousemove);
 document.addEventListener("click",handleClick);
-
+let count = 0;
 function handleMousemove(e){
 	if(e.target !== canvas){return}
-	ctx.clearRect(0,0,canvas.width,canvas.height);
-	
+	count++
+	console.log("count",count);
 	//get x and y
 	let x = e.layerX;
 	let y = e.layerY;
@@ -19,13 +19,8 @@ function handleMousemove(e){
 	
 	
 	let theta = getSwordAngle(x,y);
-		
-	let x_sword = e.layerX;
-	let y_sword = e.layerY;
 	
-	drawExtra();
-	drawSword(x_sword,y_sword,theta);
-	
+	updateSword(e.layerX,e.layerY,theta); //function in client.js
 }
 
 
