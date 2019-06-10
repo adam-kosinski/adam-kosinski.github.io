@@ -18,22 +18,22 @@ function transformPoint(p) //input: Point object in 3 space, returns projected P
 
 function drawPolygon(ctx,polygon) //input a Polygon object to draw
 {
-	let p = []; //get array of vertices
+	let v = []; //get array of vertices
 	//transform points from 3-space to canvas
 	for(let i=0; i<polygon.v.length; i++)
 	{
-		p[i] = transformPoint(polygon.v[i]);
+		v[i] = transformPoint(polygon.v[i]);
 	}
 	//draw the polygon
 	ctx.fillStyle = polygon.color;
 	ctx.beginPath();
-	ctx.moveTo(p[0].x, -p[0].y);
-	for(let i=1; i<p.length; i++){
-		ctx.lineTo(p[i].x, -p[i].y);
+	ctx.moveTo(v[0].x, -v[0].y);
+	for(let i=1; i<v.length; i++){
+		ctx.lineTo(v[i].x, -v[i].y);
 	}
 	ctx.closePath();
 	ctx.fill();
-	ctx.stroke();
+	//ctx.stroke();
 }
 
 //function to get signed depth of a point to a polygon in 3 space, positive depth is away from viewpoint
@@ -124,7 +124,14 @@ storage needed:
 
 function render(draw_ctx,polygons) //polygons is an array of Polygon objects that each lie on a plane
 {
-	//pixel storage
+	ctx.clearRect(-canvas.width,-canvas.height,2*canvas.width,2*canvas.height);
+	let renderOrder = getRenderOrder(polygons);
+	console.log(renderOrder);
+	for(let i=0; i<renderOrder.length; i++){
+		drawPolygon(draw_ctx,renderOrder[i]);
+	}
+	
+	/*/pixel storage
 	let pixels = {};
 	
 	//reference to original canvas
@@ -133,6 +140,7 @@ function render(draw_ctx,polygons) //polygons is an array of Polygon objects tha
 	//reference canvas that will be used to extract pixels from each polygon
 	let canvas = test_canvas;
 	let ctx = test_ctx;
+	ctx.imageSmoothingEnabled = false;
 		
 	//loop through polygons
 	for(let i=0, n_polygons=polygons.length; i<n_polygons; i++){
@@ -156,7 +164,7 @@ function render(draw_ctx,polygons) //polygons is an array of Polygon objects tha
 				
 				//get pixel depth - signed distance from point on viewplane/canvas to polygon along a line following the projection
 					//2d coords
-/*magic numbers*/				let x = p % canvas.width - 250;
+/*magic numbers/				let x = p % canvas.width - 250;
 				let y = 250 - Math.floor(p / canvas.width);
 				let depth = getPointDepth(new Point(x,y), polygons[i]);
 				
@@ -183,4 +191,5 @@ function render(draw_ctx,polygons) //polygons is an array of Polygon objects tha
 		draw_ctx.globalAlpha = pixels[px].opacity;
 		draw_ctx.fillRect(pixels[px].x, -pixels[px].y, 1, 1);
 	}
+	*/
 }

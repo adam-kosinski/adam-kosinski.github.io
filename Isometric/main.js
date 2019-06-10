@@ -22,7 +22,7 @@ let y_dir = new Vector(0,1,0);
 let z_dir = new Vector(0,0,1);
 
 //viewer location
-let viewpoint = new Point(2,1,0.5); //note: since we are doing isometric view, only the direction of this point from the origin matters
+let viewpoint = new Point(-0.5,1,0.5); //note: since we are doing isometric view, only the direction of this point from the origin matters
 
 //center location (what we look at, what we rotate around)
 let centerpoint = new Point(0,0,0);
@@ -45,23 +45,29 @@ let px_per_unit = 50; //how many pixels on the canvas corresponds to one unit in
 
 updateViewpoint(viewpoint); //will define viewplane, all proj_dir. See below for func definition
 renderCube(0,0,0,1);
+render(ctx,polygons);
 
 //animate rotation
 let time = 0; //in seconds
+let t = 0;
 let fps = 50;
-setInterval(function(){
-	ctx.clearRect(-canvas.width,-canvas.height,2*canvas.width,2*canvas.height);
-	
-	let newViewpoint = new Point(Math.cos(time),Math.sin(time),0.5*Math.sin(time+Math.PI/4));
-	updateViewpoint(newViewpoint);
-	
-	render(ctx,polygons);
-	
-	console.log(performance.now());
-	
-	time += 1/fps;
-}, 1000/fps);
-
+let id;
+function animate(){
+	id = setInterval(function(){
+		ctx.clearRect(-canvas.width,-canvas.height,2*canvas.width,2*canvas.height);
+		
+		let newViewpoint = new Point(Math.cos(time),Math.sin(time),0.5*Math.sin(time+Math.PI/4));
+		updateViewpoint(newViewpoint);
+		
+		render(ctx,polygons);
+		
+		console.log(performance.now()-t);
+		t=performance.now();
+		
+		time += 1/fps;
+	}, 1000/fps);
+}
+function stop(){clearInterval(id)}
 //function declarations -----------------------------------
 
 function updateViewpoint(newViewpoint)

@@ -44,9 +44,8 @@ function drawPolygon(polygon)
 	ctx.stroke();
 }
 
-function pointInPolygon(point,poly){
+function pointInPolygon(p,poly){
 	//process input, since this was copied from tanks
-	p = [point.x,point.y];
 	polygon = [];
 	for(let i=0; i<poly.v.length; i++){
 		polygon.push([poly.v[i].x,poly.v[i].y]);
@@ -67,9 +66,10 @@ function pointInPolygon(point,poly){
 	// plug in those coefficients with the x,y of the point
 	// if result < 0, point is on right hand side of line; if result > 0, on left hand side
 	
-	
+	//store the result for each edge, must be the same for the point to be in the polygon
 	let commonResult;
 	
+	//iterate through vertices
 	for(var i=0; i<poly.length; i++){
 		p1 = poly[i];
 		p2 = poly[(i+1)%poly.length];
@@ -78,7 +78,7 @@ function pointInPolygon(point,poly){
 		let B = p2[0] - p1[0];
 		let C = -(A*p1[0] + B*p1[1]);
 		
-		let result = A*p[0] + B*p[1] + C;
+		let result = A*p.x + B*p.y + C;
 		
 		//convert result to 1 or -1
 		if(result >= 0){result = 1}
@@ -95,19 +95,99 @@ function pointInPolygon(point,poly){
 	return true;
 }
 
+
+//need a different sorting algorithm where saying order of 2 things doesn't matter with respect to each other doesn't mean they are equal
+//used for getRenderOrder()
+function sort(array,f){
+	//method:
+	//fill a matrix called comparisons with results of f
+	//find the item(s) that needs to be sorted lower than anything else: f(that,other) is always (-) or 0, put it/them into the sorted array,
+	//and remove it/them from the input array.
+	//if no such item (means f(that,other) is (+) for at least one 'other', for all 'thats'),
+	//the sort won't work, throw an error - this is a limitation of my rendering method
+	
+	//shallow copy array
+	array = array.slice();
+	
+	//sorted output array
+	let out = [];
+	
+
+	let n = array.length;
+	
+	//compare all elements together
+	let comparisons = [];
+	for(let i=0; i<n; i++){
+		let row = [];
+		for(let j=0; j<n; j++){
+			row.push(0);
+		}
+		comparisons.push(row);
+	}
+	for(let a=0; a<n-1; a++){
+		for(let b=a+1; b<n; b++){
+			let result = f(array[a],array[b]);
+			comparisons[a][b] = result;
+			comparisons[b][a] = -result;
+		}
+	}
+	
+	//find lowest item(s)
+	
+	//flag to help determine if impossible sort
+	let found_one = false;
+		
+	while(n>0){
+		found_one = false;
+		
+		consider:
+		for(let a=0; a<n; a++){ //considering these items
+			for(let b=0; b<n; b++){ //comparing to these items
+				if(a===b){continue}
+				if(comparisons[a][b] > 0){ //then not the lowest one
+					continue consider;
+				}
+			}
+			//if made it here, it's a lowest one
+			n--;
+			out.push(array[a]);
+				//remove from comparisons and array
+			array.splice(a,1);
+			comparisons.splice(a,1);
+			for(let i=0; i<n; i++){
+				comparisons[i].splice(a,1);
+			}
+			
+			found_one = true;
+			
+			break consider;
+		}
+	
+		//if we looked at all the items and didn't find one, sorting is impossible - throw error
+		if(!found_one){
+			throw new Error("Impossible sort");
+		}
+	}
+	
+	return out;
+}
+
 //function to get order to render CONVEX polygons that don't intersect in 3-space
-function getRenderOrder(...polygons)
+//note: problem...if you have a rock-paper-scissors situation where all things are on top of something and below something, this won't work - sort() will throw an error
+function getRenderOrder(polygons)
 {
 	// Method:
 	// 1. project each polygon onto viewplane
-	// 2. if one vertex of a polygon is in another polygon, do a depth test at that vertex to determine which to sort to be drawn later
-	//		(drawn later = closer to viewer)
+	// 2. iterate through pixels on canvas, checking if a pixel/point is in both polygons
+	// 		-if so, do a depth test at that point
+	// 3. use average of depth tests to sort (not every depth test will be correct - edges of polygon)
 	
-	polygons.sort(function(poly1,poly2)
+	return sort(polygons, function(poly1,poly2)
 	{	
+		//console.log(poly1.color,poly2.color,performance.now());
 		//project poly1 and poly2
 		let polys = [poly1,poly2];
-		let proj_polygons = [];
+		let proj_polys = [];
 		for(let i=0; i<2; i++)
 		{
 			let poly = polys[i];
@@ -116,107 +196,69 @@ function getRenderOrder(...polygons)
 			{
 				proj_points.push(transformPoint(poly.v[n]));
 			}
-			proj_polygons.push(new Polygon(poly.color,proj_points));
+			proj_polys.push(new Polygon(poly.color,proj_points));
 		}
-		let proj_poly1 = proj_polygons[0];
-		let proj_poly2 = proj_polygons[1];
+		let proj_poly1 = proj_polys[0];
+		let proj_poly2 = proj_polys[1];
 		
-		//iterate through vertices of proj_poly1
-		for(let n=0; n<proj_poly1.v.length; n++){
-			let p = proj_poly1.v[n];
-			//check if vertex is in proj_poly2
-			console.log(p,proj_poly2);
-			if(pointInPolygon(p,proj_poly2))
-			{
-				//do depth test (0 = at viewplane, + = away from viewpoint, - = towards viewpoint direction)
-					//same as distance from vertex to viewplane
-				let dist_poly1 = new Vector(viewplane_origin,poly1.v[n]).dot(viewplane.normal)/viewplane.normal.mag; //viewplane.normal comes towards viewer 
+		
+		//iterate through possible pixels of intersection
+		//get bounds
+		let x_min = Infinity;
+		let x_max = -Infinity;
+		let y_min = Infinity;
+		let y_max = -Infinity;
+		for(let v=0; v<proj_poly1.v.length; v++) {
+			let x = proj_poly1.v[v].x;
+			let y = proj_poly1.v[v].y;
+			if(x < x_min){x_min = x}
+			if(x > x_max){x_max = x}
+			if(y < y_min){y_min = y}
+			if(y > y_max){y_max = y}
+		}
+		for(let v=0; v<proj_poly2.v.length; v++) {
+			let x = proj_poly2.v[v].x;
+			let y = proj_poly2.v[v].y;
+			if(x < x_min){x_min = x}
+			if(x > x_max){x_max = x}
+			if(y < y_min){y_min = y}
+			if(y > y_max){y_max = y}
+		}
 				
-					//see below this function for the math derivation
-				let num = poly2.normal.dot(new Vector(poly1.v[n], poly2.v[0]));
-				let denom = poly2.normal.dot(viewplane.normal);
-				let t = num/denom;
-				let x = viewplane.normal.i*t + poly1.v[n].x;
-				let y = viewplane.normal.j*t + poly1.v[n].y;
-				let z = viewplane.normal.k*t + poly1.v[n].z;
-				let intersect = new Point(x,y,z);
-				let dist_poly2 = new Vector(viewplane_origin,intersect).dot(viewplane.normal)/viewplane.normal.mag;
-				
-				if(dist_poly1 < dist_poly2){return 1} //sort poly1 after poly2, to be drawn on top
-				else if(dist_poly1 > dist_poly2){return -1} //sort poly1 before poly2, to be drawn behind
-				else {return 0} //order doesn't matter
+		//iterate
+		
+		let poly1_depths = [];
+		let poly2_depths = [];
+		
+		for(let x=x_min; x<x_max; x++){
+			for(let y=y_min; y<y_max; y++){
+				let p = new Point(x,y);
+				//test if point is in both projected polygons
+				if( pointInPolygon(p, proj_poly1) && pointInPolygon(p, proj_poly2) ) {					
+					
+					poly1_depths.push( getPointDepth(p, poly1) );
+					poly2_depths.push( getPointDepth(p, poly2) );
+				}
 			}
-			//else, keep iterating
 		}
 		
-		//iterate through vertices of proj_poly2
-		for(let n=0; n<proj_poly2.v.length; n++){
-			let p = proj_poly2.v[n];
-			//check if vertex is in proj_poly1
-			if(pointInPolygon(p,proj_poly1))
-			{
-				console.log("Boo");
-				//do depth test (0 = at viewplane, + = away from viewpoint, - = towards viewpoint direction)
-					//same as distance from vertex to viewplane
-				let dist_poly2 = new Vector(viewplane_origin,poly2.v[n]).dot(viewplane.normal)/viewplane.normal.mag; //viewplane.normal comes towards viewer 
-				
-					//see below this function for the math derivation
-				let num = poly1.normal.dot(new Vector(poly2.v[n], poly1.v[0]));
-				let denom = poly1.normal.dot(viewplane.normal);
-				let t = num/denom;
-				let x = viewplane.normal.i*t + poly2.v[n].x;
-				let y = viewplane.normal.j*t + poly2.v[n].y;
-				let z = viewplane.normal.k*t + poly2.v[n].z;
-				let intersect = new Point(x,y,z);
-				let dist_poly1 = new Vector(viewplane_origin,intersect).dot(viewplane.normal)/viewplane.normal.mag;
-				
-				console.log("dist "+poly1.color+": "+dist_poly1);
-				console.log("dist "+poly2.color+": "+dist_poly2);
-				
-				if(dist_poly2 < dist_poly1){return 1} //sort poly2 after poly1, to be drawn on top
-				else if(dist_poly2 > dist_poly1){return -1} //sort poly2 before poly1, to be drawn behind
-				else {return 0} //order doesn't matter
-			}
-			//else, keep iterating
+		if(poly1_depths.length === 0 && poly2_depths.length === 0) {return 0} //no overlap, doesn't matter what order
+		else {
+			//get average depth of shared pixels for each polygon
+			let avg_depth1 = poly1_depths.reduce(function(a,b){return a+b}) / poly1_depths.length;
+			let avg_depth2 = poly2_depths.reduce(function(a,b){return a+b}) / poly2_depths.length;
+						
+			//returning a negative value means draw poly1 before poly2, a positive value means draw poly1 after poly2
+			//we want to draw the bigger depth first
+			return avg_depth2 - avg_depth1;
 		}
 		
-		return 0; //if polygons don't intersect on the canvas, doesn't matter what order to draw them in
 	});
 	
 	//return sorted array - draw polygons earlier in array first = farthest back
-	return polygons;
+	//return polygons;
 }
 
-/*distance logic for above function:
-
-line orthogonal to viewplane, through vertex of one polygon
-
-get unit vector <a,b,c> pointing away from viewer, (x0,y0,z0) is point on viewplane
-
-x = at + x0
-y = bt + y0
-z = ct + z0
-
-plane of polygon
-i(x-x1) + j(y-y1) + k(z-z1) = 0
-
-Solve for the t that gives the intersection point:
-
-dx = x0 - x1
-dy = y0 - y1
-dz = z0 - z1
-
-i(at + x0 - x1) + j(bt + y0 - y1) + k(ct + z0 - z1) = 0
-
-iat + idx + jbt +jdy + kct + kdz = 0
-
-t(ia + jb + kc) = -(idx + jdy + kdz)
-t = i(x1-x0) + j(y1-y0) + k(z1-z0) / ia + jb + kc
-t = <i,j,k> * <p0 to p1> / <i,j,k> * <a,b,c>
-
-t will be the signed distance from (x0,y0,z0) to the point
-
-*/
 
 
 function renderCube(x,y,z,size) //x,y,z are coords of vertex of cube with most negative coords
@@ -236,16 +278,16 @@ function renderCube(x,y,z,size) //x,y,z are coords of vertex of cube with most n
 	
 	polygons = [];
 	polygons.push(new Polygon("red",[p[0], p[1], p[3], p[2]])); //bottom square
-	polygons.push(new Polygon("red",[p[4], p[5], p[7], p[6]])); //top square
-	polygons.push(new Polygon("red",[p[0], p[1], p[5], p[4]])); //back left square
-	polygons.push(new Polygon("red",[p[0], p[2], p[6], p[4]])); //back right square
-	polygons.push(new Polygon("red",[p[1], p[3], p[7], p[5]])); //front left square
-	polygons.push(new Polygon("red",[p[2], p[3], p[7], p[6]])); //front right square
+	polygons.push(new Polygon("orange",[p[4], p[5], p[7], p[6]])); //top square
+	polygons.push(new Polygon("yellow",[p[0], p[1], p[5], p[4]])); //back left square
+	polygons.push(new Polygon("green",[p[0], p[2], p[6], p[4]])); //back right square
+	polygons.push(new Polygon("blue",[p[1], p[3], p[7], p[5]])); //front left square
+	polygons.push(new Polygon("black",[p[2], p[3], p[7], p[6]])); //front right square
 	/*
 	//draw polygons
 	console.log(polygons);
 		//get render order
-	let renderOrder = getRenderOrder.apply(this,polygons);
+	let renderOrder = getRenderOrder(polygons);
 	console.log(renderOrder);
 	
 		//iterate through and draw
@@ -255,27 +297,4 @@ function renderCube(x,y,z,size) //x,y,z are coords of vertex of cube with most n
 	}
 	
 	*/
-	
-	
-	//draw lines
-	
-	/*/vertical lines
-	drawLine(p[0], p[4]);
-	drawLine(p[1], p[5]);
-	drawLine(p[2], p[6]);
-	drawLine(p[3], p[7]);
-	
-	//bottom square
-	drawLine(p[0], p[1]);
-	drawLine(p[0], p[2]);
-	drawLine(p[1], p[3]);
-	drawLine(p[2], p[3]);
-	
-	
-	
-	//top square
-	drawLine(p[4], p[5]);
-	drawLine(p[4], p[6]);
-	drawLine(p[5], p[7]);
-	drawLine(p[6], p[7]);*/
 }
