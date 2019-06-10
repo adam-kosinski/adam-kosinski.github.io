@@ -1,0 +1,41 @@
+html {
+	position: relative;
+}
+
+body {
+	padding-left: 30px;
+	padding-right: 30px;
+	
+	font-family: Georgia;
+}
+
+hr {
+	padding-left: 200px;
+}
+
+h1,p,audio,hr {
+	position: relative;
+	z-index: 5;
+}
+
+h1 {
+	text-align: center;
+}
+
+
+#background {
+	position: absolute;
+	top: 0;
+	left: 0;
+}
+
+#lighten {
+	position: fixed;
+	z-index: 1;
+	width: 100%;
+	height: 100%;
+	top: 0;
+	left: 0;
+	
+	background-color: rgba(255,255,255,0.75);
+}
