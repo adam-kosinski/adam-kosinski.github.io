@@ -69,7 +69,7 @@ function getPointDepth(p, polygon) //p is 2d point on viewplane/canvas, polygon 
 	t(ia + jb + kc) = -(idx + jdy + kdz)
 	t = i(x1-x0) + j(y1-y0) + k(z1-z0) / ia + jb + kc
 	t = <i,j,k> * <p0 to p1> / <i,j,k> * <a,b,c>
-	t = poly.normal * <p0 to p1> / poly.normal * v
+	t = (poly.normal * <p0 to p1>) / (poly.normal * v)
 	
 	this is an interesting conclusion from the previous line but probably not helpful:
 	t = mag of proj <p0 to p1> onto poly.normal / mag of proj v onto poly.normal
@@ -124,14 +124,14 @@ storage needed:
 
 function render(draw_ctx,polygons) //polygons is an array of Polygon objects that each lie on a plane
 {
-	ctx.clearRect(-canvas.width,-canvas.height,2*canvas.width,2*canvas.height);
+	/*ctx.clearRect(-canvas.width,-canvas.height,2*canvas.width,2*canvas.height);
 	let renderOrder = getRenderOrder(polygons);
 	console.log(renderOrder);
 	for(let i=0; i<renderOrder.length; i++){
 		drawPolygon(draw_ctx,renderOrder[i]);
-	}
+	}*/
 	
-	/*/pixel storage
+	//pixel storage
 	let pixels = {};
 	
 	//reference to original canvas
@@ -164,7 +164,7 @@ function render(draw_ctx,polygons) //polygons is an array of Polygon objects tha
 				
 				//get pixel depth - signed distance from point on viewplane/canvas to polygon along a line following the projection
 					//2d coords
-/*magic numbers/				let x = p % canvas.width - 250;
+/*magic numbers*/				let x = p % canvas.width - 250;
 				let y = 250 - Math.floor(p / canvas.width);
 				let depth = getPointDepth(new Point(x,y), polygons[i]);
 				
@@ -191,5 +191,5 @@ function render(draw_ctx,polygons) //polygons is an array of Polygon objects tha
 		draw_ctx.globalAlpha = pixels[px].opacity;
 		draw_ctx.fillRect(pixels[px].x, -pixels[px].y, 1, 1);
 	}
-	*/
+	
 }

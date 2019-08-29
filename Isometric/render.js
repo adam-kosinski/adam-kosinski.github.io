@@ -261,7 +261,7 @@ function getRenderOrder(polygons)
 
 
 
-function renderCube(x,y,z,size) //x,y,z are coords of vertex of cube with most negative coords
+function generateCubePolygons(x,y,z,size) //x,y,z are coords of vertex of cube with most negative coords
 {
 	let p = []; //stores vertices
 	
@@ -283,18 +283,5 @@ function renderCube(x,y,z,size) //x,y,z are coords of vertex of cube with most n
 	polygons.push(new Polygon("green",[p[0], p[2], p[6], p[4]])); //back right square
 	polygons.push(new Polygon("blue",[p[1], p[3], p[7], p[5]])); //front left square
 	polygons.push(new Polygon("black",[p[2], p[3], p[7], p[6]])); //front right square
-	/*
-	//draw polygons
-	console.log(polygons);
-		//get render order
-	let renderOrder = getRenderOrder(polygons);
-	console.log(renderOrder);
 	
-		//iterate through and draw
-	for(let n=0; n<polygons.length; n++)
-	{
-		drawPolygon(polygons[n]);
-	}
-	
-	*/
 }

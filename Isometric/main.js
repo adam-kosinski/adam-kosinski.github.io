@@ -44,7 +44,7 @@ let px_per_unit = 50; //how many pixels on the canvas corresponds to one unit in
 
 
 updateViewpoint(viewpoint); //will define viewplane, all proj_dir. See below for func definition
-renderCube(0,0,0,1);
+generateCubePolygons(0,0,0,1);
 render(ctx,polygons);
 
 //animate rotation
