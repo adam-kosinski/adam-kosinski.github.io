@@ -19,12 +19,13 @@ body {
 
 #main {
 	position: absolute;
-	margin-top: 20vh;
+	margin-top: 125px;
 	width: 50%;
 	z-index: 5;
 }
 
 #title_header {
+	padding-top: 15px;
 	text-align: center;
 	position: fixed;
 	width: 50%;
@@ -32,7 +33,7 @@ body {
 	font-size: 30px;
 	font-weight: bold;
 	z-index: 10;
-	background-image: linear-gradient(rgba(255,255,255,1), rgba(255,255,255,1), rgba(255,255,255,0));
+	background-image: linear-gradient(rgba(255,255,255,1), rgba(255,255,255,1), rgba(255,255,255,1), rgba(255,255,255,0));
 }
 
 #title_header img {
