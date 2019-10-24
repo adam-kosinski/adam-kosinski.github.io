@@ -3,42 +3,61 @@
 	<head>
 		<title>My Music Improvisations</title>
 		<link type="text/css" rel="stylesheet" href="music.css"/>
+		<link href='https://fonts.googleapis.com/css?family=Open Sans' rel='stylesheet'>
+		<link href='https://fonts.googleapis.com/css?family=Alegreya' rel='stylesheet'>
 	</head>
 	<body>
-		<img id="background" src="Pendleton Falls.jpg"/>
+
+		<div id="title_header">
+			Some of my Music Improvisations
+			<div>
+				<img src="flourish.png"/>
+			</div>
+		</div>
+
+		<div id="right_panel">
+			<img id="side_image" src="Pendleton Falls.jpg"/>
+		</div>
 		
-		
-		<h1>Some of my Music Improvisations</h1>
-		
-		<hr>
-		
-		<p>Me on piano, Adrian (one of my friends) on viola, improvising together.</p>
-		<audio controls src="Adrian and Me NCSSM.wav"></audio>
-		<hr>
-		
-		<p><b>"Eloquent" - </b>A piano piece I improvised, centered around the theme heard at the beginning.</p>
-		<audio controls src="Eloquent.wav"></audio>
-		<hr>
-		
-		<p>Exploring a chromatically stepping base line and chords that fit with it on piano.</p>
-		<audio controls src="Chromatic Chord Progression.wav"></audio>
-		<hr>
-		
-		<p>A powerful string improvisation done on a digital keyboard.</p>
-		<audio controls src="Arabic Strings 2.wav"></audio>
-		<hr>
-		
-		<p>A medium-length improvisation on digital piano. One of my favorite soothing improvs.</p>
-		<audio controls src="Digital Electric Piano.wav"></audio>
-		<hr>
+		<div id="main">
+			
+			<!-- <div class="entry"> -->
+				<!-- <p>Me on piano, Adrian (one of my friends) on viola, improvising together.</p> -->
+				<!-- <audio controls src="Adrian and Me NCSSM.wav"></audio> -->
+				<!-- <hr> -->
+			<!-- </div> -->
+			
+			<div class="entry">
+				<p><b>"Eloquent" - </b>A piano piece I improvised, centered around the theme heard at the beginning. This is the original recording.</p>
+				<audio controls src="Eloquent.wav"></audio>
+				<hr>
+			</div>
+			
+			<!-- <div class="entry"> -->
+				<!-- <p>A medium-length improvisation on digital piano. One of my favorite soothing improvs.</p> -->
+				<!-- <audio controls src="Digital Electric Piano.wav"></audio> -->
+				<!-- <hr> -->
+			<!-- </div> -->
+			
+			<div class="entry">
+				<p>A piece I'm working on with a synthesizer lead and a driving electronic drum beat. This recording was improvised based on a theme I had written down earlier.</p>
+				<audio controls src="Synth Song w Drums.wav"></audio>
+				<hr>
+			</div>
+			
+			<div class="entry">
+				<p>A powerful string improvisation done on a digital keyboard.</p>
+				<audio controls src="Arabic Strings 2.wav"></audio>
+				<hr>
+			</div>
+			
+			<div class="entry">
+				<p>Exploring a chromatically stepping base line and chords that fit with it on piano.</p>
+				<audio controls src="Chromatic Chord Progression.wav"></audio>
+				<hr>
+			</div>
+		</div>
 				
-		<p>A piece I'm working on with a synthesizer lead and a driving electronic drum beat. The recording was improvised based on a theme I had written down earlier.</p>
-		<audio controls src="Synth Song w Drums.wav"></audio>
-		<hr>
-		
-		
-		<div id="lighten"></div>
-		
 		<script src="music.js"></script>
 	</body>
 </html>

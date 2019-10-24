@@ -3,39 +3,55 @@ html {
 }
 
 body {
-	padding-left: 30px;
-	padding-right: 30px;
-	
-	font-family: Georgia;
+	margin: 0;
+	font-family: Open Sans, sans-serif;
+	background-color: white;
 }
 
-hr {
-	padding-left: 200px;
+#right_panel {
+	position: fixed;
+	top: 0;
+	right: 0;
+	background-color: black;
+	width: 50%;
+	height: 100%;
 }
 
-h1,p,audio,hr {
-	position: relative;
+#main {
+	position: absolute;
+	margin-top: 20vh;
+	width: 50%;
 	z-index: 5;
 }
 
-h1 {
+#title_header {
 	text-align: center;
+	position: fixed;
+	width: 50%;
+	font-family: Alegreya;
+	font-size: 30px;
+	font-weight: bold;
+	z-index: 10;
+	background-image: linear-gradient(rgba(255,255,255,1), rgba(255,255,255,1), rgba(255,255,255,0));
 }
 
-
-#background {
-	position: fixed;
-	top: 0;
-	left: 0;
+#title_header img {
+	width: 175px;
+	position: relative;
+	top: -20px;
 }
 
-#lighten {
-	position: fixed;
-	z-index: 1;
-	width: 100%;
-	height: 100%;
+.entry {
+	padding-left: 20px;
+	padding-right: 20px;
+}
+
+#side_image {
+	position: absolute;
+	margin: auto;
 	top: 0;
-	left: 0;
-	
-	background-color: rgba(255,255,255,0.75);
+	bottom: 0;
+	right: 10%;
+	left: 10%;
+	width: 80%;
 }
