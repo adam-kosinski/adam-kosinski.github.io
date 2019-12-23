@@ -50,6 +50,11 @@ sword.add(hilt);
 
 scene.add(sword);
 
+//axes
+let axes = new THREE.AxesHelper(1); //arg is size of axes. x-red, y-green, z-blue
+scene.add(axes);
+
+
 //light
 let aLight = new THREE.AmbientLight("white",1);
 scene.add(aLight);
@@ -64,12 +69,15 @@ camera.position.set(0,0,5);
 camera.rotation.x = 0;
 
 
+sword.position.set(0,2,0);
+
 //we need a render loop in order to see anything
 function animate(){
-	//sword.rotation.z += 0.01;
+	
+	sword.rotation.z += 0.01;
 		
 	//render
 	renderer.render(scene, camera);
 	requestAnimationFrame(animate);
 }
-animate();
+requestAnimationFrame(animate);

@@ -33,12 +33,11 @@ function drawExtra(){
 }
 
 function line(x1,y1,x2,y2){
-		ctx.beginPath();
-		ctx.moveTo(x1,y1);
-		ctx.lineTo(x2,y2);
-		ctx.stroke();
-	}
-
+	ctx.beginPath();
+	ctx.moveTo(x1,y1);
+	ctx.lineTo(x2,y2);
+	ctx.stroke();
+}
 
 function get_out_theta(x,y){ //x,y with respect to center point (x_center, y_low)
 	
