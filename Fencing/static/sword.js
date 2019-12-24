@@ -1,4 +1,38 @@
+function newSword(guard_color, blade_color=default_blade_color){
+	//all config values from globals.js
 
+	let sword = new THREE.Group();
+
+	//sword blade
+	let g_blade = new THREE.CylinderGeometry(blade_tip_width/2, blade_base_width/2, blade_length); //g = geometry; args - r top, r bottom, height
+	let m_blade = new THREE.MeshStandardMaterial({color: blade_color}); //m = material
+	let blade = new THREE.Mesh(g_blade, m_blade);
+	blade.position.y = blade_length/2 + grip_length/2; //default is centered on origin, shift it so origin is midway down handle (rotation point)
+	sword.add(blade);
+
+	//sword hilt (guard + grip)
+	let hilt = new THREE.Group();
+	
+	let g_guard = new THREE.SphereGeometry(guard_radius, 16, 4, 0, 2*Math.PI, 0, Math.PI/2); //r, width seg, height seg, phi_start, phi_sweep, theta_start, theta_sweep
+	let m_guard = new THREE.MeshStandardMaterial({color: guard_color, side:THREE.DoubleSide});
+	let guard = new THREE.Mesh(g_guard, m_guard);
+	guard.position.y = grip_length/2 - guard_radius;
+	hilt.add(guard);
+
+	let g_grip = new THREE.CylinderGeometry(grip_width/2, grip_width/2, grip_length);
+	let grip = new THREE.Mesh(g_grip, m_guard); //just use the guard's material
+	hilt.add(grip);
+
+	//no need to translate the hilt, it's already centered on the origin (rotation point) like I want
+
+	sword.add(hilt);
+
+	
+	scene.add(sword);
+	return sword;
+}
+
+/*
 function drawSword(x,y,theta){ //theta is angle counterclockwise from up
 	
 	ctx.translate(x,y);
@@ -31,6 +65,7 @@ function drawExtra(){
 	ctx.strokeStyle = "black";
 	ctx.lineWidth = 1;
 }
+*/
 
 function line(x1,y1,x2,y2){
 	ctx.beginPath();
