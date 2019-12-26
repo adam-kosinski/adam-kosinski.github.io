@@ -5,27 +5,37 @@
 let name = prompt("Please enter a name:");
 if(!name || name===""){name = "unnamed"}
 
-var socket = io();
-var id; //id of the socket
+let socket = io();
+let id; //id of the socket
 
 
 //RENDERING STUFF
 
 //set up scene, camera, and renderer
 let scene = new THREE.Scene();
-let camera = new THREE.PerspectiveCamera(75, renderWidth/renderHeight, 0.1, 1000); //FOV, aspect ratio, near clipping plane distance, far clipping plane distance
-let controls = new THREE.OrbitControls(camera); //requires the js file
+let camera = new THREE.PerspectiveCamera(75, window.innerWidth/window.innerHeight, 0.1, 1000); //FOV, aspect ratio, near clipping plane distance, far clipping plane distance
+//let controls = new THREE.OrbitControls(camera); //requires the js file
 let renderer = new THREE.WebGLRenderer();
-renderer.setSize(renderWidth, renderHeight);
+renderer.setSize(window.innerWidth, window.innerHeight);
+
+	//renderer display canvas should always fill the window
+window.addEventListener("resize", function(){
+	renderer.setSize(window.innerWidth, window.innerHeight);
+	camera.aspect = window.innerWidth / window.innerHeight;
+	camera.updateProjectionMatrix();
+});
+
 document.body.appendChild(renderer.domElement);
+renderer.domElement.style.cursor = "default"; //TODO: get rid of this eventually
 
-
-camera.position.set(0,0,100);
+camera.position.set(0, eye_height, 150 + camera_offset_from_head.z);
 
 
 //array to organize each player's 3d objects. Player id key gives you a certain player's objects: {body: ___, sword: ___}
 let player_objects = {};
 
+//object to store this player's state
+let me; //defined upon first player state emit from server
 
 
 //extra 3D stuff
@@ -38,7 +48,7 @@ let aLight = new THREE.AmbientLight("white",1);
 scene.add(aLight);
 
 let dLight = new THREE.DirectionalLight("white",1);
-dLight.position.set(2,0,2)
+dLight.position.set(1,4,1)
 scene.add(dLight);
 
 
@@ -60,6 +70,9 @@ socket.on("player_state", function(players){ //players is an object containing a
 	//don't do anything if this player isn't registered with the server yet
 	if(!players[id]){return}
 
+	//update this player's state
+	me = players[id];
+
 	//update player 3d objects
 	for(player_id in players){
 		//initialize objects for the player if haven't already
@@ -71,15 +84,29 @@ socket.on("player_state", function(players){ //players is an object containing a
 		}
 
 		//update object position/rotation
-		let p_srv = players[player_id]; //what to set position/rotation to, coming from the server
-		let p_obj = player_objects[player_id]; //what to set
-		console.log("p_srv",p_srv);
-		p_obj.sword.position.x = p_srv.sword.position.x;
-		p_obj.sword.position.y = p_srv.sword.position.y;
-		p_obj.sword.position.z = p_srv.sword.position.z;
-		p_obj.sword.rotation.x = p_srv.sword.rotation.x;
-		p_obj.sword.rotation.y = p_srv.sword.rotation.y;
-		p_obj.sword.rotation.z = p_srv.sword.rotation.z;
+		let cmd = players[player_id]; //what to set position/rotation to, coming from the server
+		let obj = player_objects[player_id]; //what to set
+		
+			//sword
+		obj.sword.position.x = cmd.sword.position.x;
+		obj.sword.position.y = cmd.sword.position.y;
+		obj.sword.position.z = cmd.sword.position.z;
+		obj.sword.rotation.x = cmd.sword.rotation.x;
+		obj.sword.rotation.y = cmd.sword.rotation.y;
+		obj.sword.rotation.z = cmd.sword.rotation.z;
+
+			//TODO: body
+	}
+
+	//remove 3d objects of players that disconnected
+	for(player_id in player_objects){
+		if( ! players.hasOwnProperty(player_id) ){
+			//remove objects from scene
+			scene.remove(player_objects[player_id].sword);
+			//TODO: body object
+			//remove objects from storage array
+			delete player_objects[player_id];
+		}
 	}
 
 	//update display
@@ -90,6 +117,9 @@ socket.on("player_state", function(players){ //players is an object containing a
 
 //SENDING DATA TO SERVER--------------------------------------------------
 
-function updateSword(x,y,z,theta){
-	socket.emit("sword_update", {"x":x, "y":y, "z":z, "theta":theta});
+function updateSword(data){ //data is an object with property/value of what to update. Options for properties: x,y,z,x_rot,y_rot,z_rot
+	if(!me){return;} //don't do anything if haven't received this player's state from the server yet
+
+	//send update	
+	socket.emit("sword_update", data);
 }
