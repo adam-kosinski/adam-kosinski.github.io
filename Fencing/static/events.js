@@ -6,7 +6,8 @@ document.addEventListener("wheel",handleWheel);
 
 let count = 0;
 function handleMousemove(e){
-	
+	if(!player_data){return;} //without initial state, things will break
+
 	//get x and y of mouse with respect to center of window for x, bottom of window for y
 	let mx = e.layerX - window.innerWidth/2;
 	let my = (e.layerY - window.innerHeight) * -1; //-1 because I want up to be positive, (default is down is positive)
@@ -20,28 +21,31 @@ function handleMousemove(e){
 
 
 function handleMousedown(e){
+	if(!player_data){return;} //without initial state, things will break
+	
 	if(e.button === 0){
-		updateSword({x_rot: min_x_rot});
+		updateSword({snap: min_sword_snap});
 	}
 	else if (e.button === 2){
 	}
 }
 
 function handleMouseup(e){
+	if(!player_data){return;} //without initial state, things will break
+	
 	if(e.button === 0){
-		updateSword({x_rot: max_x_rot});
+		updateSword({snap: max_sword_snap});
 	}
 	else if (e.button === 2){
 	}
 }
 
-
 function handleWheel(e){
+	if(!player_data){return;} //without initial state, things will break
+	
 	//e.deltaY stores how much is scrolled, in px. Negative is scroll up
-	console.log(e.deltaY);	
-	//figure how much to rotate on the z-axis based on this. Scroll down should be rotate clockwise on the screen
-	let dz_rot = - e.deltaY / px_scroll_per_radian;
+	//figure how much to rotate left/right based on this. Scroll down should be rotate clockwise on the screen
+	let d_angle = e.deltaY / px_scroll_per_radian;
 
-	if(!me){return}
-	updateSword({z_rot: me.target.sword.rotation.z += dz_rot});
+	updateSword({angle: player_data[id].target.sword.angle += d_angle});
 }

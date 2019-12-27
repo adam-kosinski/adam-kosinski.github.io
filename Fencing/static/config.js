@@ -7,29 +7,42 @@ let blade_base_width = 0.8;
 let grip_length = 7;
 let grip_width = 1;
 let guard_radius = 3;
+let default_guard_color = "dimgrey";
 let default_blade_color = "gray";
 
 
 
 //player properties
-	//measurements
 let max_health = 100;
+
 let player_height = 66;
 let player_width = 16; //at chest
 let player_depth = 8; //at chest
-let head_height = player_height / 7.5;
-let upper_arm_length = 0;
-let lower_arm_length = 0;
-let eye_height = player_height - 0.5*head_height;
-	//constraints
-let min_z_rot = 0; //sword rotate left/right
-let max_z_rot = 0;
-let min_x_rot = -2; //sword rotate forward/back, smaller = rotate away
-let max_x_rot = 0;
-//note: sword y_rot is always the same as the forearm/arm
 
-//camera stuff
-let camera_offset_from_head = {x: 0, y: 0, z:30};
+let head_height = player_height / 7.5;
+let eye_height = player_height - 0.5*head_height;
+
+let hand_radius = 1.5; //hand is approximated by a sphere
+let wrist_radius = 1;
+let elbow_radius = 1.5;
+let shoulder_radius = 2;
+
+let lower_arm_length = 13; //center of elbow to center of hand
+let upper_arm_length = 13; //center of shoulder to center of elbow
+
+let default_shirt_color = "white";
+let default_skin_color = "bisque";
+
+
+//constraints
+let min_sword_angle = 0; //sword rotate left/right
+let max_sword_angle = 0;
+let min_sword_snap = 0.05; //snap is angle between forearm and sword vectors
+let max_sword_snap = (2/3)*Math.PI; //ALSO IN SERVER CONFIG. based on physical constraint
+//note sword twist is controlled by forearm
+
+//offsets (all from player position)
+let camera_offset = {x: 0, y: eye_height, z:30};
 
 
 //input config
@@ -37,9 +50,7 @@ let px_per_inch = 30; //used to convert mouse movement into sword movement
 let px_scroll_per_radian = 200; //used to convert mouse scrolling into sword rotation
 
 
-let on_guard = {x: player_width/2, y: player_height/2, z:10} //relative to player position (on the floor)
-
-
+/*
 //region boundaries - based on mouse's position on webpage
 //x_left, x_right, y_low, and y_high outline a rectangle that form the 'center' region
 
@@ -57,7 +68,4 @@ let x_max = x_right + 100;
 let y_min = y_high;
 let y_max = y_low;
 
-
-
-
-
+*/
