@@ -35,6 +35,11 @@ class PlayerPosition {
 		this.y = 0; //pretty much always zero, unless the player jumps - not coding that
 		this.z = 150;
 		this.v_forearm = new THREE.Vector3(0,1,-1); //vector representing direction of forearm. Client can only access state, not methods
+		this.arm = {
+			//vector shoulder->hand specified by spherical coords:
+			theta: 0, //horizotal rotation, 0 is straight forward, positive is to the right
+			phi: (2/3)*Math.PI //vertical rotation, 0 is up, positive is downwards
+		}
 		this.sword = {
 		  	x: 0,
 			y: 33,
@@ -138,8 +143,6 @@ setInterval(function(){
 			//max snap is the snap of this vector
 		let max_snap_from_clipping = v_sword_on_plane.angleTo(p.v_forearm);
 		
-	console.log(max_snap_from_clipping);
-
 		//limit delta snap
 		let target_d_snap = Math.min(p.target.sword.snap, max_snap_from_clipping) - p.sword.snap; //gap we want to close
 		let max_d_snap = (t_now() - t_prev) * config.sword_snap_speed; //speed restriction

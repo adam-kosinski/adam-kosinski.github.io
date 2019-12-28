@@ -30,8 +30,8 @@ let shoulder_radius = 2;
 let lower_arm_length = 13; //center of elbow to center of hand
 let upper_arm_length = 13; //center of shoulder to center of elbow
 
-let default_shirt_color = "white";
-let default_skin_color = "bisque";
+let default_shirt_color = "lightgrey";
+let default_skin_color = "burlywood";
 
 
 //constraints
@@ -40,6 +40,17 @@ let max_sword_angle = 0;
 let min_sword_snap = 0.05; //snap is angle between forearm and sword vectors
 let max_sword_snap = (2/3)*Math.PI; //ALSO IN SERVER CONFIG. based on physical constraint
 //note sword twist is controlled by forearm
+
+let min_elbow_angle = (2/3)*Math.PI;
+let max_elbow_angle = Math.PI - 0.05; //can't be perfectly straight b/c then can't cross forearm and upper arm vectors to get that rotation axis (used for changing elbow angle)
+
+
+//initial states
+let initial_arm_theta = 0;
+let initial_arm_phi = (2/3)*Math.PI;
+let arm_twist = -(1/6)*Math.PI; //amount to rotate arm around main arm axis, for a more natural look. Theta/phi don't change this
+let initial_elbow_angle = min_elbow_angle; //angle of bend in the elbow
+
 
 //offsets (all from player position)
 let camera_offset = {x: 0, y: eye_height, z:30};

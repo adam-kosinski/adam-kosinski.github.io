@@ -14,7 +14,7 @@ let id; //id of the socket
 //set up scene, camera, and renderer
 let scene = new THREE.Scene();
 let camera = new THREE.PerspectiveCamera(75, window.innerWidth/window.innerHeight, 0.1, 1000); //FOV, aspect ratio, near clipping plane distance, far clipping plane distance
-//let controls = new THREE.OrbitControls(camera); //requires the js file
+let controls = new THREE.OrbitControls(camera); //requires the js file
 let renderer = new THREE.WebGLRenderer();
 renderer.setSize(window.innerWidth, window.innerHeight);
 
@@ -25,6 +25,7 @@ window.addEventListener("resize", function(){
 	camera.updateProjectionMatrix();
 });
 //camera position is set in the player state update
+camera.position.set(0,60,150);
 
 document.body.appendChild(renderer.domElement);
 renderer.domElement.style.cursor = "default"; //TODO: get rid of this eventually
@@ -90,7 +91,7 @@ socket.on("player_state", function(players){ //players is an object containing a
 	player_data = players;
 
 	//update camera - //TODO: not compatible with changing forward direction
-	camera.position.set(players[id].x + camera_offset.x, players[id].y + camera_offset.y, players[id].z + camera_offset.z);
+//	camera.position.set(players[id].x + camera_offset.x, players[id].y + camera_offset.y, players[id].z + camera_offset.z);
 
 	//camera.position.set(60, eye_height, 140);
 	//camera.rotation.y = Math.PI/2;
