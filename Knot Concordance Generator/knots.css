@@ -1,0 +1,46 @@
+* {
+	font-family: sans-serif;
+}
+
+p {
+	margin: 0;
+	margin-bottom: 5px;
+}
+
+/* input stuff ----------------------------*/
+
+canvas {
+	width: 500px;
+	height: 500px;
+	border: 1px solid black;
+}
+
+
+/* output stuff ---------------------------*/
+
+#output_container {
+	position: relative;
+	border-collapse: collapse;
+}
+
+#table_container {
+	padding-left: 10px;
+	vertical-align: top;
+}
+
+#concordance_table {
+	overflow-y: scroll;
+	border-collapse: collapse;
+	background-color: #ffffcc;
+	cursor: default;
+}
+
+#concordance_table td {
+	border: 1px solid black;
+	padding: 5px;
+}
+
+tr#header {
+	font-weight: bold;
+	background-color: #ffcc33;
+}

@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Ribbon Concordinator</title>
+		<link type="text/css" rel="stylesheet" href="knots.css"/>
+	</head>
+	<body>
+		<div id="input_container">
+			<p>Input base knot here:</p>
+			<canvas id="input" width="500" height="500"></canvas>
+			<div id="input_buttons">
+				<button id="input_button">Input/update base knot</button>
+				<button id="generate_concordance" disabled="true">Generate ribbon concordance</button>
+			</div>
+		</div>
+		
+		<hr>
+		
+		<table id="output_container">
+			<tbody>
+				<tr>
+					<td id="display_container">
+						<p>Ribbon Concordance Display:</p>
+						<canvas id="display" width="500" height="500"></canvas>
+					</td>
+					
+					<td id="table_container">
+						<p>Click entry to display it:</p>
+						<table id="concordance_table">
+							<tbody id="concordance_tbody">
+								<tr id="header">
+									<td>#</td>
+									<td>PD Notation</td>
+								</tr>
+							</tbody>
+						</table>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+		
+		<script src="state.js"></script>
+		<script src="globals.js"></script>
+		<script src="strand.js"></script>
+		<script src="io.js"></script>
+		<script src="path.js"></script>
+	</body>
+</html>
