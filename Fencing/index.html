@@ -6,12 +6,18 @@
 		<script src="/socket.io/socket.io.js"></script>
 	</head>
 	<body>
-		<canvas id="canvas" height="500" width="800"></canvas>
-		
-		<script src="/static/globals.js"></script>
-		<script src="/static/sword.js"></script>
-		<script src="/static/events.js"></script>
-		
+		<!--external code-->
+		<script src="/static/three.js"></script>
+		<script src="/static/OrbitControls.js"></script>
+
+		<!--config/my functions not related to client-->
+		<script src="/static/deepCopy.js"></script>
+		<script src="/static/config.js"></script>
+		<script src="/static/3d_objects.js"></script>
+
+		<!--execution code, note: client contains server communication functions referenced by other code, must be first in this list-->
 		<script src="/static/client.js"></script>
+		
+		<script src="/static/events.js"></script>
 	</body>
 </html>
