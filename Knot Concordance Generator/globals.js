@@ -16,6 +16,7 @@ let LOOP_WIDTH = 30; //px, width of starting loop for the band
 let LOOP_HEIGHT = 20; //px, width of starting loop for the band
 
 let input = new State();
+let s = input.strands; //for debugging convenience
 
 
 let entries = []; //will be filled with State objects as more ribbon concordances are generated
@@ -26,6 +27,8 @@ BUG: adding a new strand that goes straight through an existing point, doesn't r
 
 Still getting intersections at endpoints that I don't want, despite the change to the newStrand() function in state.js
 Probably has something to do about how new strands are recursively split up
+
+Intersection at point happens when either a) draw a strand through a previous point, b) draw a strand, ending on a previous strand
 
 Want to add ctrl+Z feature for entering a knot
 

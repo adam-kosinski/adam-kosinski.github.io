@@ -116,6 +116,7 @@ function handleMousemove(e){
 }
 
 
+
 function drawEverything(canvas, state){
 	let ctx = canvas.getContext("2d");
 	ctx.clearRect(0,0,canvas.width,canvas.height);
@@ -149,7 +150,7 @@ function newTableEntry(state){
 	
 	entries.push(state);
 	
-	drawEverything(display_canvas, state);
+	displayEntry({target:tr}); //putting a fake event object here, but it has the necessary property so can use this function
 }
 
 

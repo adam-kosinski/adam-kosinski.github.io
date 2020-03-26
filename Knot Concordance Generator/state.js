@@ -21,7 +21,7 @@ class State {
 		for(let s=0; s<this.strands.length; s++){
 			let other_strand = this.strands[s];
 			
-			//if the strand is connected to either of the new strand's points, don't check for intersection - there won't be a meaningful one and it will cause a false intersection to be detected at the new strand's points
+			//if the strand is connected to either of the new strand's points, don't check for intersection - there won't be a meaningful one
 			if(p0.strands.indexOf(other_strand) !== -1 || p1.strands.indexOf(other_strand) !== -1){
 				continue;
 			}
@@ -329,6 +329,7 @@ class State {
 			let p1_idx = this.points.indexOf(this.strands[s].p1);
 			let new_strand = new Strand(copy.points[p0_idx], copy.points[p1_idx], this.strands[s].p0_over, this.strands[s].p1_over);
 			new_strand.id = this.strands[s].id;
+			new_strand.strokeStyle = this.strands[s].strokeStyle;
 			
 			copy.strands.push(new_strand);
 		}

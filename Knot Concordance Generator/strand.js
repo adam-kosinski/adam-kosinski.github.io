@@ -29,13 +29,8 @@ class Point {
 		}
 	}
 	
-	getPD(under_in){ //arg is the under-in strand to this crossing
-		if(!this.isCrossing()){
-			console.log("Can't get the PD code of the point b/c it's not a crossing",this);
-			return;
-		}
-		
-		let start_angle = under_in.getAngleFromPoint(this);
+	sortStrandsCounterclockwise(start_strand){
+		let start_angle = start_strand.getAngleFromPoint(this);
 
 		let p = this; //for some reason, referring to this point as 'this' inside the sort function fails
 		//order is: under-in first, then go counterclockwise
@@ -48,6 +43,15 @@ class Point {
 			
 			return angle_b - angle_a;
 		});
+	}
+	
+	getPD(under_in){ //arg is the under-in strand to this crossing
+		if(!this.isCrossing()){
+			console.log("Can't get the PD code of the point b/c it's not a crossing",this);
+			return;
+		}
+		
+		this.sortStrandsCounterclockwise(under_in);
 		
 		//record the code
 		let code = [];
@@ -62,6 +66,18 @@ class Point {
 		}
 		
 		return code;
+	}
+	
+	show(canvas=input_canvas){
+		let ctx = canvas.getContext("2d");
+		ctx.strokeStyle = "red";
+		
+		ctx.beginPath();
+		ctx.arc(this.x, this.y, 5, 0, 2*Math.PI);
+		ctx.closePath();
+		ctx.stroke();
+		
+		ctx.strokeStyle = "black";
 	}
 }
 
@@ -170,7 +186,7 @@ class Strand {
 	}
 	
 	draw(ctx){
-		//ctx.strokeStyle = this.strokeStyle;
+		ctx.strokeStyle = this.strokeStyle;
 		
 		if(!this.p0_over && !this.p1_over && this.length < 2*UNDERSTRAND_GAP){ //then this is an understrand and too small to show
 			return;
@@ -212,8 +228,8 @@ class Strand {
 		ctx.strokeStyle = "black";
 	}
 	
-	show(){
-		let ctx = input_canvas.getContext("2d");
+	show(canvas=input_canvas){
+		let ctx = canvas.getContext("2d");
 		ctx.lineWidth = 5;
 		this.draw(ctx);
 		ctx.lineWidth = 1;
@@ -255,11 +271,24 @@ function intersect(s1,s2){ //Input is 2 strands. Output is the intersection poin
 	let d2 = ((a.x-c.x)*(b.y-a.y) + (a.y-c.y)*(a.x-b.x)) / det;
 	
 	//test if intersection is on the line segments
-	if(0<d1&&d1<0.01 || 0.99<d1&&d1<1 || 0<d2&&d2<0.01 || 0.99<d2&&d2<1){console.log("intersection at point")}
-	if((0.01 < d1 && d1 < 0.99) && (0.01 < d2 && d2 < 0.99)){ //don't count intersections at the segment's endpoints
+	if((0 < d1 && d1 < 1) && (0 < d2 && d2 < 1)){ //don't count intersections at the segment's endpoints
 		//intersection exists, find and return it
 		let x = a.x + d1*(b.x-a.x);
-		let y = a.y + d1*(b.y-a.y);	
+		let y = a.y + d1*(b.y-a.y);
+
+		if(0<d1&&d1<0.01 || 0.99<d1&&d1<1 || 0<d2&&d2<0.01 || 0.99<d2&&d2<1){
+			/*s1.show();
+			s2.show();
+			
+			let ctx = input_canvas.getContext("2d");
+			ctx.beginPath();
+			ctx.arc(x,y,5,0,2*Math.PI);
+			ctx.closePath();
+			ctx.stroke();
+			*/
+			throw new Error("intersection at point");
+		}
+		
 		return new Point(x,y);
 	}
 	else {

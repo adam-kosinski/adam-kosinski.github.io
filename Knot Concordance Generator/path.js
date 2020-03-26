@@ -94,5 +94,3 @@ function selectRandomStrand(state, min_length){
 	
 	return strand;
 }
-
-let s = input.strands;
