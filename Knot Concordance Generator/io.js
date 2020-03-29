@@ -143,7 +143,6 @@ function newTableEntry(state){
 	
 	let td_PD = document.createElement("td");
 	td_PD.textContent = state.getPD();
-	if(state===input){original_PD_display = td_PD;}
 	tr.appendChild(td_PD);
 	
 	concordance_table.tBodies[0].appendChild(tr);
@@ -160,8 +159,7 @@ function inputKnot(){
 		return;
 	}
 	
-	newTableEntry(input);
-	original_PD_display.textContent = input.getPD();
+	newTableEntry(input.getCopy());
 	generate_concordance_button.disabled = false;
 }
 

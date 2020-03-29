@@ -5,6 +5,8 @@ class State {
 		this.points = [];
 		this.strands = [];
 		this.ordered_indices = []; //the function IDStrands() below will fill this with strand indices in order of ID
+			//NOTE: this.strands tends to be sorted a lot. When this happens, this array will be incorrect
+		this.regions = [];
 	}
 	
 	newPoint(x,y){
@@ -33,7 +35,7 @@ class State {
 				this.removeStrand(other_strand);
 				//disconnect the new strand we just made. Don't need to fully remove it b/c wasn't yet pushed to this.strands
 				new_strand.disconnect();
-
+				
 				//add the intersection point to points
 				this.points.push(intersection);
 				
@@ -64,6 +66,15 @@ class State {
 		
 		//disconnect it from its points
 		strand.disconnect();
+	}
+	
+	updateRegions(){
+		//disconnect any existing regions
+		for(let i=0; i<this.regions.length; i++){
+			this.regions[i].disconnect();
+		}
+		
+		this.regions = getRegions(this); //see region.js for function definition
 	}
 	
 	openGap(strand){ //returns array of the two new points created by the gap
@@ -125,14 +136,14 @@ class State {
 		}
 	}
 	
-	//function to assign strands IDs in order
+	//function to assign strands IDs in order - for PD code
 	IDStrands(){
 		let cur_id = 1;
 		let strand_indices = Array.from(Array(this.strands.length).keys()); //gets an array [0,1,2,3, ...]
 		//this array is used to track what strands remain to be ID-ed. Strands w/ an ID get removed. The entry in the
 		//array refers to the strand's index in this.strands
 		
-		this.ordered_indices = [];
+		this.ordered_indices = []; //clear it
 		
 		//sort this.strands so that strands w/ crossings at p0 come first, since we always need to start ID-ing each component
 		//at a strand that just came out of a crossing
@@ -166,7 +177,8 @@ class State {
 		}
 	}
 	
-	getPD(){		
+	getPD(){
+		this.orientStrands();
 		this.IDStrands();
 		
 		//loop through strands in order, if come to a strand going under into a crossing, get the code of that crossing
@@ -311,7 +323,9 @@ class State {
 		2. Copy the points over using the Point constructor and setting endpoint state (leave strands array empty)
 		3. Copy the strands over, using the Strand constructor to refer to newly created points and over/under stuff. Only need to directly set the id state.
 				-Note: this will update the existing copied points' strands array
+				-Note: the strand's regions array will be filled up when we copy over the regions
 		4. Copy the ordered_indices state array
+		5. Copy regions over, using the Region constructor - will update the strands' regions arrays
 		*/
 		let copy = new State();
 		
@@ -336,6 +350,13 @@ class State {
 		
 		//copy ordered indices array
 		copy.ordered_indices = this.ordered_indices.slice(); //we can slice b/c ordered indices is an array of just integers, no deeper levels
+		
+		//copy over regions
+		for(let r=0; r<this.regions.length; r++){
+			let new_region = new Region(this.regions[r].strands);
+			
+			copy.regions.push(new_region);
+		}
 		
 		return copy;
 	}

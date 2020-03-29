@@ -33,7 +33,7 @@ class Point {
 		let start_angle = start_strand.getAngleFromPoint(this);
 
 		let p = this; //for some reason, referring to this point as 'this' inside the sort function fails
-		//order is: under-in first, then go counterclockwise
+		
 		this.strands.sort(function(a,b){
 			//sort in order of descending angles - this makes it appear counterclockwise
 			let angle_a = a.getAngleFromPoint(p);
@@ -95,7 +95,9 @@ class Strand {
 		this.p0_over = p0_over; //these are true/false based on whether or not it's an over or under crossing at that point
 		this.p1_over = p1_over;
 		
-		this.length = Math.sqrt((p1.x-p0.x)**2 + (p1.y-p0.y)**2);
+		this.regions = [];
+		
+		this.length = Math.hypot(p1.x-p0.x, p1.y-p0.y);
 		//unit vector
 		this.unit = {
 			x: (p1.x-p0.x)/this.length,
@@ -121,7 +123,7 @@ class Strand {
 	}
 	
 	getAngleFromPoint(p){
-		let p0, p1; //determine direction to calculate. We're using vector p0->p1
+		let p0, p1; //determine direction to calculate. We're using vector p0->p1 (p0==p)
 		if(p == this.p0){
 			p0 = this.p0;
 			p1 = this.p1;
@@ -156,6 +158,7 @@ class Strand {
 		return false; //no next strand found
 	}
 	
+	/*not using this:
 	getPreviousStrand(){
 		//moving backwards (p1->p0), return the previous strand (i.e. the other one connected to p0)
 		for(let i=0; i<this.p0.strands.length; i++){
@@ -169,6 +172,7 @@ class Strand {
 		}
 		return false; //no next strand found
 	}
+	*/
 	
 	disconnect(){
 		//remove strand from connected points' strands arrays
@@ -183,6 +187,29 @@ class Strand {
 			this.p1.strands.splice(idx_p1, 1);
 		}
 		else {console.log("Couldn't remove, strand not found in its p1",this,this.p1);}
+	}
+	
+	isR2Valid(){
+		/*function to check for if we can do a reidemeister 2 move with the band under/over this strand
+		we can if:
+			this strand borders exactly 2 regions
+			strand is longer than the minimum
+			both of this strand's r2 points (band does the reid 2 by going to one point then going to the other,
+				these are on either side of the strand's midpoint) are within their respective regions
+		*/
+		if(this.regions.length != 2){return false;}
+		
+		if(this.length < R2_MIN_STRAND_LENGTH){return false;}
+		
+		let r2_point_0 = this.regions[0].getR2Point(this);
+		let r2_point_1 = this.regions[1].getR2Point(this);
+				
+		if(this.regions[0].isPointInside(r2_point_0) && this.regions[1].isPointInside(r2_point_1)){
+			return true;
+		}
+		else {
+			return false;
+		}
 	}
 	
 	draw(ctx){
@@ -236,6 +263,7 @@ class Strand {
 	}
 }
 
+
 function intersect(s1,s2){ //Input is 2 strands. Output is the intersection point if they intersect, else false
 	/* Note: ideas taken from stack overflow https://stackoverflow.com/questions/9043805/test-if-two-lines-intersect-javascript-function
 	If we represent s1 as point a -> point b, s2 as point c -> point d
@@ -258,7 +286,7 @@ function intersect(s1,s2){ //Input is 2 strands. Output is the intersection poin
 	let b = s1.p1;
 	let c = s2.p0;
 	let d = s2.p1;
-		
+	
 	let det = (a.x-b.x)*(d.y-c.y) - (d.x-c.x)*(a.y-b.y);
 	
 	//test for intersection
@@ -276,8 +304,15 @@ function intersect(s1,s2){ //Input is 2 strands. Output is the intersection poin
 		let x = a.x + d1*(b.x-a.x);
 		let y = a.y + d1*(b.y-a.y);
 
-		if(0<d1&&d1<0.01 || 0.99<d1&&d1<1 || 0<d2&&d2<0.01 || 0.99<d2&&d2<1){
-			/*s1.show();
+		//get pixel offset representations of d1 and d2 (instead of the current percent representations) - to allow intersection-at-point error checking
+		let ab_length = Math.hypot(a.x-b.x, a.y-b.y);
+		let cd_length = Math.hypot(c.x-d.x, c.y-d.y);
+		let d1_px = d1*ab_length;
+		let d2_px = d2*cd_length;
+		//check for intersection at point (within 1 px of the end of either strand)
+		if(0<=d1_px && d1_px<=1 || ab_length-1<=d1_px && d1_px<=ab_length ||
+		   0<=d2_px && d2_px<=1 || cd_length-1<=d2_px && d2_px<=cd_length){
+			s1.show();
 			s2.show();
 			
 			let ctx = input_canvas.getContext("2d");
@@ -285,7 +320,7 @@ function intersect(s1,s2){ //Input is 2 strands. Output is the intersection poin
 			ctx.arc(x,y,5,0,2*Math.PI);
 			ctx.closePath();
 			ctx.stroke();
-			*/
+			
 			throw new Error("intersection at point");
 		}
 		
