@@ -13,6 +13,7 @@ class Region {
 		for(let i=0; i<this.strands.length; i++){
 			this.strands[i].regions.push(this);
 		}
+		console.log("adding region to strands");
 	}
 	
 	disconnect(){
@@ -119,14 +120,21 @@ class Region {
 		//if odd, inside the region
 		
 		//for outer region, it's the opposite
-		
-		let fake_strand = {
-			p0: point,
-			p1: {
-				x: 10000,
-				y: point.y
-			}
+		let getRandomVector = function(){
+			let r = 10000;
+			let theta = Math.random() * 2*Math.PI;
+			
+			let out = {
+				p0: point,
+				p1: {
+					x: r*Math.cos(theta),
+					y: r*Math.sin(theta)
+				}
+			};
+			return out;
 		};
+		
+		let fake_strand = getRandomVector();
 		let n_intersections = 0;
 		
 		//note: need to do intersection at point error handling, rare as it is, it happened once to me
@@ -148,9 +156,9 @@ class Region {
 					}
 				}
 			} catch(error){
-				//we got intersection at point, add 1000 to the y offset and try again
+				//we got intersection at point, try again with a different direction for fake_strand
 				intersection_at_point = true;
-				fake_strand.y += 1000;
+				fake_strand = getRandomVector();
 				n_intersections = 0;
 			}
 		
@@ -171,7 +179,7 @@ class Region {
 		//make sure the given strand is in this region
 		let idx = this.strands.indexOf(strand);
 		if(idx == -1){
-			throw new Error("Can't get draw point of a strand not in this region",strand,this);
+			throw new Error("Can't get draw point of a strand not in this region");
 		}
 		
 		//get strand midpoint
@@ -217,6 +225,9 @@ class Region {
 			
 			if(options.r2_valid === true){
 				if(!strand.isR2Valid()){
+					strand.show();
+					debugger;
+					drawEverything(input_canvas, input);
 					continue try_loop;
 				}
 			}
@@ -230,7 +241,7 @@ class Region {
 			}
 			return strand;
 		}
-		return false;
+		return false; //means none of the strands in the region met the conditions specified by the options object
 	}
 }
 
@@ -330,11 +341,12 @@ function getRegions(state){
 
 //debugging convenience:
 let r = getRegions(input);
-function showRegions(){
+function showRegions(state=input){
 	r = getRegions(input);
-	for(let i=0; i<r.length; i++){
+	let reg = getRegions(state);
+	for(let i=0; i<reg.length; i++){
 		drawEverything(input_canvas, input);
-		r[i].show();
+		reg[i].show();
 		debugger;
 	}
 }

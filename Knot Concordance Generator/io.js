@@ -55,6 +55,7 @@ function handleClick(e){
 	//cleanup for not drawing anymore
 	if(drawing == false){
 		cur_point = undefined;
+		input.updateRegions();
 	}
 	
 	drawEverything(input_canvas, input);
@@ -69,6 +70,7 @@ function handleDblclick(e){
 		cur_point.endpoint = true;
 		drawing = false;
 		cur_point = undefined;
+		input.updateRegions();
 	}
 	//test for resume drawing at a certain point
 	else if(!drawing && hovered_point){
@@ -166,8 +168,8 @@ function inputKnot(){
 
 function generateConcordance(){
 	let new_state = input.getCopy();
-	let path = generatePath(new_state);
-	new_state.applyPath(path);
+	let band = new Band(new_state, 50, 50);
+	runBandAlgorithm(band, 5); //5 reid 2s
 	newTableEntry(new_state);
 }
 

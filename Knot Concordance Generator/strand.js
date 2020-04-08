@@ -84,8 +84,9 @@ class Point {
 class Strand {
 	//WARNING: ANY MODIFICATIONS TO MEMBER VARIABLES NEED TO BE UPDATED IN state.js, getCopy() METHOD
 	
-	constructor(p0, p1, p0_over=true, p1_over=true){		
-		this.id = undefined; //the state class will assign this later
+	constructor(p0, p1, p0_over=true, p1_over=true, marker=undefined){		
+		this.id = undefined; //used for PD stuff and maybe alexander stuff, the state class will assign this later in State.IDStrands()
+		this.marker = marker; //used to mark a strand and track it through any intersection splits that happen - used mainly for marking the band and its tip strand
 		
 		this.p0 = p0;
 		p0.strands.push(this);
@@ -197,9 +198,9 @@ class Strand {
 			both of this strand's r2 points (band does the reid 2 by going to one point then going to the other,
 				these are on either side of the strand's midpoint) are within their respective regions
 		*/
-		if(this.regions.length != 2){return false;}
+		if(this.regions.length != 2){console.log("r2 not valid b/c #regions != 2",this.regions.length,this.regions); return false;}
 		
-		if(this.length < R2_MIN_STRAND_LENGTH){return false;}
+		if(this.length < R2_MIN_STRAND_LENGTH){console.log("r2 not valid b/c too short");return false;}
 		
 		let r2_point_0 = this.regions[0].getR2Point(this);
 		let r2_point_1 = this.regions[1].getR2Point(this);
@@ -208,12 +209,13 @@ class Strand {
 			return true;
 		}
 		else {
+			console.log("r2 not valid because r2 point not inside region");
 			return false;
 		}
 	}
 	
 	draw(ctx){
-		ctx.strokeStyle = this.strokeStyle;
+		//ctx.strokeStyle = this.strokeStyle;
 		
 		if(!this.p0_over && !this.p1_over && this.length < 2*UNDERSTRAND_GAP){ //then this is an understrand and too small to show
 			return;

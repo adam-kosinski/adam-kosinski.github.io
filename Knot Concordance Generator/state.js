@@ -16,8 +16,8 @@ class State {
 	}
 	
 	//add a new strand to the state, does intersection checking. Doesn't return the strand, since it might split into multiple
-	newStrand(p0, p1, over=true, p0_over=true, p1_over=true){ //third arg is if this strand should go over existing ones by default
-		let new_strand = new Strand(p0,p1,p0_over,p1_over);
+	newStrand(p0, p1, over=true, marker=undefined, p0_over=true, p1_over=true){ //third arg is if this strand should go over existing ones by default
+		let new_strand = new Strand(p0,p1,p0_over,p1_over, marker);
 		
 		//intersection checking
 		for(let s=0; s<this.strands.length; s++){
@@ -41,11 +41,11 @@ class State {
 				
 				//split this strand and the other strand in two				
 				//this strand
-				this.newStrand(p0, intersection, over, p0_over, over); //preserve over/under at non-intersection points, set it at intersection points based on "over" arg
-				this.newStrand(intersection, p1, over, over, p1_over);
+				this.newStrand(p0, intersection, over, marker, p0_over, over); //preserve over/under at non-intersection points, set it at intersection points based on "over" arg
+				this.newStrand(intersection, p1, over, marker, over, p1_over);
 				//other strand
-				this.newStrand(other_strand.p0, intersection, true, other_strand.p0_over, !over); //args follow same logic as for new strand, except we assume over is true (shouldn't matter really since no cascading intersections for this one)
-				this.newStrand(intersection, other_strand.p1, true, !over, other_strand.p1_over);
+				this.newStrand(other_strand.p0, intersection, true, other_strand.marker, other_strand.p0_over, !over); //args follow same logic as for new strand, except we assume over is true (shouldn't matter really since no cascading intersections for this one)
+				this.newStrand(intersection, other_strand.p1, true, other_strand.marker, !over, other_strand.p1_over);
 				
 				return; //other intersections will be taken care of by the recursive calls for new strands
 			}
@@ -59,8 +59,7 @@ class State {
 		//remove strand from this state's strands array
 		let idx = this.strands.indexOf(strand);
 		if(idx == -1){
-			console.log("Couldn't remove strand b/c couldn't find it in state's strands array");
-			return;
+			throw new Error("Couldn't remove strand b/c couldn't find it in state's strands array");
 		}
 		this.strands.splice(idx, 1);
 		
@@ -87,8 +86,8 @@ class State {
 		
 		this.removeStrand(strand);
 		
-		this.newStrand(strand.p0, p0_side_point);
-		this.newStrand(p1_side_point, strand.p1);
+		this.newStrand(strand.p0, p0_side_point, true, undefined, strand.p0_over, true); //p0, p1, over (for intersections), marker, p0_over, p1_over
+		this.newStrand(p1_side_point, strand.p1, true, undefined, true, strand.p1_over);
 		
 		return [p0_side_point, p1_side_point];
 	}
@@ -117,11 +116,12 @@ class State {
 			let next_strand; //declared in this scope so the do-while loop's condition can read it
 			
 			do {
+				//drawEverything(input_canvas, input);
 				//this.strands[i].show();
 				//debugger;
 				
 				//if we got to this strand, its orientation was already good, so mark that
-				strand_indices.splice(strand_indices.indexOf(i), 1)[0];
+				strand_indices.splice(strand_indices.indexOf(i), 1);
 				
 				//orient next strand to have same orientation as this strand
 				next_strand = this.strands[i].getNextStrand();
@@ -203,118 +203,6 @@ class State {
 		return out;
 	}
 	
-	//function to add points/strands corresponding to a given added-band path
-	applyPath(path){
-		//will have to re-orient later anyways so orientation of strands here doesn't really matter
-		
-		//add the starting loop
-		let top_left = this.newPoint(path.start_x - 0.5*LOOP_WIDTH, path.start_y - 0.5*LOOP_HEIGHT);
-		let top_right = this.newPoint(path.start_x + 0.5*LOOP_WIDTH, path.start_y - 0.5*LOOP_HEIGHT);
-		let bottom_left = this.newPoint(path.start_x - 0.5*LOOP_WIDTH, path.start_y + 0.5*LOOP_HEIGHT);
-		let bottom_right = this.newPoint(path.start_x + 0.5*LOOP_WIDTH, path.start_y + 0.5*LOOP_HEIGHT);
-		
-		let hole_top = this.newPoint(path.start_x + 0.5*LOOP_WIDTH, path.start_y - 0.5*BAND_WIDTH);
-		let hole_bottom = this.newPoint(path.start_x + 0.5*LOOP_WIDTH, path.start_y + 0.5*BAND_WIDTH);
-		
-		this.newStrand(hole_top, top_right);
-		this.newStrand(top_right, top_left);
-		this.newStrand(top_left, bottom_left);
-		this.newStrand(bottom_left, bottom_right);
-		this.newStrand(bottom_right, hole_bottom);
-		
-		let prev = new Point(path.start_x + 0.5*LOOP_WIDTH, path.start_y); //using the Point class for convenient storage of x,y
-		let prev_prev;
-		let prev_left_p = hole_top; //previous point along the strand, to the left as you're facing forward on the strand (away from the loop)
-		let prev_right_p = hole_bottom; //same but to the right
-		
-		//loop through the steps, adding points and strands to form the band
-		for(let s=0; s<=path.steps.length; s++){ // '<=' not '<' so we can use the pretty-turn logic for the merge bit
-			let step;
-			if(s < path.steps.length){
-				step = path.steps[s];
-			}
-			else {
-				step = { //average of the merge points
-					x: (path.merge_left_p.x + path.merge_right_p.x)/2,
-					y: (path.merge_left_p.y + path.merge_right_p.y)/2,
-					over: true
-				}
-			}
-			
-			//get vector from previous point, so we can draw next points perpendicular to it, from the current step's x/y
-			let from_prev = {
-				x: (step.x - prev.x),
-				y: (step.y - prev.y)
-			};
-			
-			//draw vector is left point -> right point
-			let draw_vector = {
-				x: -from_prev.y, //rotate from_prev clockwise
-				y: from_prev.x
-			};
-			//scale magnitude to half of band width
-			let draw_vector_mag = Math.hypot(draw_vector.x, draw_vector.y);
-			draw_vector.x *= (0.5*BAND_WIDTH / draw_vector_mag);
-			draw_vector.y *= (0.5*BAND_WIDTH / draw_vector_mag);
-			
-			//get better draw vectors (but keep the old one, still useful), so that the strands stop half of BAND_WIDTH before the step's point - makes the turns work better			let draw_back_vector = {
-			let from_prev_mag = Math.hypot(from_prev.x, from_prev.y);
-			let right_draw_vector = {
-				x: draw_vector.x - (from_prev.x * (0.5*BAND_WIDTH/from_prev_mag)),
-				y: draw_vector.y - (from_prev.y * (0.5*BAND_WIDTH/from_prev_mag))
-			};
-			let left_draw_vector = {
-				x: -draw_vector.x - (from_prev.x * (0.5*BAND_WIDTH/from_prev_mag)),
-				y: -draw_vector.y - (from_prev.y * (0.5*BAND_WIDTH/from_prev_mag))
-			};
-			
-			//determine if we're turning left or right
-			//https://math.stackexchange.com/questions/274712/calculate-on-which-side-of-a-straight-line-is-a-given-point-located
-			let turn_dir = 0;
-			if(s > 0){
-				turn_dir = (step.x - prev_prev.x)*(prev.y - prev_prev.y) - (step.y - prev_prev.y)*(prev.x - prev_prev.x);
-				//turn_dir<0 indicates turn right, turn_dir>0 indicates turn left
-			}
-			
-			//add new points and strands
-			//add buffering strand for turns
-			if(turn_dir > 0){
-				//left turn
-				let buffer_right_p = this.newPoint(prev_left_p.x + 2*draw_vector.x, prev_left_p.y + 2*draw_vector.y);
-				this.newStrand(prev_right_p, buffer_right_p, step.over);
-				prev_right_p = buffer_right_p;
-			}
-			if(turn_dir < 0){
-				//right turn
-				let buffer_left_p = this.newPoint(prev_right_p.x - 2*draw_vector.x, prev_right_p.y - 2*draw_vector.y);
-				this.newStrand(prev_left_p, buffer_left_p, step.over);
-				prev_left_p = buffer_left_p;
-			}
-			//else, either straight or we didn't have a previous step, so don't mess w/ turn buffering
-			
-			//add normal strands
-			if(s < path.steps.length){
-				let left_p = this.newPoint(step.x + left_draw_vector.x, step.y + left_draw_vector.y);
-				let right_p = this.newPoint(step.x + right_draw_vector.x, step.y + right_draw_vector.y);
-				this.newStrand(prev_left_p, left_p, path.steps[Math.max(0,s-1)].over);
-				this.newStrand(prev_right_p, right_p, path.steps[Math.max(0,s-1)].over);
-			
-				prev_prev = prev;
-				prev = step;
-				prev_left_p = left_p;
-				prev_right_p = right_p;
-			}
-			else { //we're doing the merge at the end
-				this.newStrand(prev_left_p, path.merge_left_p);
-				this.newStrand(prev_right_p, path.merge_right_p);
-				
-				path.merge_left_p.endpoint = false; //no longer an endpoint if they used to be
-				path.merge_right_p.endpoint = false;
-			}
-		}
-		
-		this.orientStrands();
-	}
 	
 	//function to copy this State and return an identical State object
 	getCopy(){
@@ -343,6 +231,7 @@ class State {
 			let p1_idx = this.points.indexOf(this.strands[s].p1);
 			let new_strand = new Strand(copy.points[p0_idx], copy.points[p1_idx], this.strands[s].p0_over, this.strands[s].p1_over);
 			new_strand.id = this.strands[s].id;
+			new_strand.marker = this.strands[s].marker;
 			new_strand.strokeStyle = this.strands[s].strokeStyle;
 			
 			copy.strands.push(new_strand);
@@ -352,11 +241,7 @@ class State {
 		copy.ordered_indices = this.ordered_indices.slice(); //we can slice b/c ordered indices is an array of just integers, no deeper levels
 		
 		//copy over regions
-		for(let r=0; r<this.regions.length; r++){
-			let new_region = new Region(this.regions[r].strands);
-			
-			copy.regions.push(new_region);
-		}
+		copy.updateRegions(copy);
 		
 		return copy;
 	}
