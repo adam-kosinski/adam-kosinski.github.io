@@ -143,6 +143,11 @@ function newTableEntry(state){
 	td_id.textContent = state===input? "Original" : entries.length;
 	tr.appendChild(td_id);
 	
+	let td_alexander = document.createElement("td");
+	td_alexander.innerHTML = state.getAlexander(true); //for_html is 'true'
+	td_alexander.className = "justify_right";
+	tr.appendChild(td_alexander);
+	
 	let td_PD = document.createElement("td");
 	td_PD.textContent = state.getPD();
 	tr.appendChild(td_PD);
@@ -166,10 +171,20 @@ function inputKnot(){
 }
 
 
-function generateConcordance(){
-	let new_state = input.getCopy();
-	let band = new Band(new_state, 50, 50);
-	runBandAlgorithm(band, 5); //5 reid 2s
+function generateConcordance(){	
+	let new_state;
+	let n_errors = 0;
+	while(n_errors < 100){
+		try {
+			new_state = input.getCopy();
+			let band = new Band(new_state, 50, 50);
+			runBandAlgorithm(band, 1);
+			break;
+		}
+		catch(error){console.log(error)}
+		n_errors++;
+	}
+	console.log("Number errors when generating: "+n_errors);
 	newTableEntry(new_state);
 }
 

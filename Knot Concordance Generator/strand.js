@@ -14,8 +14,7 @@ class Point {
 	
 	flipCrossing(){
 		if(!this.isCrossing()){
-			console.log("Point is not a crossing, cannot flip it",this);
-			return;
+			throw new Error("Point is not a crossing, cannot flip it");
 		}
 		for(let i=0; i<this.strands.length; i++){
 			let strand = this.strands[i];
@@ -26,6 +25,30 @@ class Point {
 			else {
 				strand.p1_over = !strand.p1_over;
 			}
+		}
+	}
+	
+	getCrossingSign(){ //returns 1 for positive crossing, -1 for negative crossing
+		if(!this.isCrossing()){
+			throw new Error("Point is not a crossing, can't get crossing sign");
+		}
+		
+		//sort strands counterclockwise, beginning with the understrand going in
+		//determine understrand going in
+		for(let i=0; i<this.strands.length; i++){
+			let s = this.strands[i];
+			if(s.p1 === this && s.p1_over === false){
+				this.sortStrandsCounterclockwise(s);
+				break;
+			}
+		}
+		
+		//examine the next strand counterclockwise around to determine positive/negative crossing
+		let s = this.strands[1];
+		if(s.p0 === this && s.p0_over === true){return 1;}
+		else if(s.p1 === this && s.p1_over === true){return -1;}
+		else {
+			throw new Error("Something seems to be wrong with the crossing, strands not oriented as expected");
 		}
 	}
 	
@@ -97,6 +120,7 @@ class Strand {
 		this.p1_over = p1_over;
 		
 		this.regions = [];
+		this.state = undefined; //set when the State object adds a strand via State.newStrand()
 		
 		this.length = Math.hypot(p1.x-p0.x, p1.y-p0.y);
 		//unit vector
@@ -104,6 +128,7 @@ class Strand {
 			x: (p1.x-p0.x)/this.length,
 			y: (p1.y-p0.y)/this.length
 		}
+		this.midpoint = new Point( (p0.x+p1.x)/2, (p0.y+p1.y)/2 );
 		
 		this.strokeStyle = "rgb("+(Math.random()*256)+","+(Math.random()*256)+","+(Math.random()*256)+")";
 	}
@@ -190,28 +215,92 @@ class Strand {
 		else {console.log("Couldn't remove, strand not found in its p1",this,this.p1);}
 	}
 	
-	isR2Valid(){
+	openGap(){ //returns array of the two new points created by the gap
+		let state = this.state; //get a separate reference b/c this.state gets cleared when we remove this strand
+		
+		let mid_x = this.p0.x + this.unit.x * 0.5*this.length;
+		let mid_y = this.p0.y + this.unit.y * 0.5*this.length;
+		let p0_side_point = state.newPoint(mid_x - this.unit.x*0.5*BAND_WIDTH, mid_y - this.unit.y*0.5*BAND_WIDTH);
+		let p1_side_point = state.newPoint(mid_x + this.unit.x*0.5*BAND_WIDTH, mid_y + this.unit.y*0.5*BAND_WIDTH);
+		p0_side_point.endpoint = true;
+		p1_side_point.endpoint = true;
+		
+		state.removeStrand(this);
+		
+		state.newStrand(this.p0, p0_side_point, true, undefined, this.p0_over, true); //p0, p1, over (for intersections), marker, p0_over, p1_over
+		state.newStrand(p1_side_point, this.p1, true, undefined, true, this.p1_over);
+		
+		return [p0_side_point, p1_side_point];
+	}
+	
+	isR2Valid(start_region=undefined){
+		//start_region needed only if the strand has the "band" marker
+		
 		/*function to check for if we can do a reidemeister 2 move with the band under/over this strand
 		we can if:
 			this strand borders exactly 2 regions
 			strand is longer than the minimum
 			both of this strand's r2 points (band does the reid 2 by going to one point then going to the other,
 				these are on either side of the strand's midpoint) are within their respective regions
+			If it's a band strand, r2 moves go fully across, check if going fully across intersects exactly 2 strands
 		*/
 		if(this.regions.length != 2){console.log("r2 not valid b/c #regions != 2",this.regions.length,this.regions); return false;}
 		
 		if(this.length < R2_MIN_STRAND_LENGTH){console.log("r2 not valid b/c too short");return false;}
 		
-		let r2_point_0 = this.regions[0].getR2Point(this);
-		let r2_point_1 = this.regions[1].getR2Point(this);
-				
-		if(this.regions[0].isPointInside(r2_point_0) && this.regions[1].isPointInside(r2_point_1)){
-			return true;
+		if(this.marker == "band"){
+			//can't easily get the region on the other side of the band, so instead create a fake strand that goes across the band
+			//and make sure it intersects exactly twice
+			
+			if(!start_region){
+				throw new Error("Can't compute isR2Valid() for strand w/ marker 'band', start_region not specified");
+			}
+			
+			//get r2_p0 and r2_p1 (on opposite sides of the band)
+			let r2_p0 = start_region.getR2Point(this);
+			
+			let r2_vector = {
+				x: this.midpoint.x - r2_p0.x,
+				y: this.midpoint.y - r2_p0.y
+			}
+			let cur_mag = Math.hypot(r2_vector.x, r2_vector.y);
+			let wanted_mag = 2* R2_DIST_FROM_STRAND + BAND_WIDTH;
+			r2_vector.x *= wanted_mag/cur_mag;
+			r2_vector.y *= wanted_mag/cur_mag;
+			
+			let r2_p1 = new Point(r2_p0.x + r2_vector.x, r2_p0.y + r2_vector.y);
+			
+			//get fake strand, count number of intersections
+			let fake_strand = new Strand(r2_p0, r2_p1);
+			let n_intersections = 0;
+			for(let i=0; i<this.state.strands.length; i++){
+				let other_strand = this.state.strands[i];
+				try { //to handle intersection-at-point errors
+					if(intersect(fake_strand, other_strand)){
+						n_intersections++;
+					}
+				}
+				catch(error){
+					console.log("r2 not valid b/c intersection at point w/ fake strand");
+					return false;
+				}
+			}
+			if(n_intersections != 2){
+				console.log("r2 not valid b/c the strand is marked 'band' and an r2 over the full band intersects strands <2 or >2 times");
+				return false;
+			}
 		}
 		else {
-			console.log("r2 not valid because r2 point not inside region");
-			return false;
+			let r2_p0 = this.regions[0].getR2Point(this);
+			let r2_p1 = this.regions[1].getR2Point(this);
+			
+			if(! (this.regions[0].isPointInside(r2_p0) && this.regions[1].isPointInside(r2_p1))){
+				console.log("r2 not valid because r2 point not inside region");
+				return false;
+			}
 		}
+		
+		return true;
 	}
 	
 	draw(ctx){

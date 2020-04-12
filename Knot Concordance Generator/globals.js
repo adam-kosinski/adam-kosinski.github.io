@@ -11,8 +11,10 @@ let ARROW_SIZE = 5; //px, length & width of arrows drawn on strands to show orie
 
 let BAND_WIDTH = 10; //px, width of band we wind around everywhere.
 
-let R2_DIST_FROM_STRAND = 15; //px, the band goes to a point this far from the strand before doing a reidemeister 2 move under or over the strand
-let R2_MIN_STRAND_LENGTH = 1.5*BAND_WIDTH;
+let R2_DIST_FROM_STRAND = 13; //px, the band goes to a point this far from the strand before doing a reidemeister 2 move under or over the strand
+	//note: can't equal 0.5*BAND_WIDTH, this will cause an intersection-at-point error in Band.doR2() for strands marked 'band'
+let R2_MIN_STRAND_LENGTH = 1.5*BAND_WIDTH; //minimum length a strand must be for the band to be able to reidemeister 2 under/over it
+let R2_CLOSE_ENOUGH_RADIUS = 10;
 
 let input = new State();
 let entries = []; //will be filled with State objects as more ribbon concordances are generated
@@ -29,9 +31,10 @@ Still getting intersections at endpoints that I don't want, despite the change t
 Probably has something to do about how new strands are recursively split up
 	-Intersection at point happens when either a) draw a strand through a previous point, b) draw a strand, ending on a previous strand
 
-BUG/missing feature: big region won't be correctly detected if there are multiple components
--> probably deal with this in the band generation code?
+BUG/missing feature: region won't be correctly detected if there are multiple components - big region and technically smaller regions
+-> deal with this in the band generation code?
 - not sure if I can just concatenate the strand arrays for all the other regions, I think it will mess up some of the region's methods - check though
+- can check if "inside the region" is facing outwards, and also check if all the region's strands/points are within another region - if so, both strand sets are for the same region
 - Also Mathematica fails to do the Alexander polynomial for links (2+ components)
 
 Iffy feature: ordered_indices in State object becomes wrong when strands are sorted - make better
@@ -39,16 +42,18 @@ Iffy feature: ordered_indices in State object becomes wrong when strands are sor
 
 BUG: when merging, the first addStep can intersect the merge strand (despite the check for this, b/c the band is to the left and right of the center)
 
+BUG: Alexander polynomial sometimes has a bunch of extra 0s and then an incorrect +/- 1 at the end. The polynomial before the zeros is correct though
+
+NOTE: Currently alexander polynomial doesn't work for links
+
 -----------------------
 
-isR2 valid needs to check if points to the left AND right of the primary r2 point are inside the region, so we don't get
+Add intersection at point checking for when inputting a knot? - SnapPy does the flash-screen thing
+
+isR2Valid needs to check if points to the left AND right of the primary r2 point are inside the region, so we don't get
 the band's left strand ending in the region and the band's right strand ending JUST... outside the region
 
-Have a different method of doing R2 for band strands - go straight through the band
--issue if the band's tip ends up in the middle of the band
-
-To avoid band weirdness, have a radius around the first r2 point (or pre-merge point), where if the tip is in the radius, consider it at the r2 point
-	-can also use this to combat intersection at point if we want, by picking a different r2 point within the radius and trying that
+Consider using R2_CLOSE_ENOUGH_RADIUS to combat intersection at point, by picking a different r2 point within the radius and trying that
 
 Would like to add: better rendering for TINY strands with one over-crossing and one under-crossing
 

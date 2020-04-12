@@ -13,7 +13,6 @@ class Region {
 		for(let i=0; i<this.strands.length; i++){
 			this.strands[i].regions.push(this);
 		}
-		console.log("adding region to strands");
 	}
 	
 	disconnect(){
@@ -182,12 +181,6 @@ class Region {
 			throw new Error("Can't get draw point of a strand not in this region");
 		}
 		
-		//get strand midpoint
-		let midpoint = {
-			x: strand.p0.x + strand.unit.x * 0.5*strand.length,
-			y: strand.p0.y + strand.unit.y * 0.5*strand.length
-		};
-		
 		//get offset vector from midpoint - flip and negate unit vector, 
 		let offset_vector = {
 			x: -strand.unit.y * R2_DIST_FROM_STRAND,
@@ -202,8 +195,8 @@ class Region {
 			offset_vector.y *= -1;
 		}
 		
-		let x = midpoint.x + offset_vector.x;
-		let y = midpoint.y + offset_vector.y;
+		let x = strand.midpoint.x + offset_vector.x;
+		let y = strand.midpoint.y + offset_vector.y;
 		
 		let r2_point = new Point(x,y);
 		
@@ -224,10 +217,10 @@ class Region {
 			let strand = this.strands[idx];
 			
 			if(options.r2_valid === true){
-				if(!strand.isR2Valid()){
-					strand.show();
-					debugger;
-					drawEverything(input_canvas, input);
+				if(!strand.isR2Valid(this)){
+					//strand.show();
+					//debugger;
+					//drawEverything(input_canvas, input);
 					continue try_loop;
 				}
 			}
@@ -329,24 +322,17 @@ function getRegions(state){
 		}
 	}
 	
-	//add regions to appropriate strands
-	for(let i=0; i<regions.length; i++){
-		regions[i].addMeToStrands();
-	}
-	
 	return regions;
 }
 
 
 
 //debugging convenience:
-let r = getRegions(input);
 function showRegions(state=input){
-	r = getRegions(input);
-	let reg = getRegions(state);
-	for(let i=0; i<reg.length; i++){
+	state.updateRegions();
+	for(let i=0; i<state.regions.length; i++){
 		drawEverything(input_canvas, input);
-		reg[i].show();
+		state.regions[i].show();
 		debugger;
 	}
 }

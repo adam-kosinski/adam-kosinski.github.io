@@ -38,6 +38,11 @@ canvas {
 #concordance_table td {
 	border: 1px solid black;
 	padding: 5px;
+	white-space: nowrap;
+}
+
+.justify_right {
+	text-align: right;
 }
 
 tr#header {

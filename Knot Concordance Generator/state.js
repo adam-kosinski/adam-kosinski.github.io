@@ -4,7 +4,7 @@ class State {
 	constructor(){
 		this.points = [];
 		this.strands = [];
-		this.ordered_indices = []; //the function IDStrands() below will fill this with strand indices in order of ID
+		this.ordered_strands = []; //the function IDStrands() below will fill this with strand indices in order of ID
 			//NOTE: this.strands tends to be sorted a lot. When this happens, this array will be incorrect
 		this.regions = [];
 	}
@@ -53,6 +53,7 @@ class State {
 		
 		//if no intersections, push this strand
 		this.strands.push(new_strand);
+		new_strand.state = this;
 	}
 	
 	removeStrand(strand){
@@ -62,6 +63,9 @@ class State {
 			throw new Error("Couldn't remove strand b/c couldn't find it in state's strands array");
 		}
 		this.strands.splice(idx, 1);
+		
+		//tell it it's no longer part of this state (not sure if necessary but hey doesn't hurt)
+		strand.state = undefined;
 		
 		//disconnect it from its points
 		strand.disconnect();
@@ -74,22 +78,12 @@ class State {
 		}
 		
 		this.regions = getRegions(this); //see region.js for function definition
-	}
-	
-	openGap(strand){ //returns array of the two new points created by the gap
-		let mid_x = strand.p0.x + strand.unit.x * 0.5*strand.length;
-		let mid_y = strand.p0.y + strand.unit.y * 0.5*strand.length;
-		let p0_side_point = this.newPoint(mid_x - strand.unit.x*0.5*BAND_WIDTH, mid_y - strand.unit.y*0.5*BAND_WIDTH);
-		let p1_side_point = this.newPoint(mid_x + strand.unit.x*0.5*BAND_WIDTH, mid_y + strand.unit.y*0.5*BAND_WIDTH);
-		p0_side_point.endpoint = true;
-		p1_side_point.endpoint = true;
 		
-		this.removeStrand(strand);
-		
-		this.newStrand(strand.p0, p0_side_point, true, undefined, strand.p0_over, true); //p0, p1, over (for intersections), marker, p0_over, p1_over
-		this.newStrand(p1_side_point, strand.p1, true, undefined, true, strand.p1_over);
-		
-		return [p0_side_point, p1_side_point];
+		//tell strands which regions they belong to
+		//add regions to appropriate strands
+		for(let i=0; i<this.regions.length; i++){
+			this.regions[i].addMeToStrands();
+		}
 	}
 	
 	orientStrands(){
@@ -137,19 +131,28 @@ class State {
 	}
 	
 	//function to assign strands IDs in order - for PD code
-	IDStrands(){
-		let cur_id = 1;
+	IDStrands(type="pd"){
+		//type can be "pd" or "alexander"
+		
+		type = type.toLowerCase();
+		if(type !== "pd" && type !== "alexander"){
+			throw new Error("Can't IDStrands, type argument ("+type+") is not 'pd' or 'alexander'");
+		}
+		
+		let cur_id = type==="pd"? 1 : 0;
 		let strand_indices = Array.from(Array(this.strands.length).keys()); //gets an array [0,1,2,3, ...]
 		//this array is used to track what strands remain to be ID-ed. Strands w/ an ID get removed. The entry in the
 		//array refers to the strand's index in this.strands
 		
-		this.ordered_indices = []; //clear it
+		this.ordered_strands = []; //clear it
 		
-		//sort this.strands so that strands w/ crossings at p0 come first, since we always need to start ID-ing each component
-		//at a strand that just came out of a crossing
+		//sort this.strands so that strands w/ under-crossings at p0 come first, since we always need to start ID-ing each component
+		//at a strand that just came out from under a crossing
 		this.strands.sort(function(a,b){
 			if(a.p0.isCrossing() && !b.p0.isCrossing()){return -1;}
 			else if(b.p0.isCrossing() && !a.p0.isCrossing()){return 1;}
+			else if(a.p0_over == false && b.p0_over == true){return -1;}
+			else if (b.p0_over == false && a.p0_over == true){return 1}
 			else {return 0;}
 		});
 		
@@ -165,12 +168,27 @@ class State {
 			
 			do {
 				this.strands[i].id = cur_id;
-				let done_idx = strand_indices.splice(strand_indices.indexOf(i), 1)[0];
-				this.ordered_indices.push(done_idx);
+				strand_indices.splice(strand_indices.indexOf(i), 1)[0];
+				this.ordered_strands.push(this.strands[i]);
 				
-				if(this.strands[i].p1.isCrossing()){cur_id++;} //only change id at a crossing
+				//change id if we should
+				if(this.strands[i].p1.endpoint){
+					cur_id++;
+					break;
+				}
+				if(this.strands[i].p1.isCrossing()){
+					if(type === "pd"){
+						cur_id++;
+					}
+					else if(type === "alexander" && this.strands[i].p1_over === false){
+						cur_id++;
+					}
+				}
+				
 				next_strand = this.strands[i].getNextStrand();
-				if(next_strand == false){break;} //reached an endpoint, no next strand exists, so we're done w/ this component
+				if(next_strand == false){
+					throw new Error("Couldn't get next strand in IDStrands()");
+				}
 				i = this.strands.indexOf(next_strand);
 				
 			} while (next_strand != first_strand  && strand_indices.length > 0)
@@ -179,12 +197,12 @@ class State {
 	
 	getPD(){
 		this.orientStrands();
-		this.IDStrands();
+		this.IDStrands("pd");
 		
 		//loop through strands in order, if come to a strand going under into a crossing, get the code of that crossing
 		let PD = [];
-		for(let i=0; i<this.ordered_indices.length; i++){
-			let strand = this.strands[this.ordered_indices[i]];
+		for(let i=0; i<this.ordered_strands.length; i++){
+			let strand = this.ordered_strands[i];
 			
 			if(strand.p1_over == false){
 				PD.push(strand.p1.getPD(strand));
@@ -204,6 +222,142 @@ class State {
 	}
 	
 	
+	getAlexander(for_html=false){
+		//if for_html is true, will do <sup> tags instead of ^ symbols
+		/*
+		ID the strands properly for alexander stuff - use an argument option for State.IDStrands()
+		Fill the alexander matrix w/ the appropriate stuff, using t = big multiple of 10,
+		    so the powers of t will stand out in the final determinant
+		Remove a row and column
+		Take the determinant
+		Parse the result to separate powers of t, find coefficients by doing this
+		Return a string representing the alexander polynomial
+		*/
+		
+		this.IDStrands("alexander");
+		let t_mag = 2;
+		let t = 10**t_mag;
+		
+		//create alexander matrix - rows are crossings, columns are strands
+		//new row added for each crossing we find, columns are indexed by the strand ID
+		let matrix = [];
+		
+		//find number of different IDs (IDs start at 0), max_id+1 is the number of cols in the matrix
+		let max_id = 0;
+		for(let i=0; i<this.strands.length; i++){
+			max_id = Math.max(max_id, this.strands[i].id);
+		}
+		
+		//loop through crossings, add stuff to the matrix
+		for(let i=0; i<this.points.length; i++){
+			if(!this.points[i].isCrossing()){continue;}
+			
+			let p = this.points[i];
+			let row = new Array(max_id+1).fill(0);
+			
+			//figure out if it's a positive or negative crossing
+			let crossing_sign = p.getCrossingSign();
+			
+			//loop through strands attached to this crossing, using their ids to assign values
+			for(let s=0; s<p.strands.length; s++){
+				if(p.strands[s].p0 === p){
+					if(p.strands[s].p0_over === true){ //this is the overstrand
+						let value = crossing_sign==1 ? 1-t : 1-(1/t);
+						row[p.strands[s].id] += value;
+					}
+					else { //this is the understrand out
+						let value = crossing_sign==1 ? t : 1/t;
+						row[p.strands[s].id] += value;
+					}
+				}
+				else if(p.strands[s].p1 === p && p.strands[s].p1_over === false){ //this is the understrand in
+					row[p.strands[s].id] += -1;
+				}
+			}			
+			//get rid of floating point error and make all values integers
+			for(let i=0; i<row.length; i++){
+				row[i] = Math.round(row[i]*t); //multiplying by t ensures we get an integer, since smallest abs val is t^-1
+				row[i] = math.bignumber(row[i]); //also need to use a big number so that we don't get floating point error w/ scientific notation
+			}
+			matrix.push(row);
+		}
+		let display_matrix = matrix.map(function(row){
+			return row.map(function(x){
+				return x.toString();
+			});
+		});
+		console.log(display_matrix);
+		
+		//if no crossings, alexander polynomial should be 1
+		if(matrix.length == 0){
+			return "1";
+		}
+		
+		//remove the last row and col (arbitrarily)
+		matrix.pop();
+		for(let i=0; i<matrix.length; i++){
+			matrix[i].pop();
+		}
+		
+		//compute the determinant
+		let det = math.det(matrix); //from the math.js library
+		
+		//parse the result to get the coefficients
+		let coefficients = []; //index = power of t
+		
+		let n = det.abs().floor();
+		while(n.mod(t).equals(0)){ //make lowest power 0
+			n = n.div(t);
+		}
+		let safety_counter = 0;
+		while(n.greaterThan(0) && safety_counter < 100){
+			console.log(n.toString());
+			let last_bit = n.mod(t);
+			n = n.div(t).floor();
+			if(last_bit.greaterThan(t/2)){ //then the sign is negative
+				let value = last_bit.minus(t);
+				n = n.plus(1);
+				coefficients.push(value.toString());
+			}
+			else { //the sign is positive
+				coefficients.push(last_bit.toString());
+			}
+			safety_counter++;
+		}
+				
+		let out = "";
+		for(let i=coefficients.length-1; i>=0; i--){
+			let c = coefficients[i];
+			//sign
+			if(c<0){
+				out += "- ";
+			}
+			else {
+				out += out.length==0 ? "" : "+ ";
+			}
+			//coefficient
+			if(c != 1 && c != -1){
+				out += Math.abs(c);
+			}
+			//power of t
+			if(i == 0){
+				out += "1";
+			}
+			else {
+				out += "t";
+				if(i != 1 && for_html){
+					out += "<sup>" + i + "</sup>";
+				}
+				else if(i != 1){
+					out += "^" + i;
+				}
+			}
+			out += " ";
+		}
+		
+		return out;
+	}
+	
 	//function to copy this State and return an identical State object
 	getCopy(){
 		/*Plan:
@@ -212,8 +366,7 @@ class State {
 		3. Copy the strands over, using the Strand constructor to refer to newly created points and over/under stuff. Only need to directly set the id state.
 				-Note: this will update the existing copied points' strands array
 				-Note: the strand's regions array will be filled up when we copy over the regions
-		4. Copy the ordered_indices state array
-		5. Copy regions over, using the Region constructor - will update the strands' regions arrays
+		4. Copy regions over, using the Region constructor - will update the strands' regions arrays
 		*/
 		let copy = new State();
 		
@@ -236,10 +389,7 @@ class State {
 			
 			copy.strands.push(new_strand);
 		}
-		
-		//copy ordered indices array
-		copy.ordered_indices = this.ordered_indices.slice(); //we can slice b/c ordered indices is an array of just integers, no deeper levels
-		
+				
 		//copy over regions
 		copy.updateRegions(copy);
 		
