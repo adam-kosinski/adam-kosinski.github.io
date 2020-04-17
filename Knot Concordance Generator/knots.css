@@ -7,12 +7,24 @@ p {
 	margin-bottom: 5px;
 }
 
+.zoom_buttons {
+	display: inline-block;
+}
+
+.zoom-in, .move, .zoom-out {
+	width: 30px;
+	display: block;
+	padding: 5px;
+	margin: 3px;
+}
+
 /* input stuff ----------------------------*/
 
 canvas {
 	width: 500px;
 	height: 500px;
 	border: 1px solid black;
+	display: inline-block;
 }
 
 
@@ -21,6 +33,7 @@ canvas {
 #output_container {
 	position: relative;
 	border-collapse: collapse;
+	white-space: nowrap;
 }
 
 #table_container {
@@ -29,10 +42,14 @@ canvas {
 }
 
 #concordance_table {
-	overflow-y: scroll;
 	border-collapse: collapse;
 	background-color: #ffffcc;
+	border: 0.5px solid black;
 	cursor: default;
+	
+	display: block;
+	height: 500px;
+	overflow-y: auto;
 }
 
 #concordance_table td {

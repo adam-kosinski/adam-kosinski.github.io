@@ -95,8 +95,14 @@ class Point {
 		let ctx = canvas.getContext("2d");
 		ctx.strokeStyle = "red";
 		
+		//get zoom object
+		let zoom_obj;
+		if(ctx.canvas===input_canvas){zoom_obj = input_zoom;}
+		else if(ctx.canvas===display_canvas){zoom_obj = display_zoom;}
+		else {throw new Error("invalid canvas");}		
+		
 		ctx.beginPath();
-		ctx.arc(this.x, this.y, 5, 0, 2*Math.PI);
+		ctx.arc(this.x, this.y, 5/zoom_obj.scale, 0, 2*Math.PI);
 		ctx.closePath();
 		ctx.stroke();
 		
@@ -306,34 +312,44 @@ class Strand {
 	draw(ctx){
 		//ctx.strokeStyle = this.strokeStyle;
 		
-		if(!this.p0_over && !this.p1_over && this.length < 2*UNDERSTRAND_GAP){ //then this is an understrand and too small to show
+		//get zoom object
+		let zoom_obj;
+		if(ctx.canvas===input_canvas){zoom_obj = input_zoom;}
+		else if(ctx.canvas===display_canvas){zoom_obj = display_zoom;}
+		else {throw new Error("invalid canvas");}
+		
+		//update constants to account for zoom
+		let understrand_gap = UNDERSTRAND_GAP/zoom_obj.scale;
+		let arrow_size = ARROW_SIZE/zoom_obj.scale;
+		
+		if(!this.p0_over && !this.p1_over && this.length < 2*understrand_gap){ //then this is an understrand and too small to show
 			return;
 		}
 		
 		ctx.beginPath();
 		
-		let x = this.p0.x + (this.p0_over? 0 : this.unit.x*UNDERSTRAND_GAP);
-		let y = this.p0.y + (this.p0_over? 0 : this.unit.y*UNDERSTRAND_GAP);
+		let x = this.p0.x + (this.p0_over? 0 : this.unit.x*understrand_gap);
+		let y = this.p0.y + (this.p0_over? 0 : this.unit.y*understrand_gap);
 		ctx.moveTo(x,y);
 		
-		x = this.p1.x - (this.p1_over? 0 : this.unit.x*UNDERSTRAND_GAP);
-		y = this.p1.y - (this.p1_over? 0 : this.unit.y*UNDERSTRAND_GAP);
+		x = this.p1.x - (this.p1_over? 0 : this.unit.x*understrand_gap);
+		y = this.p1.y - (this.p1_over? 0 : this.unit.y*understrand_gap);
 		ctx.lineTo(x,y);
 		
 		ctx.closePath();
 		ctx.stroke();
 		
 		//draw orientation arrow
-		if(this.length > 2*UNDERSTRAND_GAP + 2*ARROW_SIZE){ //check to make sure arrow will be comfortably visible
+		if(this.length > 2*understrand_gap + 2*arrow_size){ //check to make sure arrow will be comfortably visible
 			let draw_vector = { //left -> right
-				x: -this.unit.y * 0.5*ARROW_SIZE,
-				y: this.unit.x * 0.5*ARROW_SIZE
+				x: -this.unit.y * 0.5*arrow_size,
+				y: this.unit.x * 0.5*arrow_size
 			}
 			
-			let arrow_back_x = this.p0.x + (this.unit.x * (0.5*this.length - 0.5*ARROW_SIZE));
-			let arrow_back_y = this.p0.y + (this.unit.y * (0.5*this.length - 0.5*ARROW_SIZE));
-			let arrow_front_x = this.p0.x + (this.unit.x * (0.5*this.length + 0.5*ARROW_SIZE));
-			let arrow_front_y = this.p0.y + (this.unit.y * (0.5*this.length + 0.5*ARROW_SIZE));
+			let arrow_back_x = this.p0.x + (this.unit.x * (0.5*this.length - 0.5*arrow_size));
+			let arrow_back_y = this.p0.y + (this.unit.y * (0.5*this.length - 0.5*arrow_size));
+			let arrow_front_x = this.p0.x + (this.unit.x * (0.5*this.length + 0.5*arrow_size));
+			let arrow_front_y = this.p0.y + (this.unit.y * (0.5*this.length + 0.5*arrow_size));
 			
 			ctx.beginPath();
 			ctx.moveTo(arrow_front_x, arrow_front_y);

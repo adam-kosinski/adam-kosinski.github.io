@@ -255,7 +255,9 @@ function getRegions(state){
 	//sort point storage of strands counterclockwise, so we always know the order to go in when going around a region
 	for(let i=0; i<state.points.length; i++){
 		let p = state.points[i];
-		p.sortStrandsCounterclockwise(p.strands[0]); //start with the current first strand, doesn't really matter
+		if(p.strands.length > 0){
+			p.sortStrandsCounterclockwise(p.strands[0]); //start with the current first strand, doesn't really matter
+		}
 	}
 	
 	let regions = []; //will store Region objects
@@ -282,7 +284,8 @@ function getRegions(state){
 				let next_p = this_strand.p0 === prev_p ? this_strand.p1 : this_strand.p0;
 				
 				if(next_p.strands.length < 2){
-					throw new Error("Cannot find regions, knot has open endpoints");
+					console.log("Cannot find regions, knot has open endpoints. Returning an empty array");
+					return [];
 				}
 				
 				//get the next strand at that point

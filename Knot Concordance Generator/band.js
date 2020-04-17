@@ -307,7 +307,7 @@ function runBandAlgorithm(band, num_R2s){
 		band.doR2(strand_to_r2, over, over2);
 		
 		drawEverything(input_canvas, band.state);
-		debugger;
+		//debugger;
 	}
 	
 	//merge

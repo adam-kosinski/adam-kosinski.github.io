@@ -3,12 +3,18 @@
 	<head>
 		<title>Ribbon Concordinator</title>
 		<link type="text/css" rel="stylesheet" href="knots.css"/>
+		<link rel="icon" href="trefoil_icon.png"/>
 		<script src="math.js" type="text/javascript"></script> <!-- math library -->
 	</head>
 	<body>
 		<div id="input_container">
 			<p>Input base knot here:</p>
 			<canvas id="input" width="500" height="500"></canvas>
+			<div class="zoom_buttons">
+				<img class="zoom-in input_zoom" src="zoom-in.png"/>
+				<img class="move input_zoom" src="move.png"/>
+				<img class="zoom-out input_zoom" src="zoom-out.png"/>				
+			</div>
 			<div id="input_buttons">
 				<button id="input_button">Input/update base knot</button>
 				<button id="generate_concordance" disabled="true">Generate ribbon concordance</button>
@@ -23,6 +29,11 @@
 					<td id="display_container">
 						<p>Ribbon Concordance Display:</p>
 						<canvas id="display" width="500" height="500"></canvas>
+						<div class="zoom_buttons">
+							<img class="zoom-in display_zoom" src="zoom-in.png"/>
+							<img class="move display_zoom" src="move.png"/>
+							<img class="zoom-out display_zoom" src="zoom-out.png"/>	
+						</div>
 					</td>
 					
 					<td id="table_container">

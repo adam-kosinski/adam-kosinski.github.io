@@ -274,11 +274,21 @@ class State {
 					row[p.strands[s].id] += -1;
 				}
 			}			
-			//get rid of floating point error and make all values integers
+			//multiply by t to make all values integers
 			for(let i=0; i<row.length; i++){
-				row[i] = Math.round(row[i]*t); //multiplying by t ensures we get an integer, since smallest abs val is t^-1
-				row[i] = math.bignumber(row[i]); //also need to use a big number so that we don't get floating point error w/ scientific notation
+				if(row[i]%1 != 0){ //if not an integer
+					console.log("not an integer");
+					for(let j=0; j<row.length; j++){
+						row[j] = Math.round(row[j]*t); //ensures integer, since smallest number is t^-1
+					}
+					break;
+				}
 			}
+			//use bignumbers
+			for(let i=0; i<row.length; i++){
+				row[i] = math.bignumber(row[i]);
+			}
+			
 			matrix.push(row);
 		}
 		let display_matrix = matrix.map(function(row){
@@ -301,12 +311,16 @@ class State {
 		
 		//compute the determinant
 		let det = math.det(matrix); //from the math.js library
+		console.log("det",det.toString());
 		
 		//parse the result to get the coefficients
 		let coefficients = []; //index = power of t
 		
-		let n = det.abs().floor();
-		while(n.mod(t).equals(0)){ //make lowest power 0
+		let n = det.round().abs(); //cleanup
+		if(n.equals(0)){
+			throw new Error("Determinant for alexander polynomial is zero");
+		}
+		while(n.greaterThan(0) && n.mod(t).equals(0)){ //make lowest power 0
 			n = n.div(t);
 		}
 		let safety_counter = 0;
@@ -336,14 +350,11 @@ class State {
 				out += out.length==0 ? "" : "+ ";
 			}
 			//coefficient
-			if(c != 1 && c != -1){
+			if(i == 0 || (c != 1 && c != -1)){
 				out += Math.abs(c);
 			}
 			//power of t
-			if(i == 0){
-				out += "1";
-			}
-			else {
+			if(i != 0) {
 				out += "t";
 				if(i != 1 && for_html){
 					out += "<sup>" + i + "</sup>";
@@ -397,3 +408,61 @@ class State {
 	}
 }
 
+
+/*
+function alex_det(m, t){
+	//m is the matrix (of bignumbers), t is the value of t we're allowed to scale things by to stop numbers from getting out of hand
+	
+	if(m.length == 0){
+		throw new Error("Can't take det, 0 rows");
+	}
+	if(m.length != m[0].length){
+		throw new Error("Can't take det, n rows != n cols");
+	}
+	
+	//scale the first row down if we can
+	reduce_loop:
+	while(true){
+		for(let i=0; i<m[0].length; i++){
+			if(! m[0][i].mod(t).equals(0)){
+				break reduce_loop;
+			}
+		}
+		m[0] = m[0].map(x => x.div(t));
+	}
+	
+	//compute the determinant
+	let det = math.bignumber(0);
+	if(m.length == 1){
+		det = m[0][0];
+	}
+	else {
+		//iterate over the first row, computing the determinant
+		let sign = math.bignumber(1);
+		for(let i=0; i<m[0].length; i++){
+			
+			//get a new matrix with first row and this column removed
+			let new_m = [];
+			for(let r=1; r<m.length; r++){
+				let new_row = [];
+				for(let c=0; c<m[0].length; c++){
+					if(c != i){
+						new_row.push(m[r][c]);
+					}
+				}
+				new_m.push(new_row);
+			}
+			
+			det = det.plus( sign.times( m[0][i] ).times( alex_det(new_m, t) ));
+			sign = sign.neg();
+		}
+	}
+	
+	//reduce the determinant
+	while(det.mod(t).equals(0)){
+		det = det.div(t);
+	}
+	
+	return det;
+}
+*/
