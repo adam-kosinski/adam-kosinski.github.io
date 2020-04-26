@@ -52,7 +52,16 @@ math.config({
 
 
 /*notes:
-BUG: getting errors when trying to compute alex poly for inputs that the undo feature was used to draw
+
+Critical path:
+
+-Eliminate band-turn bug
+-No merging into band strands
+-Ensure the band goes through itself at least once (would be nice to increase the probability it will by moving further into a region before deciding next R2)
+
+--------------------------
+
+BUG: getting multiple types of errors when trying to compute alex poly for inputs that the undo feature was used to draw
 
 BUG: adding a new strand that goes straight through an existing point, doesn't register as a crossing - currently throwing an error (intersection at point) to deal with this
 Still getting intersections at endpoints that I don't want, despite the change to the newStrand() function in state.js
@@ -67,12 +76,14 @@ BUG/missing feature: region won't be correctly detected if there are multiple co
 
 BUG: when merging, the first addStep can intersect the merge strand (despite the check for this, b/c the band is to the left and right of the center)
 
-BUG: Alexander polynomial sometimes has a bunch of extra 0s and then an incorrect +/- 1 at the end. The polynomial before the zeros is correct though
+FIXED BUG: Alexander polynomial sometimes has a bunch of extra 0s and then an incorrect +/- 1 at the end. The polynomial before the zeros is correct though
 --> this is round-off/floating point error. Fix is to increase the math.config precision (see above)
 
 NOTE: Currently alexander polynomial doesn't work for links
 
 -----------------------
+
+Band algorithm being run maybe should be added to undo stack? - not essential. Also would need to edit my ctrl+B test code BTW
 
 Make flipping crossings un-doable?
 
@@ -84,9 +95,8 @@ isR2Valid needs to check if points to the left AND right of the primary r2 point
 the band's left strand ending in the region and the band's right strand ending JUST... outside the region
 
 Consider using R2_CLOSE_ENOUGH_RADIUS to combat intersection at point, by picking a different r2 point within the radius and trying that
+-this could possibly be handled for the general case in Band.addStep()
 
 Would like to add: better rendering for TINY strands with one over-crossing and one under-crossing
-
-Zoom in/out feature for displays?
 
 */

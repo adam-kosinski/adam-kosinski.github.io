@@ -45,6 +45,7 @@ class Band
 			let s = this.state.strands[i];
 			if(s.marker === "band_tip"){
 				this.state.removeStrand(s);
+				i--; //so we don't skip the next one
 			}
 		}
 		

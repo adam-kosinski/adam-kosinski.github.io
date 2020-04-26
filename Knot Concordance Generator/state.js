@@ -397,6 +397,7 @@ class State {
 			new_strand.id = this.strands[s].id;
 			new_strand.marker = this.strands[s].marker;
 			new_strand.strokeStyle = this.strands[s].strokeStyle;
+			new_strand.state = copy;
 			
 			copy.strands.push(new_strand);
 		}

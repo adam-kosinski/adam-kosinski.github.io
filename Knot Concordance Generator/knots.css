@@ -25,6 +25,7 @@ canvas {
 	height: 500px;
 	border: 1px solid black;
 	display: inline-block;
+	user-select: none;
 }
 
 

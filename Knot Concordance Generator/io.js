@@ -37,6 +37,8 @@ function getLastPoint(){
 }
 
 function zoom(e, zoom_obj, zoom_factor){ //e is the mouse event that triggered this
+	//code adapted from: https://stackoverflow.com/questions/2916081/zoom-in-on-a-point-using-scale-and-translate
+	
 	let ctx = zoom_obj.ctx;
 	let origin = zoom_obj.origin;
 	
@@ -310,10 +312,13 @@ function handleInputMousemove(e){
 				//highlight the point
 				drawEverything(input_canvas, input);
 				let ctx = input_canvas.getContext("2d");
+				ctx.lineWidth = 1/input_zoom.scale;
 				ctx.beginPath();
 				ctx.arc(p.x, p.y, point_select_radius, 0, 2*Math.PI);
 				ctx.closePath();
 				ctx.stroke();
+				
+				ctx.lineWidth = 1;
 			}
 			return; //stop looking for points
 		}
@@ -324,7 +329,17 @@ function handleInputMousemove(e){
 
 
 
-function handleKeydown(e){
+function handleKeydown(e){	
+	
+	//testing utility for running the band algorithm
+	if(e.key === "b" && e.ctrlKey){
+		input = draw_stack[draw_stack.length-1].getCopy();
+		drawEverything(input_canvas, input);
+		b = new Band(input,50,50);
+		runBandAlgorithm(b,3);
+	}
+	
+	
 	if(e.key === "Escape" && drawing){
 		drawing = false;
 		
@@ -375,7 +390,6 @@ function drawEverything(canvas, state){
 	}
 	
 	//draw strands
-	ctx.lineWidth = 1/zoom_obj.scale;
 	for(let s=0; s<state.strands.length; s++){
 		state.strands[s].draw(ctx);
 	}

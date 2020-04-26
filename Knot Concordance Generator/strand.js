@@ -101,12 +101,15 @@ class Point {
 		else if(ctx.canvas===display_canvas){zoom_obj = display_zoom;}
 		else {throw new Error("invalid canvas");}		
 		
+		ctx.lineWidth = 1/zoom_obj.scale;
+		
 		ctx.beginPath();
 		ctx.arc(this.x, this.y, 5/zoom_obj.scale, 0, 2*Math.PI);
 		ctx.closePath();
 		ctx.stroke();
 		
 		ctx.strokeStyle = "black";
+		ctx.lineWidth = 1;
 	}
 }
 
@@ -309,7 +312,7 @@ class Strand {
 		return true;
 	}
 	
-	draw(ctx){
+	draw(ctx, lineWidth=1){
 		//ctx.strokeStyle = this.strokeStyle;
 		
 		//get zoom object
@@ -321,6 +324,7 @@ class Strand {
 		//update constants to account for zoom
 		let understrand_gap = UNDERSTRAND_GAP/zoom_obj.scale;
 		let arrow_size = ARROW_SIZE/zoom_obj.scale;
+		ctx.lineWidth = lineWidth/zoom_obj.scale;
 		
 		if(!this.p0_over && !this.p1_over && this.length < 2*understrand_gap){ //then this is an understrand and too small to show
 			return;
@@ -360,13 +364,12 @@ class Strand {
 		}
 		
 		ctx.strokeStyle = "black";
+		ctx.lineWidth = 1;
 	}
 	
 	show(canvas=input_canvas){
 		let ctx = canvas.getContext("2d");
-		ctx.lineWidth = 5;
-		this.draw(ctx);
-		ctx.lineWidth = 1;
+		this.draw(ctx, 5);
 	}
 }
 
@@ -423,10 +426,13 @@ function intersect(s1,s2){ //Input is 2 strands. Output is the intersection poin
 			s2.show();
 			
 			let ctx = input_canvas.getContext("2d");
+			ctx.lineWidth = 1/input_zoom.scale;
 			ctx.beginPath();
 			ctx.arc(x,y,5,0,2*Math.PI);
 			ctx.closePath();
 			ctx.stroke();
+			
+			ctx.lineWidth = 1;
 			
 			throw new Error("intersection at point");
 		}
