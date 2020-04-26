@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Fencing Multiplayer</title>
+		<link type="text/css" rel="stylesheet" href="/static/style.css"/>
+		<script src="/socket.io/socket.io.js"></script>
+	</head>
+	<body>
+		<!--external code-->
+		<script src="/static/three.js"></script>
+		<script src="/static/OrbitControls.js"></script>
+
+		<!--config/my functions not related to client-->
+		<script src="/static/deepCopy.js"></script>
+		<script src="/static/config.js"></script>
+		<script src="/static/3d_objects.js"></script>
+
+		<!--execution code, note: client contains server communication functions referenced by other code, must be first in this list-->
+		<script src="/static/client.js"></script>
+		
+		<script src="/static/events.js"></script>
+	</body>
+</html>
