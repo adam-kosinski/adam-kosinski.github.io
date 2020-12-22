@@ -6,11 +6,6 @@ let http = require("http");
 let path = require("path");
 let socketIO = require("socket.io");
 
-let classes = require("./classes");
-let Player = classes.Player;
-let Game = classes.Game;
-let Element = classes.Element;
-
 //app stuff
 let app = express();
 let server = http.Server(app);
@@ -99,65 +94,6 @@ io.on("connection", function(socket) {
 	socket.on("get_state", function(callback){
 		callback(player_statuses, game); //if game is undefined, tells them no game currently happening
 	});
-
-
-
-
-  // STATE UPDATES -------------------------------------------------------------------
-
-  socket.on("start_game", function(){
-    game = new Game();
-    console.log("Game starting");
-    console.log(game);
-    io.emit("start_game");
-  });
-
-
-  socket.on("update_server_element", function(data){
-    if(!game){return;} //element storage only occurs during a game
-
-    let update = {id: data.id, style: {}}; //stores stuff to tell clients to update
-
-    if(game.elements.hasOwnProperty(data.id)){
-      //then check if there's a difference between the updated version and the one we have
-      let storage = game.elements[data.id];
-      let different = false;
-
-      //tagName should never change, but just in case...
-      if(data.tagName != storage.tagName) {
-        console.log("Tagnames don't match", data, storage);
-        return;
-      }
-
-      if(data.className != storage.className) {
-        update.className = data.className;
-        storage.className = data.className;
-        different = true;
-      }
-
-      for(let prop in data.style){
-        if(data.style[prop] != storage.style[prop]) {
-          update.style[prop] = data.style[prop];
-          storage.style[prop] = data.style[prop];
-          different = true;
-        }
-      }
-
-      if(!different){return;}
-    }
-    else {
-      //element isn't tracked yet, start tracking
-      let element = new Element(data.tagName, data.id, data.className, data.style);
-      game.elements[data.id] = element;
-      update = element;
-      console.log("New element", element);
-    }
-
-    //update all clients except the sender
-    socket.broadcast.emit("update_client_element", update);
-
-  });
-
 
 
 });

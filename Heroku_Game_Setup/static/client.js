@@ -45,36 +45,10 @@ socket.emit("get_state", function(player_statuses, game){
 		//initialize game display
 	}
 	else {
-		//home_screen.style.display = "block";
+		home_screen.style.display = "block";
 	}
 });
 
-
-
-// FUNCTIONS SENDING STUFF TO SERVER ---------------------------
-
-function updateServerElement(element, ...style_properties){
-	//sends data about an element (tagname, id, className, style) to the server, who remembers the data for each element it's tracking
-	//if the server notices a difference, it will send out updates to all the clients but this one, do change the element's display
-	//if the element is not yet tracked, the server will start tracking it
-
-	//only the style properties specified as extra arguments will be updated
-
-	let data = {
-		tagName: element.tagName.toLowerCase(),
-		id: element.id,
-		className: element.className,
-		style: {}
-	};
-
-	let style = getComputedStyle(element);
-	for(let i=0; i<style_properties.length; i++){
-		let prop = style_properties[i];
-		data.style[prop] = style[prop];
-	}
-
-	socket.emit("update_server_element", data);
-}
 
 
 
@@ -108,14 +82,3 @@ socket.on("player_connection", function(player_statuses){
 	//indicate disconnected in game GUI if game active TODO
 });
 
-
-socket.on("start_game", function(){
-	game_active = true;
-	console.log("Game starting");
-});
-
-
-socket.on("update_client_element", function(data){
-	console.log("update_client_element", data);
-	updateClientElement(data);
-});

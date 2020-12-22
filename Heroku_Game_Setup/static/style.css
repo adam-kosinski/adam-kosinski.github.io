@@ -63,13 +63,3 @@ p {
 }
 
 
-
-/* test ----------------------------------*/
-
-#test {
-	height: 50px;
-	width: 50px;
-	border-radius: 25px;
-	background-color: yellow;
-	border: 2px solid black;
-}
