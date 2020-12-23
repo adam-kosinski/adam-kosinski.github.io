@@ -11,7 +11,7 @@ function windowResized(){
 		canvases[i].style.width = window.innerWidth + "px";
 		canvases[i].style.height= window.innerHeight + "px";
 	}
-	
+
 	//redraw edges, since the canvas drawing will get deleted when we resize the canvas
 	updateCanvas(); //function in updateCanvas.js
 }
@@ -74,10 +74,10 @@ function updateAdjacencyMatrixDisplay(){
 
 function switchMode(targetMode){ //targetMode is a string
 	if(instructions.style.display !== "none"){return} //don't do anything if the instructions are showing
-	
+
 	mode = targetMode; //mode is a global variable
 	console.log("mode:",mode);
-	
+
 	switch(targetMode){
 		case "move vertex":
 			info.innerText = "Move Vertex";
@@ -95,7 +95,7 @@ function switchMode(targetMode){ //targetMode is a string
 			info.innerText = "Change Label";
 			break;
 	}
-	
+
 	verticesForEdge = []; //always reset this temporary storage
 }
 
@@ -121,7 +121,7 @@ function handleClick(e){
 				} else if(verticesForEdge.length === 1){
 					verticesForEdge.push(vertices.indexOf(e.target)); //push index of the vertex
 					addEdge(verticesForEdge[0], verticesForEdge[1]); //add the edge. function in addStuff.js
-					
+
 					//reset for adding another edge
 					info.innerText = "Add Edge: Select 1st Vertex";
 					verticesForEdge = [];
@@ -148,6 +148,8 @@ document.addEventListener("mousedown",handleMousedown);
 document.addEventListener("mouseup",handleMouseup);
 
 function handleMousedown(e){
+	e.preventDefault(); //otherwise computer does a weird thing with saying you can't drag
+
 	if(e.target.className === "vertex"){
 		//start dragging
 		draggedVertex = e.target;
@@ -179,15 +181,15 @@ function handleMousemove(e){
 			e.target.style.boxShadow = "0 0 20px 3px yellow";
 		}
 	}
-	
+
 	//do edge shadows (for the delete mode)
 	if(mode === "delete" && e.target === canvas){
 		//test if we're over an edge using pixel colors
 		let imageData = mainHitCtx.getImageData(0, 0, canvas.width, canvas.height);
 		let alpha = imageData.data[e.pageY*(imageData.width*4) + (e.pageX*4) + 3];
-		
+
 		if(alpha > 0){ //there's an edge here; find out which one
-			
+
 			//iterate through hit canvases
 			let hitCanvases = document.getElementsByClassName("hitCanvas"); //different variable than the global one
 			let maxAlphaCanvas = {canvas_id:undefined, alpha:0} //because hovering in one spot might be over multiple edges, store one canvas w/ max alpha
@@ -195,7 +197,7 @@ function handleMousemove(e){
 				let hitCtx = hitCanvases[i].getContext("2d");
 				let imageData = hitCtx.getImageData(0, 0, hitCanvases[i].width, hitCanvases[i].height);
 				let alpha = imageData.data[e.pageY*(imageData.width*4) + (e.pageX*4) + 3];
-				
+
 				if(alpha > maxAlphaCanvas.alpha){ //maxAlphaCanvas.alpha is set at starting of 0 above
 					edgeHere = true;
 					maxAlphaCanvas = {canvas_id:hitCanvases[i].id, alpha:alpha}
@@ -204,14 +206,14 @@ function handleMousemove(e){
 			//store this edge in a global variable that updateCanvas() will read when drawing edges
 			if(maxAlphaCanvas.canvas_id){ //check is needed b/c the program might think the red shadow is an edge when it isn't
 				let prevShadowedEdge = shadowedEdge;
-				
+
 				shadowedEdge = maxAlphaCanvas.canvas_id.split("-").map(function(a){return Number(a)}); //split the id and change all 3 parts to numbers so that data type is correct
-				
+
 				//display shadow
 				if(prevShadowedEdge !== shadowedEdge){ //check b/c of efficiency/lag stuff (this function gets called every mousemove)
 					updateCanvas();
 				}
-				
+
 				//set mouse style
 				canvas.style.cursor = "pointer";
 			}
@@ -225,28 +227,28 @@ function handleMousemove(e){
 			//mouse style
 			canvas.style.cursor = "default";
 		}
-		
+
 	} else if(shadowedEdge){ //if not delete mode or not on top of canvas, get rid of shadow if it exists
 		shadowedEdge = undefined;
 		updateCanvas();
 	}
-		
+
 	//handle dragging
 		//stop the drag if leaving the window
 	if(mode === "move vertex" && (e.pageX<0 || e.pageX>window.innerWidth || e.pageY<0 || e.pageY>window.innerHeight)){
 		draggedVertex = undefined;
 		M_adj_display.style.WebkitUserSelect = "text";
 	}
-	
+
 	if(mode === "move vertex" && draggedVertex){ //if draggedVertex has a value (HTML vertex), then we're dragging
 		draggedVertex.style.left = e.pageX - 8 + "px"; //-8 b/c vertices are 16px square
 		draggedVertex.style.top = e.pageY - 8 + "px";
-		
+
 		let label_id = "label-"+draggedVertex.id.split("-")[1];
 		let label = document.getElementById(label_id);
 		label.style.left = e.pageX - 8 + "px";
 		label.style.top = e.pageY - 32 + "px";
-		
+
 		updateCanvas("updateVertexEdgeAngles");
 	}
 }
