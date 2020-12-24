@@ -148,7 +148,6 @@ document.addEventListener("mousedown",handleMousedown);
 document.addEventListener("mouseup",handleMouseup);
 
 function handleMousedown(e){
-	e.preventDefault(); //otherwise computer does a weird thing with saying you can't drag
 
 	if(e.target.className === "vertex"){
 		//start dragging
