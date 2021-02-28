@@ -23,3 +23,14 @@ canvas {
 .displayed {
   background-color: lightgray;
 }
+
+
+#foreground_objects {
+  background-color: #eee;
+  width: 300px;
+  margin: 5px;
+}
+
+#foreground_objects button:first-child {
+  margin: 5px;
+}

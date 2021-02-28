@@ -1,17 +1,6 @@
-let canvas = document.getElementById("canvas");
-let ctx = canvas.getContext("2d");
-
-
-
-
-let images = [];
-let n_inputs = 0;
-
-
-
 
 function createInput(){
-  let idx = n_inputs;
+  let idx = n_inputs*(1+n_in_between_frames);
 
   let container = document.createElement("div");
   container.id = "image" + idx;
@@ -30,6 +19,12 @@ function createInput(){
   input.addEventListener("change", function(){readFile(reader, input.files[0])});
 
   n_inputs++;
+
+
+  //update foreground object colors
+  for(let i=0; i<foreground_objects.length; i++){
+    foreground_objects[i].updateColor();
+  }
 }
 
 
