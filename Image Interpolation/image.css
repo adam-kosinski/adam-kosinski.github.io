@@ -1,0 +1,25 @@
+canvas {
+  display: inline-block;
+  border: 1px solid black;
+}
+
+
+#inputs div:hover {
+  background-color: lightgray;
+}
+
+#inputs {
+  width: 300px;
+  margin: 0px;
+  display: inline-block;
+  vertical-align: top;
+  background-color: #eee;
+}
+
+#inputs button {
+  margin: 5px;
+}
+
+.displayed {
+  background-color: lightgray;
+}
