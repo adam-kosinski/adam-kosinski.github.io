@@ -19,6 +19,13 @@ p {
 }
 
 
+#load_screen {
+	width: 100vw;
+	height: 100vh;
+	background-color: black;
+	position: fixed;
+}
+
 /* home screen ----------------------------------------------------*/
 #home_screen {
 	display: none;

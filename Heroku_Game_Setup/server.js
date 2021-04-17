@@ -57,8 +57,10 @@ io.on("connection", function(socket) {
 	socket.on("new player", function(name, callback){
 
 		if(!player_statuses.hasOwnProperty(name)){
-			if(game != undefined){return;} //don't count spectators as player_statuses. If the game ends, they can refresh and join as a player
-
+			if(game != undefined){ //don't count spectators as player_statuses. If the game ends, they can refresh and join as a player
+				callback(null); //null for spectators
+				return;
+			}
 			//new player
 			console.log("New player: " + name + " (id: " + socket.id + ")");
 			player_statuses[name] = new PlayerStatus(name);

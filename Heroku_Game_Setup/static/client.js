@@ -19,7 +19,10 @@ function registerName(){
 
 	socket.emit("new player", my_name, function(success){
 		console.log("Name registration success:",success);
-		if(!success){
+		if(success || success === null) document.getElementById("load_screen").style.display = "none";
+		if(success === null) alert("You are watching an ongoing game as a spectator. Once the game is cleared you will be able to join as a player.");
+
+		if(success === false){
 			alert("'"+my_name+"' is taken. Please choose another");
 			my_name = undefined;
 			registerName();
