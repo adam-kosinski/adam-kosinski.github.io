@@ -15,6 +15,7 @@ Add:
   "node": "14.x"
 }
 
+Commit package.json and package-lock.json
 
 Edit .gitignore:
 
