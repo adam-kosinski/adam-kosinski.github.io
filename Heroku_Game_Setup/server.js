@@ -53,31 +53,49 @@ io.on("connection", function(socket) {
   // PLAYER CONNECTIONS ----------------------------------------------
 
 
-	//when a new player joins, check if player exists. If they don't, create new player. If they do, only allow join if that player was disconnected
 	socket.on("new player", function(name, callback){
+    //return: "success" or "duplicate" or "spectator"
 
-		if(!player_statuses.hasOwnProperty(name)){
-			if(game != undefined){ //don't count spectators as player_statuses. If the game ends, they can refresh and join as a player
-				callback(null); //null for spectators
-				return;
-			}
-			//new player
-			console.log("New player: " + name + " (id: " + socket.id + ")");
-			player_statuses[name] = new PlayerStatus(name);
-			id_to_name[socket.id] = name;
-			callback(true); //successful
-		}
-		else if(player_statuses[name].connected){
-			console.log(name + " is a duplicate name - asking them to try another");
-			callback(false); //duplicate name, tell the client it's invalid
-		}
-		else {
-			console.log(name + " reconnected (id: " + socket.id + ")");
-			id_to_name[socket.id] = name; //add the new mapping
-			player_statuses[name].connected = true;
-			callback(true); //successful
-		}
-		io.emit("player_connection", player_statuses);
+        console.log("received: new player")
+
+        /* LOGIC:
+        Check if player name exists in our register of player_statuses
+          if not, make new player status (no return yet)
+          if so, return "duplicate" if duplicate name (if player already connected)
+
+          at this point the player status exists and we've filtered out duplicates - now need to decide if spectator or not
+
+        if game going on and player not in the game, return "spectator"
+        else (either no game going on, or player in the game), return "not spectator"
+        */
+
+        //check if this player exists
+        if(!player_statuses.hasOwnProperty(name)){
+          //make a player status for them
+          console.log("New player status created for: " + name + " (id: " + socket.id + ")");
+    			player_statuses[name] = new PlayerStatus(name);
+    			id_to_name[socket.id] = name;
+        }
+        //if player exists, check if duplicate name
+        else if(player_statuses[name].connected){
+    			console.log(name + " is a duplicate name - asking them to try another");
+    			callback("duplicate"); //duplicate name, tell the client it's invalid
+          return; //stop right here, this doesn't count as a valid connection
+    		}
+        else {
+          console.log(name + " reconnected (id: " + socket.id + ")");
+        }
+
+        //now the player has a player status and isn't a duplicate connection - we have a valid connection, update socket data
+        id_to_name[socket.id] = name; //add the new mapping
+        player_statuses[name].connected = true;
+
+
+        //figure out if spectator or not and tell client
+        if(game != undefined && !game.player_names.includes(name)) callback("spectator");
+        else callback("not spectator");
+
+        io.emit("player_connection", player_statuses);
 	});
 
 	//mark player as disconnected when they leave
