@@ -7,6 +7,22 @@ let am_spectator;
 
 //CONNECTION TO SERVER -----------------------------------
 
+
+//store the id of the connection
+socket.on("connect", function(){
+	console.log("My ID: "+socket.id);
+	id = socket.id;
+});
+
+//if disconnect, don't try to reconnect - that would mess up the id_to_name database in the server
+//we could connect back with the same name using some hack... but just ask user to reload
+socket.on("disconnect", function(){
+	console.warn("disconnect detected, preventing reconnection attempts");
+	socket.disconnect();
+	alert("You have disconnected from the server. If the server is up, reloading the page will reconnect you.");
+});
+
+
 //send a new player message to the server, and pick name
 function registerName(){
 	my_name = prompt("Please enter a name (if reconnecting must match previous name):"); //TODO: make this a GUI thing not a prompt
@@ -49,12 +65,6 @@ function registerName(){
 
 registerName();
 
-
-//store the id of the connection
-socket.on("connect", function(){
-	console.log("My ID: "+socket.id);
-	id = socket.id;
-});
 
 
 //check if a game is going on
