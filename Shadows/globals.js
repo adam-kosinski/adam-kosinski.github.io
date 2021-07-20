@@ -2,20 +2,23 @@ let canvas = document.getElementById("canvas");
 let ctx = canvas.getContext("2d");
 
 //config ----------------
-let same_vertex_radius = 20; //px, clicking this close to the original point will finish the polygon drawing
+let SAME_VERTEX_RADIUS = 20; //px, clicking this close to the original point will finish the polygon drawing
+let SHADOW_DISTANCE = 300; //px away from the mouse that shadows will be rendered
+let N_SMOOTHING_SEGMENTS = 20; //see calc.js
 
 //state -----------------
 let drawing_polygon = false;
 let polygon_being_drawn; //store a Polygon here when drawing, if we finish it gets pushed to polygons storage
 
 //storage ------------------
-let polygons = []; //stores Polygon objects
-
+let polygons = []; //stores Polygon objects representing obstacles
+let shadow_polygons = []; //stores Polygon objects represented shadow area, see calc.js
 
 class Polygon {
   constructor(vertices=[], being_drawn=false){
     this.vertices = vertices; //array of coord arrays: [x,y]
     this.being_drawn = being_drawn;
+    this.color = "black";
   }
   draw(ctx){
     ctx.beginPath();
@@ -29,7 +32,17 @@ class Polygon {
     }
     else{
       ctx.closePath();
+      ctx.save();
+      ctx.fillStyle = this.color;
       ctx.fill();
+      ctx.restore();
     }
+  }
+}
+
+class ShadowPolygon extends Polygon {
+  constructor(vertices=[]){
+    super(vertices);
+    this.color = "lightgray";
   }
 }
