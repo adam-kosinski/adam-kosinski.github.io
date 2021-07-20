@@ -26,7 +26,10 @@ function updateShadowPolygons(mouse_pos){
       //smoothing - add lots of vertices to fill in the outer edge of the shadow to make it more circular
       //sweep from vector1 direction to vector0, d_theta may be negative
       let signed_shadow_angle = Math.atan2(vector0[1], vector0[0]) - Math.atan2(vector1[1], vector1[0]);
-      if(i==0) console.log(signed_shadow_angle/Math.PI);
+      if(signed_shadow_angle > Math.PI) signed_shadow_angle -= 2*Math.PI;
+      else if(signed_shadow_angle < -Math.PI) signed_shadow_angle += 2*Math.PI;
+
+      if(i==0) console.log(Math.atan2(vector0[1], vector0[0])/Math.PI, Math.atan2(vector1[1], vector1[0])/Math.PI, signed_shadow_angle/Math.PI);
       let d_theta = signed_shadow_angle / N_SMOOTHING_SEGMENTS;
       let rotation_matrix = [
         [Math.cos(d_theta), -Math.sin(d_theta)],
@@ -35,7 +38,7 @@ function updateShadowPolygons(mouse_pos){
       let rotating_vector = vector1; //sweeping starting at vector1
       for(let n=1; n<=N_SMOOTHING_SEGMENTS-1; n++){ //-1 because endpoints already taken care of
         rotating_vector = math.multiply(rotation_matrix, rotating_vector);
-        //shadow_vertices.push(math.add(mouse_pos, rotating_vector));
+        shadow_vertices.push(math.add(mouse_pos, rotating_vector));
       }
 
       shadow_vertices.push(vfar_0);

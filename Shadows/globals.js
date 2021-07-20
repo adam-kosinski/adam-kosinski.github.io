@@ -3,7 +3,7 @@ let ctx = canvas.getContext("2d");
 
 //config ----------------
 let SAME_VERTEX_RADIUS = 20; //px, clicking this close to the original point will finish the polygon drawing
-let SHADOW_DISTANCE = 300; //px away from the mouse that shadows will be rendered
+let SHADOW_DISTANCE = 200; //px away from the mouse that shadows will be rendered
 let N_SMOOTHING_SEGMENTS = 20; //see calc.js
 
 //state -----------------
