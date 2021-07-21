@@ -28,7 +28,6 @@ function handleClick(e){
     else {
       //add new vertex
       polygon_being_drawn.vertices.push([e.offsetX, e.offsetY]);
-      console.log(polygon_being_drawn.vertices);
     }
   }
 

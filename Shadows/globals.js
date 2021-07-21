@@ -2,8 +2,8 @@ let canvas = document.getElementById("canvas");
 let ctx = canvas.getContext("2d");
 
 //config ----------------
-let SAME_VERTEX_RADIUS = 20; //px, clicking this close to the original point will finish the polygon drawing
-let SHADOW_DISTANCE = canvas.width*2; //px away from the mouse that shadows will be rendered
+let SAME_VERTEX_RADIUS = 10; //px, clicking this close to the original point will finish the polygon drawing
+let SHADOW_DISTANCE = canvas.width*1.5; //px away from the mouse that shadows will be rendered
 let N_SMOOTHING_SEGMENTS = 16; //see calc.js
 
 let LIGHT_END_DISTANCE = canvas.width/2; //how many px away the mouse will light, at this distance or further everything is RENDERED as shadow (no shadow polygon) - see draw.js
