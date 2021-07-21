@@ -3,12 +3,16 @@ let ctx = canvas.getContext("2d");
 
 //config ----------------
 let SAME_VERTEX_RADIUS = 20; //px, clicking this close to the original point will finish the polygon drawing
-let SHADOW_DISTANCE = 200; //px away from the mouse that shadows will be rendered
+let SHADOW_DISTANCE = canvas.width*2; //px away from the mouse that shadows will be rendered
 let N_SMOOTHING_SEGMENTS = 16; //see calc.js
+
+let LIGHT_END_DISTANCE = canvas.width/2; //how many px away the mouse will light, at this distance or further everything is RENDERED as shadow (no shadow polygon) - see draw.js
+let FULLY_LIT_DISTANCE = 0; //px from mouse where shadow gradient begins - see draw.js
 
 //state -----------------
 let drawing_polygon = false;
 let polygon_being_drawn; //store a Polygon here when drawing, if we finish it gets pushed to polygons storage
+let mouse_pos;
 
 //storage ------------------
 let polygons = []; //stores Polygon objects representing obstacles
@@ -43,6 +47,6 @@ class Polygon {
 class ShadowPolygon extends Polygon {
   constructor(vertices=[]){
     super(vertices);
-    this.color = "lightgray";
+    this.color = "#aaa";
   }
 }

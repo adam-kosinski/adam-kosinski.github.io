@@ -5,12 +5,12 @@ document.addEventListener("mousemove", handleMousemove);
 
 function handleClick(e){
   if(e.target == canvas){
-    console.log(e.offsetX, e.offsetY);
+    mouse_pos = [e.offsetX, e.offsetY];
 
     //start or continue polygon drawing
     if(!drawing_polygon){
       drawing_polygon = true;
-      canvas.style.backgroundColor = "lightyellow";
+      canvas.style.backgroundColor = "gold";
       polygon_being_drawn = new Polygon([[e.offsetX, e.offsetY]], true); //true for being drawn
     }
     //check if drawing finished - click on starting vertex and at least 3 vertices
@@ -51,11 +51,10 @@ function handleKeydown(e){
 
 
 function handleMousemove(e){
-  let draw_info = {};
   if(e.target == canvas){
-    //draw_info.mouse_pos = [e.offsetX, e.offsetY];
-    updateShadowPolygons([e.offsetX, e.offsetY]);
+    mouse_pos = [e.offsetX, e.offsetY];
+    updateShadowPolygons(mouse_pos);
   }
 
-  draw(draw_info);
+  draw();
 }

@@ -67,7 +67,7 @@ function updateShadowPolygons(mouse_pos){
       }
 
       //add shadow polygon to storage
-      if(i==0) shadow_polygons.push(new ShadowPolygon(shadow_vertices));
+      shadow_polygons.push(new ShadowPolygon(shadow_vertices));
     }
 
   });
