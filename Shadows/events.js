@@ -14,7 +14,7 @@ function handleClick(e){
       polygon_being_drawn = new Polygon([[e.offsetX, e.offsetY]], true); //true for being drawn
     }
     //check if drawing finished - click on starting vertex and at least 3 vertices
-    else if(Math.hypot(polygon_being_drawn.vertices[0][0]-e.offsetX, polygon_being_drawn.vertices[0][1]-e.offsetY) < SAME_VERTEX_RADIUS) {
+    else if(math.distance(polygon_being_drawn.vertices[0], [e.offsetX, e.offsetY]) < SAME_VERTEX_RADIUS) {
       if(polygon_being_drawn.vertices.length >= 3){
         polygon_being_drawn.being_drawn = false;
         polygons.push(polygon_being_drawn);
