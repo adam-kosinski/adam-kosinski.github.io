@@ -9,7 +9,7 @@ let current_image_idx;
 
 
 //cool point in poly algorithm
-https://www.algorithms-and-technologies.com/point_in_polygon/javascript
+//https://www.algorithms-and-technologies.com/point_in_polygon/javascript
 
 
 //config
