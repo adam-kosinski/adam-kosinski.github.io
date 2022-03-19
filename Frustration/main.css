@@ -1,0 +1,82 @@
+html, body {
+  margin: 0;
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  font-family: sans-serif;
+  overflow: hidden;
+  user-select: none;
+  cursor: none;
+}
+
+#cursor {
+  height: 18px;
+  position: absolute;
+  z-index: 10;
+  transform: translate(1px, 2px);
+  top: -50px; /*offscreen at start so not weirdly hanging out at top left*/
+}
+
+
+#instructions p {
+  font-size: 2.5vw;
+  text-align: center;
+  margin: 1vw;
+}
+
+#done_button {
+  display: block;
+  margin: auto;
+  font-size: 1.5vw;
+  background-color: lightgreen;
+  border: 1px solid green;
+  border-radius: 4px;
+  padding: 1px;
+  width: 8vw;
+  text-align: center;
+}
+
+#done_button:hover {
+  background-color: palegreen;
+}
+
+
+.container {
+  height: 30vw;
+  width: 15vw;
+  top: 10vw;
+  position: absolute;
+}
+
+#red_container {
+  background-color: rgba(255, 0, 0, 0.5);
+  border: 3px solid red;
+  left: 5vw;
+}
+
+#blue_container {
+  background-color: rgba(0, 0, 255, 0.5);
+  border: 3px solid blue;
+  right: 5vw;
+}
+
+.circle {
+  width: 3vw;
+  height: 3vw;
+  border-radius: 100%;
+  border: 1px solid black;
+  position: absolute;
+  transform: translate(-50%, -50%); /*So that center of circle is at its coordinate*/
+}
+
+.red {
+  background-color: red;
+}
+
+.blue {
+  background-color: blue;
+}
+
+.circle.focus {
+  box-shadow: 0 0 0.4vw 0.2vw yellow;
+}

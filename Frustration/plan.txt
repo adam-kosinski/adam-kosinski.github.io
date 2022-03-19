@@ -1,0 +1,50 @@
+Plan
+
+Sort the small circles into two boxes on opposite sides, no overlaps allowed
+ - no overlaps may be too harsh
+ - Small circles? Harder to click on
+
+
+Circles slowly drift
+ - if this is too much, either make it slow drifting or make double-clicking stop their movement... temporarily
+ - also I suppose you just lose if you let a circle drift off the edge of the screen - make a snarky comment
+
+To drag, have to first click on a circle to select it, then can drag
+ - at random it fails to select or drag
+
+You have to drag very slowly, if you go too fast you drop the circle
+ - or maybe if you move the mouse too fast all the circles get scared and run away
+ - or maybe you lose all your progress if you move too fast
+ - if you're dragging a ball and it hits another, the other rockets off (if doing collisions), messes with others
+
+At random, the circle being dragged teleports a short distance away (or just gets dropped?) and you have to reselect it to continue dragging
+ - also alert box: that circle doesn't seem to like you very much
+Occasionally a circle will run away (or teleport) when mouseover
+ - or maybe assign a couple circles to be uncooperative and run away from the mouse (slower than max mouse speed but still v annoying)
+ - maybe make the uncooperative ones have a higher rate of randomly dropping
+One of the circles teleports randomly when clicked, instead of being draggable
+
+
+The whole thing is laggy and framey - jittering
+
+There's a hidden timer, if you're too slow everything gets reset
+
+At the end, tell the player that we actually wanted the red circles in the blue box, and the blue circles in the red box. Sorry for not being more specific earlier.
+
+
+
+From time to time a custom alert box pops up, have to drag the mouse to say ok and then go back
+  - not sure if that annoying without low mouse sensitivity, but maybe if I spam these...
+  - will be annoying if moving the mouse too fast resets everything
+
+Messages to roast the player
+- insult them if they try to leave the page without completing the challenge
+
+
+
+
+
+----------
+
+DUMPED
+Mouse sensitivity v v low - never mind web coding doesn't allow
