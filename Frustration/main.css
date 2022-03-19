@@ -17,6 +17,12 @@ html, body {
   top: -50px; /*offscreen at start so not weirdly hanging out at top left*/
 }
 
+#instructions {
+  position: absolute;
+  margin: auto;
+  left: 0;
+  right: 0;
+}
 
 #instructions p {
   font-size: 2.5vw;
@@ -79,4 +85,38 @@ html, body {
 
 .circle.focus {
   box-shadow: 0 0 0.4vw 0.2vw yellow;
+}
+
+
+
+
+#alerts {
+  display: none;
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  background-color: #0008;
+  z-index: 5;
+}
+
+.alert {
+  width: 25vw;
+  height: 15vw;
+  background-color: white;
+  position: absolute;
+  /*top and left taken care of by js when created*/
+  font-size: 1.5vw;
+  box-shadow: 1px 1px 5px 0 black;
+}
+
+.alert p {
+  height: 10vw;
+  margin: 0.75vw;
+}
+
+.alert button {
+  font-size: 1.5vw;
+  margin: auto;
+  display: block;
+  cursor: none;
 }

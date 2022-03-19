@@ -5,7 +5,20 @@ document.addEventListener("mousemove", handleMousemove);
 
 
 function handleClick(e){
+  if(e.target.id == "done_button"){
+    if(testForSuccess()){
+      console.log("success!");
+    }
+  }
+  if(e.target.classList.contains("alert_ok_button")){
+    let alert_box = e.target.parentElement;
+    let alert_container = alert_box.parentElement;
+    alert_container.removeChild(alert_box);
 
+    if(alert_container.childElementCount == 0){
+      alert_container.style.display = "none";
+    }
+  }
 }
 
 

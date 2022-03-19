@@ -12,10 +12,10 @@ let circles_speeding = false;
 let lagging = false; //set to true while lagging
 
 //config
-let n_circles = 12;
+let n_circles = 2;
 let max_turn_per_iteration = Math.PI/4;
 let max_offset_per_iteration = 0.05; //vw
-let max_offset_per_iteration_speeding = 0.35; //vw
+let max_offset_per_iteration_speeding = 0.5; //vw
 
 let focus_fail_rate = 0.3;
 let dragstart_fail_rate = 0.3;
@@ -28,7 +28,7 @@ let max_mouse_speed = 7;
 
 
 
-function init(){
+function init(){ //called in the html file
   //init circles
   for(let i=0; i<n_circles; i++){
     let circle = document.createElement("div");
@@ -74,12 +74,33 @@ function init(){
 }
 
 
-init();
+function testForSuccess(){
+  let red_circles = document.querySelectorAll(".circle.red");
+  let blue_circles = document.querySelectorAll(".circle.blue");
+  let red_box = document.getElementById("red_container").getBoundingClientRect();
+  let blue_box = document.getElementById("blue_container").getBoundingClientRect();
 
+  //test red circles
+  for(let i=0; i<red_circles.length; i++){
+    let rect = red_circles[i].getBoundingClientRect();
+    if(rect.left > red_box.left &&
+      rect.right < red_box.right &&
+      rect.top > red_box.top &&
+      rect.bottom < red_box.bottom)
+    {continue;}
+    return false;
+  }
 
+  //test blue circles
+  for(let i=0; i<blue_circles.length; i++){
+    let rect = blue_circles[i].getBoundingClientRect();
+    if(rect.left > blue_box.left &&
+      rect.right < blue_box.right &&
+      rect.top > blue_box.top &&
+      rect.bottom < blue_box.bottom)
+    {continue;}
+    return false;
+  }
 
-
-function setCursor(){
-  //args "default" or "move"
-
+  return true;
 }
