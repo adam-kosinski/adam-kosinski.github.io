@@ -36,12 +36,12 @@ let alert_ok_fail_rate = 0.3;
 let avg_sec_between_lags = 10;
 let lag_duration = 800; //ms
 let drag_lag_rate = 0.75;
-let mouse_movement_lag_rate = 0.5;
+let mouse_movement_lag_rate = 0.4;
 
 let sec_between_time_alerts = 120;
 let min_sec_between_runaway_alerts = 20;
 
-let max_mouse_speed = 10;
+let max_mouse_speed = 12;
 
 
 
