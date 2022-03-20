@@ -30,8 +30,8 @@ The whole thing is laggy and framey - jittering
 
 
 At the end, tell the player that we actually wanted the red circles in the blue box, and the blue circles in the red box. Sorry for not being more specific earlier.
-
-
+- or have an alert cover up the instructions, and pull a switcheroo to say opposite boxes
+- do it with a cookies banner that slowly moves up when accepted
 
 From time to time a custom alert box pops up, have to drag the mouse to say ok and then go back
   - not sure if that annoying without low mouse sensitivity, but maybe if I spam these...

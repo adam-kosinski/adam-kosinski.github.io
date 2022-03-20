@@ -105,11 +105,11 @@ html, body {
   background-color: white;
   position: absolute;
   /*top and left taken care of by js when created*/
-  font-size: 1.5vw;
   box-shadow: 1px 1px 5px 0 black;
 }
 
 .alert p {
+  font-size: 1.3vw;
   height: 10vw;
   margin: 0.75vw;
 }

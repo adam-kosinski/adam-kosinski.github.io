@@ -7,7 +7,14 @@ document.addEventListener("mousemove", handleMousemove);
 function handleClick(e){
   if(e.target.id == "done_button"){
     if(testForSuccess()){
-      console.log("success!");
+      alertEvent("success");
+      won = true;
+      //remove the I finished button since they're done
+      let done_button = document.getElementById("done_button");
+      done_button.parentElement.removeChild(done_button);
+    }
+    else {
+      alertEvent("not_success");
     }
   }
   if(e.target.classList.contains("alert_ok_button")){
@@ -46,6 +53,10 @@ function handleMouseup(e){
       //re-init circle's position
       e.target.style.left = (10 + 80*Math.random()) + "vw";
       e.target.style.top = (10 + 30*Math.random()) + "vw"; //containers are 10vw from the top, 30vw high
+      if(!circles_teleported_before){
+        setTimeout(function(){alertEvent("first_teleport")}, 500);
+      }
+      circles_teleported_before = true;
     }
     else if(!drag_element && Math.random() > focus_fail_rate){
       //checking if no drag element b/c don't want to add focus to a circle that was just finished dragging
@@ -60,6 +71,8 @@ function handleMouseup(e){
 
 function handleMousemove(e){
 
+  mouse_pos = {x:e.pageX, y:e.pageY};
+
   //cursor
   if(!lagging){
     let cursor = document.getElementById("cursor");
@@ -67,7 +80,7 @@ function handleMousemove(e){
     cursor.style.top = e.pageY + "px";
   }
 
-  if(drag_element && !lagging){
+  if(drag_element && !lagging && Math.random() > drag_lag_rate){
     //drag the circle
     let px_per_vw = window.innerWidth/100;
     drag_element.style.left = (e.pageX+drag_initial_offset.x) / px_per_vw + "vw";
@@ -84,11 +97,19 @@ function handleMousemove(e){
   //track mouse speed
   let scale = 1000/window.innerWidth; //so that mouse speed is relative to sizes of everything else
   let speed = Math.hypot(e.movementX*scale, e.movementY*scale);
-  if(speed > max_mouse_speed){
-    if(!circles_speeding){
-      circles_speeding = true;
-      setTimeout(function(){circles_speeding = false;}, 1000);
-    }
 
+  if(speed > max_mouse_speed && !circles_speeding){
+      circles_speeding = true;
+
+      if(!circles_sped_before){
+        setTimeout(function(){alertEvent("first_speeding")}, 1000);
+      }
+      else if(Math.random() < 0.25){
+        setTimeout(function(){alertEvent("speeding")}, 500);
+      }
+      circles_sped_before = true;
+
+
+      setTimeout(function(){circles_speeding = false;}, 1000);
   }
 }
