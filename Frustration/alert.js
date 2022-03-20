@@ -89,6 +89,12 @@ let alert_messages = {
     "This is not that hard. Why do you suck so much at it?",
     "Did you know that there's only one English word that ends in -mt? And no, I won't tell you which one.",
     "Boo.",
-    "Do you like peanuts? I like peanuts."
+    "Do you like peanuts? I like peanuts.",
+    "Once upon a time there was a rabbit, who ate a mouse. He then spat the mouse back out. Because rabbits don't eat mice. The end.",
+    "A circle of circly circles circled around in a circle.",
+    "Roses are red, violets are blue, they're better than circles, and better than you.",
+    "Why are you struggling so much? It's just sorting.",
+    "This task is so simple.",
+    "I never thought I'd see someone so bad at dragging and dropping."
   ]
 }
