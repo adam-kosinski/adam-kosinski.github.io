@@ -75,7 +75,8 @@ let alert_messages = {
   time: [
     "I bet I could drive in a hundred circles around the country before you're done with these circles.",
     "Why are you taking so long? Go faster! I'm bored.",
-    "You're really bad at this. Are you sure you're actually a human and not some form of mutant bonobo?"
+    "You're really bad at this. Are you sure you're actually a human and not some form of mutant bonobo?",
+    "A dying sleepwalking sloth would be faster at this than you."
   ],
   runaway_circle: [
     "That circle doesn't seem to want to be around you. Have you showered?",
@@ -83,9 +84,11 @@ let alert_messages = {
     "I think that circle would rather you mind your own beeswax."
   ],
   just_to_annoy: [
-    "You don't seem like you're trying very hard at this."
-  ],
-  back_luck: [
-    
+    "You don't seem like you're trying very hard at this.",
+    "Hi!",
+    "This is not that hard. Why do you suck so much at it?",
+    "Did you know that there's only one English word that ends in -mt? And no, I won't tell you which one.",
+    "Boo.",
+    "Do you like peanuts? I like peanuts."
   ]
 }

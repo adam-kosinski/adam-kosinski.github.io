@@ -21,7 +21,7 @@ let time_last_runaway_alert = -Infinity; //set by performance.now()
 let n_circles = 12;
 let n_runaway_circles = 4;
 let runaway_threshold = 10; //vw
-let runaway_max_extra_offset = 0.2; //vw
+let runaway_max_extra_offset = 0.3; //vw
 let max_turn_per_iteration = Math.PI/4;
 let max_offset_per_iteration = 0.05; //vw
 let max_offset_per_iteration_speeding = 0.5; //vw
@@ -84,7 +84,8 @@ function init(){ //called in the html file
         if(dist_vw < runaway_threshold){
           let theta = Math.acos((left-mouse_vw.x) / dist_vw);
           if(top-mouse_vw.y < 0) theta *= -1;
-          circle_dirs[i] = theta;
+          let confusion_theta_offset = ((Math.floor((performance.now()/1000))%2)*2 - 1)*Math.PI/4; //make it go sideways, trickier to guide it
+          circle_dirs[i] = theta + confusion_theta_offset;
 
           //interpolate between runaway offset and normal offset based on fraction of threshold distance
           let frac = 1 - (dist_vw / runaway_threshold); //1 minus, since want to be faster when closer
@@ -92,7 +93,7 @@ function init(){ //called in the html file
         }
 
         if(dist_vw < 0.25*runaway_threshold &&
-          Math.random() < 0.005 &&
+          Math.random() < 0.01 &&
           performance.now()-time_last_runaway_alert > 1000*min_sec_between_runaway_alerts)
         {
           alertEvent("runaway_circle");
@@ -140,6 +141,14 @@ function init(){ //called in the html file
     setTimeout(timeAlert, 1000*sec_between_time_alerts);
   }
   setTimeout(timeAlert, 1000*sec_between_time_alerts);
+
+
+  //miscellaneous annoying popups
+  setInterval(function(){
+    if(Math.random()<0.05){
+      alertEvent("just_to_annoy");
+    }
+  }, 10000);
 }
 
 
