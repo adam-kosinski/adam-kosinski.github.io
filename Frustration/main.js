@@ -129,7 +129,7 @@ function init(){ //called in the html file
   setInterval(function(){
     let circles = document.getElementsByClassName("circle");
     for(let i=0; i<circles.length; i++){
-      if(!circles[i].went_offscreen && isCircleOffscreen(circles[i], 0)){
+      if(!circles[i].went_offscreen && isCircleOffscreen(circles[i], 0.5)){
         circles[i].went_offscreen = true; //don't check this circle anymore
         alertEvent("circle_offscreen");
         return; //no need to let them know if multiple went off at the same time
@@ -191,7 +191,7 @@ function numCirclesCorrectlySorted(){
 
 
 function testForSuccess(){
-  return numCirclesCorrectlySorted() == n_circles;
+  return numCirclesCorrectlySorted() == n_circles; //doing it this way b/c originally I was going to reuse the numCirclesCorrectlySorted function for another thing
 }
 
 
