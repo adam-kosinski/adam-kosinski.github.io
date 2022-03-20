@@ -29,12 +29,14 @@ let max_offset_per_iteration_speeding = 0.5; //vw
 
 let focus_fail_rate = 0.3;
 let dragstart_fail_rate = 0.3;
-let drag_fail_rate = 0.002; // during mousemoves so needs to be lower
+let drag_fail_rate = 0.005; // during mousemoves so needs to be lower
 let teleport_rate = 0.1;
+let alert_ok_fail_rate = 0.3;
 
 let avg_sec_between_lags = 10;
 let lag_duration = 800; //ms
 let drag_lag_rate = 0.75;
+let mouse_movement_lag_rate = 0.5;
 
 let sec_between_time_alerts = 120;
 let min_sec_between_runaway_alerts = 20;
@@ -77,7 +79,7 @@ function init(){ //called in the html file
       let offset = (circles_speeding ? max_offset_per_iteration_speeding : max_offset_per_iteration) * Math.random();
 
       //for circles that run away from the mouse if it's close
-      if(circle.classList.contains("runaway")){
+      if(circle.classList.contains("runaway") && document.getElementById("alerts").childElementCount == 0){ //don't do this during popups
         //calculate direction to move away from mouse
         let mouse_vw = {
           x: mouse_pos.x / (window.innerWidth/100),

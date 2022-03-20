@@ -17,7 +17,7 @@ function handleClick(e){
       alertEvent("not_success");
     }
   }
-  if(e.target.classList.contains("alert_ok_button")){
+  if(e.target.classList.contains("alert_ok_button") && Math.random() > alert_ok_fail_rate){
     let alert_box = e.target.parentElement;
     let alert_container = alert_box.parentElement;
     alert_container.removeChild(alert_box);
@@ -78,7 +78,7 @@ function handleMousemove(e){
   mouse_pos = {x:e.pageX, y:e.pageY};
 
   //cursor
-  if(!lagging){
+  if(!lagging && Math.random() > mouse_movement_lag_rate){
     let cursor = document.getElementById("cursor");
     cursor.style.left = e.pageX + "px";
     cursor.style.top = e.pageY + "px";
