@@ -46,8 +46,8 @@ function alertEvent(type){
 
 let alert_messages = {
   circle_offscreen: [
-    "It looks like you let a circle wander offscreen. That wasn't very attentive of you, was it.",
-    "Whoops, a circle seems to have wandered offscreen. That's really unfortunate, isn't it?",
+    "It looks like you let a circle wander offscreen. That wasn't very attentive of you, was it. If you can't get it back, you may need to reload the page...",
+    "Whoops, a circle seems to have wandered offscreen. That's really unfortunate, isn't it? If you can't get it back, you may need to reload the page...",
   ],
   success: [
     "That took you long enough.",
