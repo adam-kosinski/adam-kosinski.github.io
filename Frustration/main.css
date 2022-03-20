@@ -6,7 +6,6 @@ html, body {
   font-family: sans-serif;
   overflow: hidden;
   user-select: none;
-  cursor: none;
 }
 
 #cursor {

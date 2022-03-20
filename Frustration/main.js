@@ -6,6 +6,7 @@ let drag_element;
 let drag_initial_offset = {x:0, y:0}; //in px, offset from center of circle when mouse initially grabbed hold
 
 //flags
+let cursor_hidden = false; //not hidden at first so they can accept the disclaimer
 let circles_speeding = false;
 let lagging = false; //set to true while lagging
 let won = false; //if true, stop the alerts
@@ -18,7 +19,7 @@ let n_lags = 0;
 let time_last_runaway_alert = -Infinity; //set by performance.now()
 
 //config
-let n_circles = 12;
+let n_circles = 10;
 let n_runaway_circles = 4;
 let runaway_threshold = 10; //vw
 let runaway_max_extra_offset = 0.3; //vw
@@ -38,11 +39,13 @@ let drag_lag_rate = 0.75;
 let sec_between_time_alerts = 120;
 let min_sec_between_runaway_alerts = 20;
 
-let max_mouse_speed = 5;
+let max_mouse_speed = 10;
 
 
 
 function init(){ //called in the html file
+  document.getElementById("n_circles").textContent = n_circles;
+
   //init circles
   for(let i=0; i<n_circles; i++){
     let circle = document.createElement("div");
@@ -148,7 +151,7 @@ function init(){ //called in the html file
     if(Math.random()<0.05){
       alertEvent("just_to_annoy");
     }
-  }, 10000);
+  }, 15000);
 }
 
 

@@ -71,6 +71,10 @@ function handleMouseup(e){
 
 function handleMousemove(e){
 
+  if(!cursor_hidden){
+    document.body.style.cursor = "none";
+    cursor_hidden = true;
+  }
   mouse_pos = {x:e.pageX, y:e.pageY};
 
   //cursor
@@ -101,13 +105,16 @@ function handleMousemove(e){
   if(speed > max_mouse_speed && !circles_speeding){
       circles_speeding = true;
 
-      if(!circles_sped_before){
-        setTimeout(function(){alertEvent("first_speeding")}, 1000);
+      //don't do speed alerts in first 10 sec (so they have time to read the task)
+      if(performance.now() > 10000){
+        if(!circles_sped_before){
+          setTimeout(function(){alertEvent("first_speeding")}, 1000);
+        }
+        else if(Math.random() < 0.25){
+          setTimeout(function(){alertEvent("speeding")}, 500);
+        }
+        circles_sped_before = true;
       }
-      else if(Math.random() < 0.25){
-        setTimeout(function(){alertEvent("speeding")}, 500);
-      }
-      circles_sped_before = true;
 
 
       setTimeout(function(){circles_speeding = false;}, 1000);

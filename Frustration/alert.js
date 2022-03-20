@@ -58,14 +58,14 @@ let alert_messages = {
     "I think you're a big fat liar about that one, mister."
   ],
   first_speeding: [
-    "Yeah, I forgot to mention that the circles get scared when you move too fast. Sorry about that. Hopefully that doesn't mess with them staying in the boxes or anything."
+    "Yeah, I forgot to mention that the circles get scared when you move your mouse too fast. Sorry about that. Hopefully that doesn't mess with them staying in the boxes or anything."
   ],
   speeding: [
     "Speedy speedy circles!",
     "Circle go vroom vroom!"
   ],
   first_teleport: [
-    "Oh yeah, they teleport too. Have fun with that!"
+    "Oh yeah, they teleport too. Have fun!"
   ],
   lag: [
     "The lag is really annoying, isn't it?",
@@ -75,8 +75,7 @@ let alert_messages = {
   time: [
     "I bet I could drive in a hundred circles around the country before you're done with these circles.",
     "Why are you taking so long? Go faster! I'm bored.",
-    "You're really bad at this. Are you sure you're actually a human and not some form of mutant bonobo?",
-    "A dying sleepwalking sloth would be faster at this than you."
+    "A sleepwalking sloth would be faster at this than you."
   ],
   runaway_circle: [
     "That circle doesn't seem to want to be around you. Have you showered?",
@@ -86,15 +85,14 @@ let alert_messages = {
   just_to_annoy: [
     "You don't seem like you're trying very hard at this.",
     "Hi!",
-    "This is not that hard. Why do you suck so much at it?",
+    "This is not that hard.",
     "Did you know that there's only one English word that ends in -mt? And no, I won't tell you which one.",
     "Boo.",
     "Do you like peanuts? I like peanuts.",
     "Once upon a time there was a rabbit, who ate a mouse. He then spat the mouse back out. Because rabbits don't eat mice. The end.",
     "A circle of circly circles circled around in a circle.",
     "Roses are red, violets are blue, they're better than circles, and better than you.",
-    "Why are you struggling so much? It's just sorting.",
-    "This task is so simple.",
+    "Why are you struggling so much?",
     "I never thought I'd see someone so bad at dragging and dropping."
   ]
 }
