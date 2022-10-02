@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Wildflowers</title>
+        <link type="text/css" rel="stylesheet" href="style.css">
+    </head>
+    <body>
+        
+        <div id="img_container">
+            <img id="plant_img" src="">
+        </div>
+
+        <div id="info_container">
+            <datalist id="family_names"></datalist> <!--values to suggest to the user, see init.js-->
+            <label for="guess">Enter family name (scientific or common):<br></label>
+            <input type="text" id="guess" list="family_names" autocomplete="on">
+            <p id="feedback"></p>
+    
+            <div id="answers">
+                <p>
+                    <span id="common_name">Common name</span><br>
+                    <span id="scientific_name">Sciencium imporantus</span>
+                </p>
+                <p><span id="family_name">family</span></p>
+                <button id="next_plant">Next Plant ></button>
+            </div>
+            
+            <p id="img_credit">
+                Image credit:<br>
+                <span id="img_author"></span><a id="inat_url" target="_blank"></a>
+                <!--target = _blank opens the link in a new tab-->
+            </p>
+
+        </div>
+
+
+        <script src="papaparse.js"></script>
+        <script src="data/popular_observations.js"></script>
+
+        <script src="main.js"></script>
+
+        <script src="init.js"></script>
+    </body>
+</html>

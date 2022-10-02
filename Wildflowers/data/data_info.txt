@@ -1,0 +1,61 @@
+Filename: observations.csv
+Downloaded on 9-29-2022 at 5:45 pm ish.
+
+Taxon: Flowering Plants (subphylum angiospermae)
+
+Filters:
+- w/ photos
+- Research grade
+- Durham County, NC, USA
+- Photo Licensing: CC-BY-NC
+- Verifiable: Yes
+- Date Range: 2018-01-01 (yyyy-mm-dd) to present (so 2022-09-29)
+
+Returned 13328 observations
+
+Fields:
+- id (unique id for observation. https://www.inaturalist.org/observations/[insert id])
+- user_name (used for attribution)
+- image_url
+- latitude
+- longitude
+- scientific_name
+- common_name
+- taxon_family_name
+
+=============================================================================
+
+Filename: popular_observations.csv
+Downloaded 10-1-2022 at 1:30pm ish
+
+Taxon: Flowering Plants (subphylum angiospermae)
+
+Filters:
+- w/ photos
+- Research grade
+- Location: NC
+- Verifiable: Yes
+- Popular: Yes
+
+Returned 5085 observations
+
+Fields:
+- id (unique id for observation. https://www.inaturalist.org/observations/[insert id])
+- user_name (used for attribution)
+- image_url
+- license (to filter out copyrighted ones)
+- latitude
+- longitude
+- scientific_name
+- common_name
+- taxon_family_name
+
+After downloading, I filtered out all tuples with no license field (copyrighted), and sorted by family
+This left 3858 observations with the following licenses:
+- CC0
+- CC-BY
+- CC-BY-NC
+- CC-BY-NC-ND
+- CC-BY-NC-SA
+- CC-BY-ND
+- CC-BY-SA

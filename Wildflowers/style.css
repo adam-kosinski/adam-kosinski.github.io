@@ -1,0 +1,72 @@
+html {
+    background-color: black;
+    color: white;
+}
+
+body {
+    margin: 0;
+}
+
+#img_container {
+    position: absolute;
+    margin: 5vh 5vw 5vh 5vw;
+    width: 40vw;
+    height: 90vh;
+}
+
+#img_container img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+#info_container {
+    width: 45vw;
+    height: 80vh;
+    position: absolute;
+    top: 10vh;
+    left: 50vw;
+    border-left: 1px solid white;
+    padding-left: 2vw;
+}
+
+#next_plant {
+    cursor: pointer;
+    background-color: darkgreen;
+    color: white;
+}
+
+#guess {
+    outline: none;
+}
+
+#feedback.correct {
+    color: lightgreen;
+}
+#feedback.incorrect {
+    color: red;
+}
+
+#answers {
+    display: none;
+}
+
+#common_name {
+    font-size: 24px;
+}
+
+#scientific_name {
+    font-style: italic;
+}
+
+#img_credit {
+    position: absolute;
+    bottom: 0;
+    margin: 0;
+    color: #666;
+    font-size: 12px;
+}
+
+#img_credit a {
+    color: #666;
+}

@@ -1,6 +1,5 @@
 
-let data = `
-id,user_name,image_url,latitude,longitude,scientific_name,common_name,taxon_family_name
+let observations_csv = `id,user_name,image_url,latitude,longitude,scientific_name,common_name,taxon_family_name
 9823525,Suzanne Cadwell,https://inaturalist-open-data.s3.amazonaws.com/photos/13447870/medium.jpeg,35.9364925392,-78.9183046396,Stellaria media,common chickweed,Caryophyllaceae
 9823539,Suzanne Cadwell,https://inaturalist-open-data.s3.amazonaws.com/photos/13447879/medium.jpeg,35.8626570707,-78.8453556935,Galium aparine,catchweed bedstraw,Rubiaceae
 9823544,Suzanne Cadwell,https://inaturalist-open-data.s3.amazonaws.com/photos/13447890/medium.jpeg,35.92852952,-78.96612448,Youngia japonica,Oriental false hawksbeard,Asteraceae
@@ -13328,5 +13327,4 @@ id,user_name,image_url,latitude,longitude,scientific_name,common_name,taxon_fami
 136628461,,https://inaturalist-open-data.s3.amazonaws.com/photos/233212332/medium.jpg,36.0505221667,-78.907555,Lycoris radiata,red spider lily,Amaryllidaceae
 136745285,,https://inaturalist-open-data.s3.amazonaws.com/photos/233429298/medium.jpeg,36.1353451,-78.8411296,Epifagus virginiana,Beechdrops,Orobanchaceae
 136935128,"",https://inaturalist-open-data.s3.amazonaws.com/photos/233780472/medium.jpg,36.0023027833,-78.9316116667,Cyclamen hederifolium,Ivy-leaved cyclamen,Primulaceae
-136944954,,https://inaturalist-open-data.s3.amazonaws.com/photos/233799576/medium.jpg,36.0005020747,-78.9338511159,Conoclinium coelestinum,blue mistflower,Asteraceae
-`
+136944954,,https://inaturalist-open-data.s3.amazonaws.com/photos/233799576/medium.jpg,36.0005020747,-78.9338511159,Conoclinium coelestinum,blue mistflower,Asteraceae`
