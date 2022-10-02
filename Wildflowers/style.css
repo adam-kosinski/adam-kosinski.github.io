@@ -30,6 +30,19 @@ body {
     padding-left: 2vw;
 }
 
+#zoom_img_container {
+    display: none;
+    position: absolute;
+    width: 45vw;
+    height: 70vh;
+    top: 10vh;
+    overflow: hidden;
+}
+
+#zoom_img {
+    position: relative;
+}
+
 #next_plant {
     cursor: pointer;
     background-color: darkgreen;

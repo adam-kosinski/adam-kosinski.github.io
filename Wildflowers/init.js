@@ -3,7 +3,7 @@
 let obs, family_obs;
 let current_tuple;
 let still_guessing = true; //for handling pressing the enter key
-
+let zoom_img_visible = false; //see mousemove event handler, so we don't need to ref the DOM every mousemove
 
 function init(){
     obs = Papa.parse(popular_observations_csv, {header: true}).data;
