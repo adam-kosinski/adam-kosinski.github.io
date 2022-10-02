@@ -34,6 +34,7 @@ body {
     cursor: pointer;
     background-color: darkgreen;
     color: white;
+    padding: 10px;
 }
 
 #guess {
