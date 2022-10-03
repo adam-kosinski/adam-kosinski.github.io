@@ -29,9 +29,6 @@ function init(){
         option.value = family;
         datalist.appendChild(option);
     }
-    
-    //show first plant
-    nextPlant();
 }
 
 

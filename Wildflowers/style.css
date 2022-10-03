@@ -84,3 +84,90 @@ body {
 #img_credit a {
     color: #666;
 }
+
+
+
+
+#enter_settings {
+    position: absolute;
+    right: 0;
+    top: 0;
+    width: 115px;
+    height: 70px;
+    cursor: pointer;
+}
+
+#enter_settings img {
+    position: absolute;
+    height: 50px;
+    margin: 10px;
+    right: 0;
+}
+
+#enter_settings p {
+    position: absolute;
+    right: 55px;
+    top: 13px;
+    text-align: right;
+    font-size: 12px;
+    color: gray;
+}
+
+#enter_settings:hover p{
+    color: white;
+    text-shadow: 1px 1px 3px white;
+}
+
+#settings {
+    position: absolute;
+    background-color: black;
+    z-index: 5;
+    width: 100vw;
+    height: 100vh;
+    color: darkgoldenrod;
+}
+
+#settings_panel {
+    position: absolute;
+    width: 80vw;
+    height: 90vh;
+
+    margin: auto;
+    inset: 0 0 0 0;
+
+    background-color: beige;
+    border: 5px solid burlywood;
+    padding: 5px 10px 10px 10px;
+}
+
+#settings_header {
+    font-size: 30px;
+    margin: 0 0 5px 0;
+    border-bottom: 2px solid burlywood;
+    font-family: 'Shadows Into Light';
+}
+
+#settings_panel div {
+    height: calc(90vh - 60px); /*55px is the height of the header + its border*/
+    position: absolute;
+    bottom: 10px;
+    background-color: red;
+}
+
+#settings_left {
+    width: 250px;
+    border-right: 2px solid burlywood;
+}
+
+#settings_right {
+    width: calc(55vw - 2px); /*border*/
+    left: calc(250px + 12px); /*10px is left padding + border*/
+}
+
+button#exit_settings {
+    cursor: pointer;
+    background-color: burlywood;
+    color: black;
+    padding: 10px;
+    border: none;
+}

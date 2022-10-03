@@ -19,6 +19,13 @@ function handleClick(e){
     if(e.target.id == "next_plant"){
         nextPlant();
     }
+    else if(e.target.id == "exit_settings"){
+        nextPlant();
+        document.getElementById("settings").style.display = "none";
+    }
+    else if(e.target.id == "enter_settings" || e.target.parentElement.id == "enter_settings"){
+        document.getElementById("settings").style.display = "block";
+    }
 }
 
 function handleMousemove(e){
