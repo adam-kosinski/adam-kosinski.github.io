@@ -131,37 +131,45 @@ body {
     position: absolute;
     width: 80vw;
     height: 90vh;
-
     margin: auto;
-    inset: 0 0 0 0;
+    inset: 0 0 0 0; /* shorthand for top left right bottom*/
 
     background-color: beige;
     border: 5px solid burlywood;
-    padding: 5px 10px 10px 10px;
+    padding: 0 10px 10px 10px;
+    
+    display: grid;
+    grid-template-columns: 300px auto;
+    grid-template-rows: 50px 1fr;
+    grid-template-areas:
+        "header header"
+        "left right";
+    gap: 10px;
+}
+
+#settings_panel * {
+    position: initial;
 }
 
 #settings_header {
     font-size: 30px;
-    margin: 0 0 5px 0;
+    grid-area: header;
     border-bottom: 2px solid burlywood;
     font-family: 'Shadows Into Light';
+    margin: 0;
 }
 
 #settings_panel div {
-    height: calc(90vh - 60px); /*55px is the height of the header + its border*/
-    position: absolute;
-    bottom: 10px;
-    background-color: red;
+    
 }
 
 #settings_left {
-    width: 250px;
+    grid-area: left;
     border-right: 2px solid burlywood;
 }
 
 #settings_right {
-    width: calc(55vw - 2px); /*border*/
-    left: calc(250px + 12px); /*10px is left padding + border*/
+    grid-area: right;
 }
 
 button#exit_settings {
