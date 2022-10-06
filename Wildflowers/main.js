@@ -6,7 +6,7 @@ document.addEventListener("mousemove", handleMousemove);
 
 function handleKeypress(e){
     if(e.key == "Enter"){
-        if(still_guessing){
+        if(guessing){
             checkAnswer();
         }
         else {
@@ -24,6 +24,7 @@ function handleClick(e){
         document.getElementById("settings").style.display = "none";
     }
     else if(e.target.id == "enter_settings" || e.target.parentElement.id == "enter_settings"){
+        guessing = false;
         document.getElementById("settings").style.display = "block";
     }
 }
@@ -85,7 +86,12 @@ function checkAnswer(){
     let guess_input = document.getElementById("guess");
     let feedback = document.getElementById("feedback");
 
-    if(guess_input.value.toLowerCase() == current_tuple.taxon_family_name.toLowerCase()){
+    let guess_string = guess_input.value.toLowerCase();
+
+    if(guess_string.length > 0 && (
+        guess_string == current_tuple.taxon_family_name.toLowerCase() ||
+        guess_string == family_data[current_tuple.taxon_family_name].common_name.toLowerCase()
+    )){
         feedback.className = "correct";
         feedback.textContent = "Correct!";
     }
@@ -94,13 +100,29 @@ function checkAnswer(){
         feedback.textContent = "Nope, correct: " + current_tuple.taxon_family_name;
     }
 
-    still_guessing = false;
+    guessing = false;
 
     //display answers
     guess_input.readOnly = true;
     document.getElementById("common_name").textContent = capitalize(current_tuple.common_name);
     document.getElementById("scientific_name").textContent = current_tuple.scientific_name;
-    document.getElementById("family_name").textContent = current_tuple.taxon_family_name;
+    
+    let family_scientific = current_tuple.taxon_family_name;
+    let family_common = family_data[family_scientific].common_name;
+    document.getElementById("family_name").textContent = family_scientific + (family_common.length > 0 ? " (" + family_common + ")" : "");
+    
+    document.getElementById("elpel_keywords").textContent = family_data[family_scientific].id_notes;
+    let more_info = document.getElementById("more_info_link");
+    if(family_data[family_scientific].id_notes.length > 0 || family_data[family_scientific].elpel_image_exists == 'True'){
+        more_info.href = "https://www.wildflowers-and-weeds.com/Plant_Families/" + family_scientific + ".htm"
+        more_info.style.display = "inline";
+    }
+    else {
+        more_info.style.display = "none";
+    }
+    document.getElementById("class_name").textContent = family_data[family_scientific].class;
+    
+    
     document.getElementById("answers").style.display = "block";
 
     //clear zoom image briefly, in case the user submitted while it was open, so they
@@ -115,7 +137,7 @@ function nextPlant(){
     //reset
     document.getElementById("answers").style.display = "none";
     document.getElementById("feedback").textContent = "";
-    still_guessing = true;
+    guessing = true;
 
     //new tuple
     current_tuple = obs[Math.floor(Math.random() * obs.length)]; //global var in init.js

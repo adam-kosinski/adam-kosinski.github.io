@@ -65,6 +65,10 @@ body {
     display: none;
 }
 
+#more_info_link {
+    color: lightgreen;
+}
+
 #common_name {
     font-size: 24px;
 }
@@ -157,10 +161,6 @@ body {
     border-bottom: 2px solid burlywood;
     font-family: 'Shadows Into Light';
     margin: 0;
-}
-
-#settings_panel div {
-    
 }
 
 #settings_left {

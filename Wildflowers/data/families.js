@@ -1,4 +1,4 @@
-scientific_name,common_name,class,image_url,license,attribution,id_notes,elpel_image_exists
+let families_csv = `scientific_name,common_name,class,image_url,license,attribution,id_notes,elpel_image_exists
 Acanthaceae,Acanthus Family,Dicots,https://static.inaturalist.org/photos/146813309/square.jpeg,,"(c) Soph, all rights reserved, uploaded by Soph",,False
 Achariaceae,Acharia Family,Dicots,https://inaturalist-open-data.s3.amazonaws.com/photos/1305389/square.jpg,cc-by-nc,"(c) Graeme White, some rights reserved (CC BY-NC), uploaded by Graeme White",,False
 Achatocarpaceae,Achatocarpus Family,Dicots,https://static.inaturalist.org/photos/1472989/square.jpg,,"(c) Eric Knight, all rights reserved",,False
@@ -415,4 +415,4 @@ Xeronemataceae,Bottlebrush Lily Family,Monocots,https://inaturalist-open-data.s3
 Xyridaceae,Yellow-Eyed Grasses,Monocots,https://static.inaturalist.org/photos/80899099/square.jpg,cc-by-nc-sa,"(c) Mary Keim, some rights reserved (CC BY-NC-SA)",,False
 Zingiberaceae,Gingers,Monocots,https://inaturalist-open-data.s3.amazonaws.com/photos/8626047/square.jpg,cc-by-nc-sa,"(c) Reinaldo Aguilar, some rights reserved (CC BY-NC-SA)",,False
 Zosteraceae,Seagrasses,Monocots,https://inaturalist-open-data.s3.amazonaws.com/photos/4769/square.jpg,cc-by-nc-sa,"(c) Kristian Peters, some rights reserved (CC BY-NC-SA)",,False
-Zygophyllaceae,Calthrops,Dicots,https://static.inaturalist.org/photos/2477646/square.JPG,,"(c) Anthony Knight, all rights reserved, uploaded by Anthony Knight","Key Words:  Desert plants with parts in fives, and opposite, usually pinnately divided leaves.",True
+Zygophyllaceae,Calthrops,Dicots,https://static.inaturalist.org/photos/2477646/square.JPG,,"(c) Anthony Knight, all rights reserved, uploaded by Anthony Knight","Key Words:  Desert plants with parts in fives, and opposite, usually pinnately divided leaves.",True`
