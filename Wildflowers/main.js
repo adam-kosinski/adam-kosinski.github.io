@@ -16,27 +16,65 @@ function handleKeypress(e){
 }
 
 function handleClick(e){
+
     if(e.target.id == "next_plant"){
         nextPlant();
+        return;
     }
-    else if(e.target.id == "exit_settings"){
+    if(e.target.id == "exit_settings"){
+        if(selected_families.length == 0){
+            alert("You must select some families");
+            return;
+        }
         nextPlant();
         document.getElementById("settings").style.display = "none";
+        return;
     }
-    else if(e.target.id == "enter_settings" || e.target.parentElement.id == "enter_settings"){
+    if(e.target.id == "select_all"){
+        selected_families = Object.keys(family_obs);
+        nonselected_families = [];
+        document.querySelectorAll(".family_choice").forEach(el => el.classList.add("selected"));
+        return;
+    }
+    if(e.target.id == "select_none"){
+        selected_families = [];
+        nonselected_families = Object.keys(family_obs);
+        document.querySelectorAll(".family_choice").forEach(el => el.classList.remove("selected"));
+        return;
+    }
+
+    let enter_settings_match = searchParents(e.target, "id", "enter_settings");
+    if(enter_settings_match){
         guessing = false;
         document.getElementById("settings").style.display = "block";
+        return;
+    }
+
+    let family_choice_match = searchParents(e.target, "class", "family_choice");
+    if(family_choice_match){
+        let is_selected = family_choice_match.classList.toggle("selected");
+        let family_name = family_choice_match.id.split("_")[0];
+        
+        if(is_selected){
+            selected_families.push(family_name);
+            nonselected_families.splice(selected_families.indexOf(family_name), 1);
+        }
+        else {
+            selected_families.splice(selected_families.indexOf(family_name), 1);
+            nonselected_families.push(family_name);
+        }
+        return;
     }
 }
 
 function handleMousemove(e){
     //Check if plant image is fully loaded. Can't do stuff relying on if on/off of image w/o it being loaded
     if(document.getElementById("plant_img").complete){
-        let img_box = getImageBox();
+        let img_box = getImageBox(); //util.js
         let zoom_container = document.getElementById("zoom_img_container");
         let zoom_img = document.getElementById("zoom_img");
 
-        if(mouseOverImage(e, img_box) && zoom_img.complete){
+        if(mouseOverImage(e, img_box) && zoom_img.complete){ //util.js
 
             if(!zoom_img_visible){
                 zoom_container.style.display = "block";
@@ -62,42 +100,74 @@ function handleMousemove(e){
 
 }
 
-function mouseOverImage(e, img_box){
-    //takes the e of a mousemove event
-    //check if the mouse is actually over the plant image as displayed
-    //since the object-fit: contain; css makes the image display smaller than its actual width and height
-
-    if(e.target.id != "plant_img" || !e.target.complete) return false; //complete checks if img is loaded
-
-    if(e.offsetX >= img_box.x && e.offsetX <= (img_box.x + img_box.width) &&
-        e.offsetY >= img_box.y && e.offsetY <= (img_box.y + img_box.height)){
-        return true;
-    }
-    return false;
-}
-
-
 
 
 
 // NON EVENT HANDLER FUNCTIONS ---------------------------------------------------------
+
+function nextPlant(){
+
+    //reset
+    document.getElementById("answers").style.display = "none";
+    document.getElementById("feedback").textContent = "";
+    guessing = true;
+
+    //new tuple
+    let next_family;
+    if(Math.random() < other_rate && nonselected_families.length > 0){
+        next_family = nonselected_families[Math.floor(Math.random() * nonselected_families.length)];
+    }
+    else {
+        if(selected_families.length == 0){
+            console.error("Somehow selected_families is empty");
+            return;
+        }
+        next_family = selected_families[Math.floor(Math.random() * selected_families.length)];
+    }
+    let tuples = family_obs[next_family];
+    current_tuple = tuples[Math.floor(Math.random() * tuples.length)]; //global var in init.js
+
+    
+    //update plant image
+    document.getElementById("plant_img").src = current_tuple.image_url;
+    document.getElementById("zoom_img").src = current_tuple.image_url.replace("medium", "original");
+
+    //update image credit
+    let author_name = current_tuple.user_name;
+    document.getElementById("img_author").textContent = author_name.length > 0 ? author_name + ". ": "";
+    let inat_link = document.getElementById("inat_url");
+    let url = "https://inaturalist.org/observations/" + current_tuple.id;
+    inat_link.textContent = url;
+    inat_link.href= url;
+
+    //reset and focus the input
+    let guess_input = document.getElementById("guess");
+    guess_input.value = "";
+    guess_input.readOnly = false;
+    guess_input.focus();
+}
+
+
+
 
 function checkAnswer(){
     let guess_input = document.getElementById("guess");
     let feedback = document.getElementById("feedback");
 
     let guess_string = guess_input.value.toLowerCase();
+    let is_other = !selected_families.includes(current_tuple.taxon_family_name);
 
-    if(guess_string.length > 0 && (
+    if(
         guess_string == current_tuple.taxon_family_name.toLowerCase() ||
-        guess_string == family_data[current_tuple.taxon_family_name].common_name.toLowerCase()
-    )){
+        guess_string == family_data[current_tuple.taxon_family_name].common_name.toLowerCase() ||
+        (is_other && guess_string == "other")
+    ){
         feedback.className = "correct";
         feedback.textContent = "Correct!";
     }
     else {
         feedback.className = "incorrect";
-        feedback.textContent = "Nope, correct: " + current_tuple.taxon_family_name;
+        feedback.textContent = "Nope, correct: " + (is_other ? "Other" : current_tuple.taxon_family_name);
     }
 
     guessing = false;
@@ -129,69 +199,4 @@ function checkAnswer(){
     //can see that the result was processed
     document.getElementById("zoom_img_container").style.display = "none";
     zoom_img_visible = false;
-}
-
-
-function nextPlant(){
-
-    //reset
-    document.getElementById("answers").style.display = "none";
-    document.getElementById("feedback").textContent = "";
-    guessing = true;
-
-    //new tuple
-    current_tuple = obs[Math.floor(Math.random() * obs.length)]; //global var in init.js
-
-    //update plant image
-    document.getElementById("plant_img").src = current_tuple.image_url;
-    document.getElementById("zoom_img").src = current_tuple.image_url.replace("medium", "original");
-
-    //update image credit
-    let author_name = current_tuple.user_name;
-    document.getElementById("img_author").textContent = author_name.length > 0 ? author_name + ". ": "";
-    let inat_link = document.getElementById("inat_url");
-    let url = "https://inaturalist.org/observations/" + current_tuple.id;
-    inat_link.textContent = url;
-    inat_link.href= url;
-
-    //reset and focus the input
-    let guess_input = document.getElementById("guess");
-    guess_input.value = "";
-    guess_input.readOnly = false;
-    guess_input.focus();
-}
-
-
-function capitalize(str){
-    return str.replace(/^\w|(?<=\s)\w|-\w/g, function(char){
-        return char.toUpperCase();
-    });
-}
-
-
-function getImageBox(){
-    //returns {x:_, y:_, width:_, height:_} of the plant display image
-    //needed because the display position and size doesn't match the image position and size, due to the object-fit: contain; css
-
-    let img = document.getElementById("plant_img");
-    let out = {};
-
-    let img_aspect_ratio = img.naturalWidth / img.naturalHeight;
-    let container_aspect_ratio = img.clientWidth / img.clientHeight;
-
-    if(img_aspect_ratio > container_aspect_ratio){
-        //then image limited by width
-        out.width = img.clientWidth;
-        out.height = img.clientWidth / img_aspect_ratio;
-    }
-    else {
-        //then image limited by height
-        out.height = img.clientHeight;
-        out.width = img.clientHeight * img_aspect_ratio;
-    }
-
-    out.x = (img.clientWidth - out.width) / 2;
-    out.y = (img.clientHeight - out.height) / 2;
-
-    return out;
 }

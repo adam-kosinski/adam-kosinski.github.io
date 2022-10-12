@@ -133,7 +133,7 @@ body {
 
 #settings_panel {
     position: absolute;
-    width: 80vw;
+    width: 85vw;
     height: 90vh;
     margin: auto;
     inset: 0 0 0 0; /* shorthand for top left right bottom*/
@@ -144,10 +144,11 @@ body {
     
     display: grid;
     grid-template-columns: 300px auto;
-    grid-template-rows: 50px 1fr;
+    grid-template-rows: 50px 40px 1fr;
     grid-template-areas:
         "header header"
-        "left right";
+        "left right_header"
+        "left right_grid";
     gap: 10px;
 }
 
@@ -178,4 +179,72 @@ button#exit_settings {
     color: black;
     padding: 10px;
     border: none;
+}
+
+#family_choices_header {
+    grid-area: right_header;
+}
+
+#family_choices_header p {
+    margin: 0;
+}
+
+#family_choices_header div.inline {
+    display: inline-block;
+    padding: 5px;
+}
+
+#family_choices_header div.inline.clickable {
+    cursor: pointer;
+}
+#family_choices_header div.inline.clickable:hover {
+    background-color: purple;
+    color: beige;
+}
+
+
+#family_choices {
+    grid-area: right_grid;
+    overflow: auto;
+}
+
+#family_choices_grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(115px, 1fr));
+    gap: 10px;
+    padding: 5px; /*so that the box shadows show up when hovering over choices*/
+}
+
+.family_choice {
+    border-radius: 10px;
+    border: 1px solid burlywood;
+    background-color: #f9f9eb;
+    padding: 10px;
+    cursor: pointer;
+}
+
+.family_choice:hover {
+    box-shadow: 0 0 4px 2px gold;
+}
+
+.family_choice.selected {
+    background-color: purple;
+    color: beige;
+}
+
+.family_choice img {
+    display: block;
+    margin: auto;
+    width: 75px;
+}
+
+.family_choice p {
+    text-align: center;
+    margin: 0;
+    font-size: 10px;
+}
+
+.family_choice span {
+    font-size: 14px;
+    text-align: center;
 }
