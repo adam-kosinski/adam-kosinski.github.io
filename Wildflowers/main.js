@@ -52,6 +52,16 @@ function handleClick(e){
         });
         return;
     }
+    if(e.target.id == "sort_n_species"){
+        sortFamilyChoices(function(a,b){
+            let a_set = new Set();
+            let b_set = new Set();
+            family_obs[a].forEach(tuple => a_set.add(tuple.scientific_name));
+            family_obs[b].forEach(tuple => b_set.add(tuple.scientific_name));
+            return b_set.size - a_set.size;
+        });
+        return;
+    }
 
     let enter_settings_match = searchParents(e.target, "id", "enter_settings");
     if(enter_settings_match){

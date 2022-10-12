@@ -10,12 +10,13 @@ let zoom_img_visible = false; //see mousemove event handler, so we don't need to
 
 function init(){
     //get observations data
-    obs = Papa.parse(popular_observations_csv, {header: true}).data;
+    obs = Papa.parse(observations_csv, {header: true}).data;
 
     //construct object organizing observations by family - object: {family1: [observations], etc.}
     family_obs = {};
     for(let i=0; i<obs.length; i++){
         let tuple = obs[i];
+
         let family = tuple.taxon_family_name;
         if(!family_obs.hasOwnProperty(family)){
             family_obs[family] = [];
@@ -23,7 +24,7 @@ function init(){
         family_obs[family].push(tuple);
     }
 
-    //get families data and organize into a dictionary by family scientific names
+    //get family data and organize into a dictionary by family scientific names
     let families_parsed = Papa.parse(families_csv, {header: true}).data;
     family_data = {};
     for(let i=0; i<families_parsed.length; i++){
@@ -50,12 +51,8 @@ function init(){
     other_option.value = "Other";
     datalist.appendChild(other_option);
 
+
     //add families to settings panel
-    populateFamilyChoices();
-}
-
-
-function populateFamilyChoices(){
     let family_choices_grid = document.getElementById("family_choices_grid");
     family_choices_grid.innerHTML = "";
 
@@ -76,6 +73,8 @@ function populateFamilyChoices(){
 
         family_choices_grid.appendChild(div);
     }
+
+    sortFamilyChoices();
 }
 
 

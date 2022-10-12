@@ -144,7 +144,7 @@ body {
     
     display: grid;
     grid-template-columns: 300px auto;
-    grid-template-rows: 50px 40px 1fr;
+    grid-template-rows: 50px 45px 1fr;
     grid-template-areas:
         "header header"
         "left right_header"
@@ -169,10 +169,6 @@ body {
     border-right: 2px solid burlywood;
 }
 
-#settings_right {
-    grid-area: right;
-}
-
 button#exit_settings {
     cursor: pointer;
     background-color: burlywood;
@@ -183,6 +179,7 @@ button#exit_settings {
 
 #family_choices_header {
     grid-area: right_header;
+    overflow: auto;
 }
 
 #family_choices_header p {
@@ -192,6 +189,7 @@ button#exit_settings {
 #family_choices_header div.inline {
     display: inline-block;
     padding: 5px;
+    font-size: 14px;
 }
 
 #family_choices_header div.inline.clickable {
@@ -224,7 +222,7 @@ button#exit_settings {
 }
 
 .family_choice:hover {
-    box-shadow: 0 0 4px 2px gold;
+    box-shadow: 0 0 5px 3px gold;
 }
 
 .family_choice.selected {
