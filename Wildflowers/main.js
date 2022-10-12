@@ -42,6 +42,16 @@ function handleClick(e){
         document.querySelectorAll(".family_choice").forEach(el => el.classList.remove("selected"));
         return;
     }
+    if(e.target.id == "sort_alphabetical"){
+        sortFamilyChoices();
+        return;
+    }
+    if(e.target.id == "sort_frequency"){
+        sortFamilyChoices(function(a,b){
+            return family_obs[b].length - family_obs[a].length;
+        });
+        return;
+    }
 
     let enter_settings_match = searchParents(e.target, "id", "enter_settings");
     if(enter_settings_match){
@@ -199,4 +209,21 @@ function checkAnswer(){
     //can see that the result was processed
     document.getElementById("zoom_img_container").style.display = "none";
     zoom_img_visible = false;
+}
+
+
+function sortFamilyChoices(compare_func){
+    let families = Object.keys(family_obs);
+
+    if(!compare_func){
+        families.sort();
+    }
+    else {
+        families.sort(compare_func);
+    }
+    
+    let grid = document.getElementById("family_choices_grid");
+    for(let i=0; i<families.length; i++){
+        grid.appendChild(document.getElementById(families[i] + "_choice"));
+    }
 }
