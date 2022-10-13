@@ -86,7 +86,7 @@ function handleClick(e){
         
         if(is_selected){
             selected_families.push(family_name);
-            nonselected_families.splice(non_selected_families.indexOf(family_name), 1);
+            nonselected_families.splice(nonselected_families.indexOf(family_name), 1);
         }
         else {
             selected_families.splice(selected_families.indexOf(family_name), 1);

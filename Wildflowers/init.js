@@ -10,7 +10,7 @@ let zoom_img_visible = false; //see mousemove event handler, so we don't need to
 
 function init(){
     //get observations data
-    obs = Papa.parse(observations_csv, {header: true}).data;
+    obs = Papa.parse(popular_observations_csv, {header: true}).data;
 
     //construct object organizing observations by family - object: {family1: [observations], etc.}
     family_obs = {};
