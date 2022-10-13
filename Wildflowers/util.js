@@ -61,7 +61,7 @@ function searchParents(child, attr, value){
     }
 
     let current = child;
-    while(current != document.body){
+    while(current.tagName != "HTML"){
         if(attr == "id" && current.id == value ||
             attr == "class" && current.classList.contains(value)
         ){
@@ -70,4 +70,15 @@ function searchParents(child, attr, value){
         current = current.parentElement;
     }
     return null;
+}
+
+
+function NSpeciesComparator(a,b){
+    //takes family names a,b
+    //returns -1, 0, or 1 appropriately
+    let a_set = new Set();
+    let b_set = new Set();
+    family_obs[a].forEach(tuple => a_set.add(tuple.scientific_name));
+    family_obs[b].forEach(tuple => b_set.add(tuple.scientific_name));
+    return b_set.size - a_set.size;
 }

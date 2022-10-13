@@ -42,6 +42,21 @@ function handleClick(e){
         document.querySelectorAll(".family_choice").forEach(el => el.classList.remove("selected"));
         return;
     }
+    if(e.target.id == "select_diverse"){
+        //first select none
+        selected_families = [];
+        nonselected_families = Object.keys(family_obs);
+        document.querySelectorAll(".family_choice").forEach(el => el.classList.remove("selected"));
+
+        //now select top 10 diverse families
+        let sorted_diverse = Object.keys(family_obs).sort(NSpeciesComparator);
+        for(let i=0; i<10; i++){
+            let f = sorted_diverse[i];
+            selected_families.push(f);
+            nonselected_families.splice(nonselected_families.indexOf(f), 1);
+            document.getElementById(f + "_choice").classList.add("selected");
+        }
+    }
     if(e.target.id == "sort_alphabetical"){
         sortFamilyChoices();
         return;
@@ -53,13 +68,7 @@ function handleClick(e){
         return;
     }
     if(e.target.id == "sort_n_species"){
-        sortFamilyChoices(function(a,b){
-            let a_set = new Set();
-            let b_set = new Set();
-            family_obs[a].forEach(tuple => a_set.add(tuple.scientific_name));
-            family_obs[b].forEach(tuple => b_set.add(tuple.scientific_name));
-            return b_set.size - a_set.size;
-        });
+        sortFamilyChoices(NSpeciesComparator); //util.js
         return;
     }
 
@@ -77,7 +86,7 @@ function handleClick(e){
         
         if(is_selected){
             selected_families.push(family_name);
-            nonselected_families.splice(selected_families.indexOf(family_name), 1);
+            nonselected_families.splice(non_selected_families.indexOf(family_name), 1);
         }
         else {
             selected_families.splice(selected_families.indexOf(family_name), 1);
@@ -194,6 +203,7 @@ function checkAnswer(){
 
     //display answers
     guess_input.readOnly = true;
+    guess_input.blur(); //to hide datalist options still hanging around annoyingly
     document.getElementById("common_name").textContent = capitalize(current_tuple.common_name);
     document.getElementById("scientific_name").textContent = current_tuple.scientific_name;
     
@@ -220,6 +230,8 @@ function checkAnswer(){
     document.getElementById("zoom_img_container").style.display = "none";
     zoom_img_visible = false;
 }
+
+
 
 
 function sortFamilyChoices(compare_func){
