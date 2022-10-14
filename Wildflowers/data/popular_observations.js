@@ -1,4 +1,4 @@
-let popular_observations_csv = `id,user_name,license,image_url,latitude,longitude,scientific_name,common_name,taxon_family_name
+datasets.nc_popular = `id,user_name,license,image_url,latitude,longitude,scientific_name,common_name,taxon_family_name
 82330347,Becky,CC0,https://inaturalist-open-data.s3.amazonaws.com/photos/135114681/medium.jpg,35.09687783,-80.11662217,Ruellia caroliniensis,Carolina ruellia,Acanthaceae
 122736412,Becky,CC0,https://inaturalist-open-data.s3.amazonaws.com/photos/207841668/medium.jpg,35.12591117,-80.07022783,Justicia americana,American water-willow,Acanthaceae
 83709131,Evan M. Raskin,CC-BY,https://inaturalist-open-data.s3.amazonaws.com/photos/137504098/medium.jpg,35.54869498,-82.50483821,Justicia americana,American water-willow,Acanthaceae

@@ -6,6 +6,9 @@ window.addEventListener("blur", handleWindowBlur)
 document.addEventListener("keypress", handleKeypress);
 document.addEventListener("click", handleClick);
 document.addEventListener("mousemove", handleMousemove);
+document.getElementById("dataset_select").addEventListener("change", function(e){
+    init(datasets[e.target.value]);
+});
 
 function handleWindowBlur(e){
     //clear the elpel page highlighting (b/c the Alt keyup event won't be processed)
@@ -173,6 +176,7 @@ function handleMousemove(e){
     }
 
 }
+
 
 
 

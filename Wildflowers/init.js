@@ -1,16 +1,9 @@
-//set globals
-let obs, family_obs, family_data;
-let selected_families = []; //families selected in settings panel
-let nonselected_families = [];
-let other_rate = 1/5; //rate at which to show a non-selected family, to be identified as "other"
-let current_tuple;
-let guessing = false; //for handling pressing the enter key
-let zoom_img_visible = false; //see mousemove event handler, so we don't need to ref the DOM every mousemove
+//can call init after the first time, giving a different csv
+//it will re-initialize everything to use the new csv
 
-
-function init(){
+function init(csv){
     //get observations data
-    obs = Papa.parse(popular_observations_csv, {header: true}).data;
+    obs = Papa.parse(csv, {header: true}).data;
 
     //construct object organizing observations by family - object: {family1: [observations], etc.}
     family_obs = {};
@@ -34,6 +27,8 @@ function init(){
     
     //initialize datalist, to suggest family names to user
     let datalist = document.getElementById("family_names");
+    datalist.innerHTML = "";
+
     for(family in family_obs){
         let scientific_option = document.createElement("option");
         scientific_option.value = family;
@@ -84,4 +79,4 @@ function init(){
 }
 
 
-init();
+init(datasets[document.getElementById("dataset_select").value]);
