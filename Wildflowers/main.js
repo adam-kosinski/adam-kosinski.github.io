@@ -67,6 +67,7 @@ function handleClick(e){
     if(searchParents(e.target, "id", "enter_settings")){
         guessing = false;
         document.getElementById("settings").style.display = "block";
+        document.getElementById("elpel_zoom_img_container").style.display = "none"; //in case it was open
         return;
     }
     if(e.target.id == "select_all"){

@@ -48,6 +48,7 @@ body {
     background-color: darkgreen;
     color: white;
     padding: 10px;
+    border: 0;
 }
 
 #guess {
