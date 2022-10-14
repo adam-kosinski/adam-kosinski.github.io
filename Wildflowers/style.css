@@ -88,6 +88,22 @@ p#elpel_keywords {
     margin-top: 16px;
 }
 
+#elpel_zoom_img_container {
+    position: absolute;
+    top: 0;
+    height: 100%;
+    width: calc(100% - 2vw); /*Account for padding of info container counted in the 100%*/
+    background-color: black;
+    display: none;
+    cursor: zoom-out;
+}
+
+#elpel_zoom_img {
+    height: 100%;
+    width: 100%;
+    object-fit: contain;
+}
+
 #img_credit {
     position: absolute;
     bottom: 0;
@@ -241,11 +257,8 @@ button#exit_settings {
     color: beige;
 }
 
-/*These two for the altkey going to elpel webpage thing*/
-.family_choice.faded {
+.family_choice.faded { /*for the altkey going to elpel webpage thing*/
     opacity: 0.1;
-}
-.family_choice.bold_border {
 }
 
 .family_choice img {

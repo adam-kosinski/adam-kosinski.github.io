@@ -45,6 +45,16 @@ function handleClick(e){
         nextPlant();
         return;
     }
+    if(e.target.id == "elpel_img"){
+        let elpel_zoom_img = document.getElementById("elpel_zoom_img");
+        elpel_zoom_img.src = e.target.src;
+        document.getElementById("elpel_zoom_img_container").style.display = "block";
+        return;
+    }
+    if(searchParents(e.target, "id", "elpel_zoom_img_container")){
+        document.getElementById("elpel_zoom_img_container").style.display = "none";
+        return;
+    }
     if(e.target.id == "exit_settings"){
         if(selected_families.length == 0){
             alert("You must select some families");
@@ -52,6 +62,11 @@ function handleClick(e){
         }
         nextPlant();
         document.getElementById("settings").style.display = "none";
+        return;
+    }
+    if(searchParents(e.target, "id", "enter_settings")){
+        guessing = false;
+        document.getElementById("settings").style.display = "block";
         return;
     }
     if(e.target.id == "select_all"){
@@ -80,6 +95,7 @@ function handleClick(e){
             nonselected_families.splice(nonselected_families.indexOf(f), 1);
             document.getElementById(f + "_choice").classList.add("selected");
         }
+        return;
     }
     if(e.target.id == "sort_alphabetical"){
         sortFamilyChoices();
@@ -93,13 +109,6 @@ function handleClick(e){
     }
     if(e.target.id == "sort_n_species"){
         sortFamilyChoices(NSpeciesComparator); //util.js
-        return;
-    }
-
-    let enter_settings_match = searchParents(e.target, "id", "enter_settings");
-    if(enter_settings_match){
-        guessing = false;
-        document.getElementById("settings").style.display = "block";
         return;
     }
 
