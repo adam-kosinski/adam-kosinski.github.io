@@ -1,8 +1,32 @@
 // EVENT HANDLER FUNCTIONS ----------------------------------------------------------------
 
+document.addEventListener("keydown", handleKeydown);
+document.addEventListener("keyup", handleKeyup);
+window.addEventListener("blur", handleWindowBlur)
 document.addEventListener("keypress", handleKeypress);
 document.addEventListener("click", handleClick);
 document.addEventListener("mousemove", handleMousemove);
+
+function handleWindowBlur(e){
+    //clear the elpel page highlighting (b/c the Alt keyup event won't be processed)
+    document.querySelectorAll(".elpel_page_exists").forEach(el => el.classList.remove("bold_border"));
+    document.querySelectorAll(".no_elpel_page_exists").forEach(el => el.classList.remove("faded"));
+}
+
+function handleKeydown(e){
+    if(e.key == "Alt"){
+        e.preventDefault();
+        document.querySelectorAll(".elpel_page_exists").forEach(el => el.classList.add("bold_border"));
+        document.querySelectorAll(".no_elpel_page_exists").forEach(el => el.classList.add("faded"));
+    }
+}
+
+function handleKeyup(e){
+    if(e.key == "Alt"){
+        document.querySelectorAll(".elpel_page_exists").forEach(el => el.classList.remove("bold_border"));
+        document.querySelectorAll(".no_elpel_page_exists").forEach(el => el.classList.remove("faded"));
+    }
+}
 
 function handleKeypress(e){
     if(e.key == "Enter"){
@@ -81,16 +105,27 @@ function handleClick(e){
 
     let family_choice_match = searchParents(e.target, "class", "family_choice");
     if(family_choice_match){
-        let is_selected = family_choice_match.classList.toggle("selected");
         let family_name = family_choice_match.id.split("_")[0];
-        
-        if(is_selected){
-            selected_families.push(family_name);
-            nonselected_families.splice(nonselected_families.indexOf(family_name), 1);
+        if(e.altKey){
+            //redirect to the elpel webpage on this family - sneaky hidden feature
+            if(family_data[family_name].id_notes.length > 0 || family_data[family_name].elpel_image_exists == "True"){
+                window.open("https://www.wildflowers-and-weeds.com/Plant_Families/" + family_name + ".htm", "_blank");
+            }
+            else {
+                alert("Elpel webpage doesn't seem to exist...");
+            }
         }
         else {
-            selected_families.splice(selected_families.indexOf(family_name), 1);
-            nonselected_families.push(family_name);
+            //normal behavior
+            let is_selected = family_choice_match.classList.toggle("selected");
+            if(is_selected){
+                selected_families.push(family_name);
+                nonselected_families.splice(nonselected_families.indexOf(family_name), 1);
+            }
+            else {
+                selected_families.splice(selected_families.indexOf(family_name), 1);
+                nonselected_families.push(family_name);
+            }
         }
         return;
     }
@@ -201,28 +236,50 @@ function checkAnswer(){
 
     guessing = false;
 
-    //display answers
+    //prepare answers to display
+
     guess_input.readOnly = true;
     guess_input.blur(); //to hide datalist options still hanging around annoyingly
     document.getElementById("common_name").textContent = capitalize(current_tuple.common_name);
     document.getElementById("scientific_name").textContent = current_tuple.scientific_name;
     
-    let family_scientific = current_tuple.taxon_family_name;
-    let family_common = family_data[family_scientific].common_name;
-    document.getElementById("family_name").textContent = family_scientific + (family_common.length > 0 ? " (" + family_common + ")" : "");
+    let f_sci = current_tuple.taxon_family_name;
+    let f_com = family_data[f_sci].common_name;
+    document.getElementById("family_name").textContent = f_sci + (f_com.length > 0 ? " (" + f_com + ")" : "");
     
-    document.getElementById("elpel_keywords").textContent = family_data[family_scientific].id_notes;
+    //elpel keywords
+    let keywords = document.getElementById("elpel_keywords");
+    if(family_data[f_sci].id_notes.length > 0){
+        keywords.textContent = family_data[f_sci].id_notes;
+        keywords.style.display = "inline";
+    }
+    else {
+        keywords.style.display = "none";
+    }
+    
+    //more info link
     let more_info = document.getElementById("more_info_link");
-    if(family_data[family_scientific].id_notes.length > 0 || family_data[family_scientific].elpel_image_exists == 'True'){
-        more_info.href = "https://www.wildflowers-and-weeds.com/Plant_Families/" + family_scientific + ".htm"
+    if(family_data[f_sci].id_notes.length > 0 || family_data[f_sci].elpel_image_exists == "True"){
+        more_info.href = "https://www.wildflowers-and-weeds.com/Plant_Families/" + f_sci + ".htm"
         more_info.style.display = "inline";
     }
     else {
         more_info.style.display = "none";
     }
-    document.getElementById("class_name").textContent = family_data[family_scientific].class;
+
+    //elpel image
+    let elpel_img = document.getElementById("elpel_img");
+    if(family_data[f_sci].elpel_image_exists == "True"){
+        elpel_img.src = "https://www.wildflowers-and-weeds.com/Plant_Families/" + f_sci + "_pics/" + f_sci + ".jpg";
+        elpel_img.style.display = "block";
+    }
+    else {
+        elpel_img.style.display = "none";
+    }
+
+    document.getElementById("class_name").textContent = family_data[f_sci].class;
     
-    
+    //display answers
     document.getElementById("answers").style.display = "block";
 
     //clear zoom image briefly, in case the user submitted while it was open, so they

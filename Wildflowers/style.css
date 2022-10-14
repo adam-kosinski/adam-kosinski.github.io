@@ -65,16 +65,27 @@ body {
     display: none;
 }
 
-#more_info_link {
-    color: lightgreen;
-}
-
 #common_name {
     font-size: 24px;
 }
 
 #scientific_name {
     font-style: italic;
+}
+
+p#elpel_keywords {
+    margin-bottom: 0;
+}
+
+#more_info_link {
+    color: lightgreen;
+}
+
+#elpel_img {
+    cursor: zoom-in;
+    height: 50px;
+    display: block;
+    margin-top: 16px;
 }
 
 #img_credit {
@@ -228,6 +239,13 @@ button#exit_settings {
 .family_choice.selected {
     background-color: purple;
     color: beige;
+}
+
+/*These two for the altkey going to elpel webpage thing*/
+.family_choice.faded {
+    opacity: 0.1;
+}
+.family_choice.bold_border {
 }
 
 .family_choice img {

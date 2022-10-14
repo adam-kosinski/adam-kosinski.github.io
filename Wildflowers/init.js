@@ -60,6 +60,12 @@ function init(){
         let div = document.createElement("div");
         div.id = family + "_choice";
         div.className = "family_choice selected"; //by default all are selected
+        if(family_data[family].id_notes.length > 0 || family_data[family].elpel_image_exists == "True"){
+            div.classList.add("elpel_page_exists");
+        }
+        else {
+            div.classList.add("no_elpel_page_exists");
+        }
 
         selected_families.push(family);
 
