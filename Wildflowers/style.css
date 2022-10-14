@@ -222,8 +222,9 @@ p#elpel_keywords {
     cursor: pointer;
     border: none;
     position: relative;
-    left: 95px;
-    top: 50px;
+    left: 10px;
+    top: -75px;
+    display: inline-block;
 }
 
 #exit_settings * {
@@ -243,11 +244,10 @@ p#elpel_keywords {
 }
 
 #flower2 {
-    position: absolute;
-    top: 310px;
-    left: 5px;
-    height: 100px;
-    transform: rotate(45deg);
+    height: 90px;
+    margin-top: 18px;
+    margin-left: 5px;
+    display: inline-block;
 }
 
 #family_choices_header {
