@@ -55,7 +55,7 @@ function handleClick(e){
         document.getElementById("elpel_zoom_img_container").style.display = "none";
         return;
     }
-    if(e.target.id == "exit_settings"){
+    if(searchParents(e.target, "id", "exit_settings")){
         if(selected_families.length == 0){
             alert("You must select some families");
             return;
@@ -184,6 +184,7 @@ function nextPlant(){
     //reset
     document.getElementById("answers").style.display = "none";
     document.getElementById("feedback").textContent = "";
+    document.getElementById("elpel_zoom_img_container").style.display = "none";
     guessing = true;
 
     //new tuple

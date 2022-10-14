@@ -55,24 +55,44 @@
 
         <div id="settings">
             <div id="settings_panel">
-                <p id="settings_header">Welcome to Wildflower Families!</p>
+                <div id="settings_header">
+                    <img src="line_flowers.png">
+                    <img src="vine_swish.png" style="transform: scaleX(-1);">
+                    <p>Welcome to Wildflower Families!</p>
+                    <img src="vine_swish.png">
+                    <img src="line_flowers.png" style="transform: scaleX(-1);">
+                </div>
                 <div id="settings_left">
-                    <p>Blah blah blah</p>
-                    <p>Select Dataset:</p>
-                    <ul id="dataset_select">
-                        <li>NC Favorites</li>
-                        <li>Durham All</li>
-                    </ul>
-                    <button id="exit_settings">Let's Go!</button>
+                    <p>
+                        This tool is designed to help you identify wildflower families. The idea comes
+                        from Thomas J. Elpel's book Botany in a Day, and much of the information is sourced from his website
+                        (<a target="_blank" href="https://www.wildflowers-and-weeds.com/">link</a>). The photo and ID data is
+                        all pulled from iNaturalist.
+                    </p>
+                    <p>
+                        <b><u>To use:</u></b> First select which families you would like to practice. Most of the flowers shown
+                        will come from the families you select, but occasionally a flower not in these families will be
+                        shown. Either the correct family or typing "Other" will be considered correct for such flowers.
+                    </p>
+                    <label for="dataset_select">Select Dataset:</label>
+                    <select id="dataset_select">
+                        <option value="TODO">NC Favorites</option>
+                        <option value="TODO">Durham All</option>
+                    </select>
+                    <div id="exit_settings">
+                        <img src="wood_sign.png">
+                        <p>START</p>
+                    </div>
+                    <img id="flower2" src="flower2.png">
                 </div>
                 <div id="family_choices_header">
                     <p>Pick Families:</p>
-                    <div class="inline"><u>Select:</u></div>
+                    <div class="inline" style="margin-left: 5px;"><u>Select:</u></div>
                     <div class="inline clickable" id="select_all">All</div>
                     <div class="inline clickable" id="select_none">None</div>
                     <div class="inline clickable" id="select_diverse">Top 10 Diverse</div>
-                    <div class="inline" style="margin-left: 50px"><u>Sort By:</u></div>
-                    <div class="inline clickable" id="sort_alphabetical">Alphabetical</div>
+                    <div class="inline" style="margin-left: 20px;"><u>Sort By:</u></div>
+                    <div class="inline clickable" id="sort_alphabetical">A-Z</div>
                     <div class="inline clickable" id="sort_n_species"># Species</div>
                     <div class="inline clickable" id="sort_frequency"># Photos</div>
                 </div>

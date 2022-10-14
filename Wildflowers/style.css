@@ -156,18 +156,20 @@ p#elpel_keywords {
     z-index: 5;
     width: 100vw;
     height: 100vh;
-    color: darkgoldenrod;
+    color: black;
 }
 
 #settings_panel {
+    background-size: cover;
+    background-image: url('paper.jpg');
+
     position: absolute;
-    width: 85vw;
+    width: max(820px, 85vw);
     height: 90vh;
     margin: auto;
     inset: 0 0 0 0; /* shorthand for top left right bottom*/
 
-    background-color: beige;
-    border: 5px solid burlywood;
+    border: 5px solid sienna;
     padding: 0 10px 10px 10px;
     
     display: grid;
@@ -185,29 +187,71 @@ p#elpel_keywords {
 }
 
 #settings_header {
-    font-size: 30px;
     grid-area: header;
-    border-bottom: 2px solid burlywood;
+    border-bottom: 2px solid peru;
+    display: flex;
+    justify-content: space-around;
+}
+
+
+#settings_header img {
+    height: 50px;
+}
+
+#settings_header p {
+    font-size: 30px;
     font-family: 'Shadows Into Light';
     margin: 0;
+    text-align: center;
 }
 
 #settings_left {
     grid-area: left;
-    border-right: 2px solid burlywood;
+    border-right: 2px solid peru;
+    position: relative;
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding-right: 10px;
 }
 
-button#exit_settings {
+#settings_left p {
+    margin-top: 0;
+}
+
+#exit_settings {
     cursor: pointer;
-    background-color: burlywood;
-    color: black;
-    padding: 10px;
     border: none;
+    position: relative;
+    left: 95px;
+    top: 50px;
+}
+
+#exit_settings * {
+    position: absolute;
+}
+
+#exit_settings img {
+    width: 100px;
+}
+
+#exit_settings p {
+    font-weight: bold;
+    width: 100px;
+    text-align: center;
+    line-height: 45px;
+    font-family: 'Shadows Into Light';
+}
+
+#flower2 {
+    position: absolute;
+    top: 310px;
+    left: 5px;
+    height: 100px;
+    transform: rotate(45deg);
 }
 
 #family_choices_header {
     grid-area: right_header;
-    overflow: auto;
 }
 
 #family_choices_header p {
@@ -216,12 +260,14 @@ button#exit_settings {
 
 #family_choices_header div.inline {
     display: inline-block;
-    padding: 5px;
+    margin-top: 2px;
     font-size: 14px;
+    border-radius: 5px;
 }
 
 #family_choices_header div.inline.clickable {
     cursor: pointer;
+    padding: 5px;
 }
 #family_choices_header div.inline.clickable:hover {
     background-color: purple;
@@ -243,8 +289,8 @@ button#exit_settings {
 
 .family_choice {
     border-radius: 10px;
-    border: 1px solid burlywood;
-    background-color: #f9f9eb;
+    border: 1px solid peru;
+    /*background-color: #ead0ae;*/
     padding: 10px;
     cursor: pointer;
 }
