@@ -67,6 +67,14 @@ function handleClick(e){
         document.getElementById("settings").style.display = "none";
         return;
     }
+    if(e.target.id == "family_image_credit_link"){
+        document.getElementById("family_image_credits_container").style.display = "block";
+        return;
+    }
+    if(e.target.id == "family_image_credits_exit"){
+        document.getElementById("family_image_credits_container").style.display = "none";
+        return;
+    }
     if(searchParents(e.target, "id", "enter_settings")){
         guessing = false;
         document.getElementById("settings").style.display = "block";

@@ -76,6 +76,13 @@ function init(csv){
     }
 
     sortFamilyChoices();
+
+    //add family image credits
+    let credit_text = "";
+    for(family in family_obs){
+        credit_text += "<b>" + family + "</b>: " + family_data[family].attribution + "<br>";
+    }
+    document.getElementById("family_image_credits_list").innerHTML = credit_text;
 }
 
 

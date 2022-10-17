@@ -252,6 +252,7 @@ p#elpel_keywords {
 
 #family_choices_header {
     grid-area: right_header;
+    position: relative; /*because of absolutely positioned child*/
 }
 
 #family_choices_header p {
@@ -272,6 +273,16 @@ p#elpel_keywords {
 #family_choices_header div.inline.clickable:hover {
     background-color: purple;
     color: beige;
+}
+
+#family_image_credit_link {
+    position: absolute;
+    top: 0;
+    right: 25px;
+    font-size: 10px;
+    text-decoration: underline;
+    cursor: pointer;
+    color: peru;
 }
 
 
@@ -323,4 +334,45 @@ p#elpel_keywords {
 .family_choice span {
     font-size: 14px;
     text-align: center;
+}
+
+#family_image_credits_container {
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    background-color: rgba(0,0,0,0.5);
+    z-index: 10;
+}
+
+#family_image_credits {
+    position: absolute;
+    width: 700px;
+    height: 450px;
+    background-color: white;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    margin: auto;
+    color: black;
+    padding: 10px;
+}
+
+#family_image_credits_exit {
+    margin: 0;
+    position: absolute;
+    top: 0;
+    right: 5px;
+    font-size: 24px;
+    cursor: pointer;
+}
+
+#family_image_credits_title {
+    margin: 0;
+    font-size: 20px;
+}
+
+#family_image_credits_list {
+    overflow-y: auto;
+    height: 415px;
 }

@@ -65,15 +65,16 @@
                 <div id="settings_left">
                     <p>
                         This tool is designed to help you identify wildflower families. The idea comes
-                        from Thomas J. Elpel's book Botany in a Day, and much of the information is sourced from his website
+                        from Thomas J. Elpel's book Botany in a Day, and the ID tips are sourced from his accompanying website
                         (<a target="_blank" href="https://www.wildflowers-and-weeds.com/">link</a>). The photo and ID data is
-                        all pulled from iNaturalist.
+                        pulled from iNaturalist.
                     </p>
                     <p>
-                        <b><u>To use:</u></b> First select which families you would like to practice. Most of the flowers shown
-                        will come from the families you select, but occasionally a flower not in these families will be
-                        shown. Typing "Other" or the correct family will be considered correct for such flowers.
-                        Also, try to use the autocomplete feature, it helps avoid spelling errors.
+                        <b><u>To use:</u></b> First, select which families you would like to practice. Most photos shown
+                        will come these families, but occasionally a plant not in these families will be
+                        shown. Typing "Other" or the correct family will be considered correct for such plants.
+                        Use the autocomplete feature, it helps avoid spelling errors. Also, clicking a family
+                        in the grid while holding Alt will send you to the family's info webpage.
                     </p>
                     <label for="dataset_select">Select Dataset:</label>
                     <select id="dataset_select">
@@ -97,10 +98,19 @@
                     <div class="inline clickable" id="sort_alphabetical">A-Z</div>
                     <div class="inline clickable" id="sort_n_species"># Species</div>
                     <div class="inline clickable" id="sort_frequency"># Photos</div>
+                    <p id="family_image_credit_link">Family Image Credits</p>
                 </div>
                 <div id="family_choices">
                     <div id="family_choices_grid"></div>
                 </div>
+            </div>
+        </div>
+
+        <div id="family_image_credits_container">
+            <div id="family_image_credits">
+                <p id="family_image_credits_exit">&#10006;</p>
+                <p id="family_image_credits_title">Family Image Credits</p>
+                <p id="family_image_credits_list">Hi</p>
             </div>
         </div>
 
