@@ -85,6 +85,12 @@ function NSpeciesComparator(a,b){
 
 
 function selectTopNDiverse(n){
+    //first select none
+    selected_families = [];
+    nonselected_families = Object.keys(family_obs);
+    document.querySelectorAll(".family_choice").forEach(el => el.classList.remove("selected"));
+
+    //now select top 10 diverse families
     let sorted_diverse = Object.keys(family_obs).sort(NSpeciesComparator);
     for(let i=0; i<n; i++){
         let f = sorted_diverse[i];

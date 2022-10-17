@@ -94,12 +94,6 @@ function handleClick(e){
         return;
     }
     if(e.target.id == "select_diverse"){
-        //first select none
-        selected_families = [];
-        nonselected_families = Object.keys(family_obs);
-        document.querySelectorAll(".family_choice").forEach(el => el.classList.remove("selected"));
-
-        //now select top 10 diverse families
         selectTopNDiverse(10); //util.js
         return;
     }
