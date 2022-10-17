@@ -100,13 +100,7 @@ function handleClick(e){
         document.querySelectorAll(".family_choice").forEach(el => el.classList.remove("selected"));
 
         //now select top 10 diverse families
-        let sorted_diverse = Object.keys(family_obs).sort(NSpeciesComparator);
-        for(let i=0; i<10; i++){
-            let f = sorted_diverse[i];
-            selected_families.push(f);
-            nonselected_families.splice(nonselected_families.indexOf(f), 1);
-            document.getElementById(f + "_choice").classList.add("selected");
-        }
+        selectTopNDiverse(10); //util.js
         return;
     }
     if(e.target.id == "sort_alphabetical"){
@@ -133,7 +127,7 @@ function handleClick(e){
                 window.open("https://www.wildflowers-and-weeds.com/Plant_Families/" + family_name + ".htm", "_blank");
             }
             else {
-                alert("Elpel webpage doesn't seem to exist...");
+                alert("Info webpage doesn't seem to exist for this family...");
             }
         }
         else {

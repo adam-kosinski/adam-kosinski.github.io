@@ -54,15 +54,13 @@ function init(csv){
     for(family in family_obs){
         let div = document.createElement("div");
         div.id = family + "_choice";
-        div.className = "family_choice selected"; //by default all are selected
+        div.className = "family_choice";
         if(family_data[family].id_notes.length > 0 || family_data[family].elpel_image_exists == "True"){
             div.classList.add("elpel_page_exists");
         }
         else {
             div.classList.add("no_elpel_page_exists");
         }
-
-        selected_families.push(family);
 
         let img = document.createElement("img");
         img.src = family_data[family].image_url;
@@ -75,10 +73,12 @@ function init(csv){
         family_choices_grid.appendChild(div);
     }
 
-    sortFamilyChoices();
+    selectTopNDiverse(10); //default selection
+
+    sortFamilyChoices(NSpeciesComparator);
 
     //add family image credits
-    let credit_text = "";
+    let credit_text = "All images sourced from iNaturalist.<br><br>";
     for(family in family_obs){
         credit_text += "<b>" + family + "</b>: " + family_data[family].attribution + "<br>";
     }

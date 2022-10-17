@@ -216,6 +216,7 @@ p#elpel_keywords {
 
 #settings_left p {
     margin-top: 0;
+    font-size: 14px;
 }
 
 #exit_settings {
@@ -342,6 +343,7 @@ p#elpel_keywords {
     width: 100%;
     background-color: rgba(0,0,0,0.5);
     z-index: 10;
+    display: none;
 }
 
 #family_image_credits {

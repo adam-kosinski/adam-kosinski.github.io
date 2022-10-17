@@ -82,3 +82,14 @@ function NSpeciesComparator(a,b){
     family_obs[b].forEach(tuple => b_set.add(tuple.scientific_name));
     return b_set.size - a_set.size;
 }
+
+
+function selectTopNDiverse(n){
+    let sorted_diverse = Object.keys(family_obs).sort(NSpeciesComparator);
+    for(let i=0; i<n; i++){
+        let f = sorted_diverse[i];
+        selected_families.push(f);
+        nonselected_families.splice(nonselected_families.indexOf(f), 1);
+        document.getElementById(f + "_choice").classList.add("selected");
+    }
+}

@@ -70,11 +70,13 @@
                         pulled from iNaturalist.
                     </p>
                     <p>
-                        <b><u>To use:</u></b> First, select which families you would like to practice. Most photos shown
-                        will come these families, but occasionally a plant not in these families will be
+                        <b><u>To use:</u></b> First, click which families you would like to practice (purple = selected).
+                        Then click START. Type your guess for the photo and press the enter key to check. Most photos shown
+                        will be in the selected families, but occasionally a plant not in these families will be
                         shown. Typing "Other" or the correct family will be considered correct for such plants.
                         Use the autocomplete feature, it helps avoid spelling errors. Also, clicking a family
-                        in the grid while holding Alt will send you to the family's info webpage.
+                        in the grid while holding Alt will send you to the family's info webpage. The number in parentheses
+                        is the number of photos available for that family.
                     </p>
                     <label for="dataset_select">Select Dataset:</label>
                     <select id="dataset_select">
@@ -91,12 +93,12 @@
                 <div id="family_choices_header">
                     <p>Pick Families:</p>
                     <div class="inline" style="margin-left: 5px;"><u>Select:</u></div>
+                    <div class="inline clickable" id="select_diverse">Top 10 Diverse</div>
                     <div class="inline clickable" id="select_all">All</div>
                     <div class="inline clickable" id="select_none">None</div>
-                    <div class="inline clickable" id="select_diverse">Top 10 Diverse</div>
                     <div class="inline" style="margin-left: 20px;"><u>Sort By:</u></div>
-                    <div class="inline clickable" id="sort_alphabetical">A-Z</div>
                     <div class="inline clickable" id="sort_n_species"># Species</div>
+                    <div class="inline clickable" id="sort_alphabetical">A-Z</div>
                     <div class="inline clickable" id="sort_frequency"># Photos</div>
                     <p id="family_image_credit_link">Family Image Credits</p>
                 </div>
