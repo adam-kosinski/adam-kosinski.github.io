@@ -84,6 +84,24 @@ function NSpeciesComparator(a,b){
 }
 
 
+
+function selectEasy(){
+    selected_families = [];
+    nonselected_families = [];
+    document.querySelectorAll(".family_choice").forEach(el => el.classList.remove("selected"));
+
+    for(let f in family_obs){
+        if(easy_families.has(f)){
+            selected_families.push(f);
+            document.getElementById(f + "_choice").classList.add("selected");
+        }
+        else {
+            nonselected_families.push(f);
+        }
+    }
+}
+
+
 function selectTopNDiverse(n){
     //first select none
     selected_families = [];

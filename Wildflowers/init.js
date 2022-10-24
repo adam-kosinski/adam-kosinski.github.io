@@ -73,9 +73,9 @@ function init(csv){
         family_choices_grid.appendChild(div);
     }
 
-    selectTopNDiverse(10); //default selection
+    selectEasy(); //default selection
 
-    sortFamilyChoices(NSpeciesComparator);
+    sortFamilyChoices(NSpeciesComparator); //default sort
 
     //add family image credits
     let credit_text = "All images sourced from iNaturalist.<br><br>";

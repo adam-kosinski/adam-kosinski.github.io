@@ -81,6 +81,13 @@ function handleClick(e){
         document.getElementById("elpel_zoom_img_container").style.display = "none"; //in case it was open
         return;
     }
+    if(e.target.id == "select_easy"){
+        selectEasy(); //util.js
+    }
+    if(e.target.id == "select_diverse"){
+        selectTopNDiverse(10); //util.js
+        return;
+    }
     if(e.target.id == "select_all"){
         selected_families = Object.keys(family_obs);
         nonselected_families = [];
@@ -92,11 +99,7 @@ function handleClick(e){
         nonselected_families = Object.keys(family_obs);
         document.querySelectorAll(".family_choice").forEach(el => el.classList.remove("selected"));
         return;
-    }
-    if(e.target.id == "select_diverse"){
-        selectTopNDiverse(10); //util.js
-        return;
-    }
+    }    
     if(e.target.id == "sort_alphabetical"){
         sortFamilyChoices();
         return;
