@@ -88,7 +88,7 @@ body { background: #f4f4f4;}
 		isPng: true,
 		name: "USGS",
 		alt: "USGS"
-	});
+	});*/
 	var usgsTiff = new google.maps.ImageMapType({
 		minZoom: 11,
 		maxZoom: 15,
@@ -112,7 +112,7 @@ body { background: #f4f4f4;}
 		name: "USGS TIFF",
 		alt: "USGS TIFF"
 	});
-	*/var natGeo = new google.maps.ImageMapType({
+	var natGeo = new google.maps.ImageMapType({
 		minZoom: 12,
 		maxZoom: 14,
 		getTileUrl: function(coord, zoom) { 
@@ -155,7 +155,7 @@ body { background: #f4f4f4;}
 		map = new google.maps.Map(document.getElementById("map"), opts);
 		map.setTilt(45);
 		//map.mapTypes.set('USGS 2013', usgs2013);
-		//map.mapTypes.set('USGS TIFF', usgsTiff);
+		map.mapTypes.set('USGS TIFF', usgsTiff);
 		map.mapTypes.set('Nat Geo', natGeo);
 		//map.mapTypes.set('USGS', usgsStolen);
 		
