@@ -1,4 +1,36 @@
-Filename: observations.csv
+Dataset: Orange County All
+
+Filename: orange_county_all.csv
+Downloaded on 11-15-2022 at 12:58pm
+
+Taxon: Flowering Plants (subphylum angiospermae)
+
+Filters:
+- w/ photos
+- Research grade
+- Orange County, NC, USA
+- Photo Licensing: CC-BY-NC
+- Verifiable: Yes
+
+Returned 22965 observations
+
+Fields:
+- id (unique id for observation. https://www.inaturalist.org/observations/[insert id])
+- user_name (used for attribution)
+- image_url
+- latitude
+- longitude
+- scientific_name
+- common_name
+- taxon_id
+- taxon_family_name
+
+
+======================================================
+
+Dataset: Durham County 2018-2022
+
+Filename: durham_all.csv
 Downloaded on 9-29-2022 at 5:45 pm ish.
 
 Taxon: Flowering Plants (subphylum angiospermae)
@@ -25,7 +57,10 @@ Fields:
 
 =============================================================================
 
-Filename: popular_observations.csv
+Dataset: NC Popular
+
+Filename: nc_popular_w_copyright.csv (original)
+Filename: nc_popular.csv (used)
 Downloaded 10-1-2022 at 1:30pm ish
 
 Taxon: Flowering Plants (subphylum angiospermae)

@@ -1,4 +1,4 @@
-datasets.durham_all = `id,user_name,image_url,latitude,longitude,scientific_name,common_name,taxon_family_name
+datasets.durham_county_2018_2022 = `id,user_name,image_url,latitude,longitude,scientific_name,common_name,taxon_family_name
 9823525,Suzanne Cadwell,https://inaturalist-open-data.s3.amazonaws.com/photos/13447870/medium.jpeg,35.9364925392,-78.9183046396,Stellaria media,common chickweed,Caryophyllaceae
 9823539,Suzanne Cadwell,https://inaturalist-open-data.s3.amazonaws.com/photos/13447879/medium.jpeg,35.8626570707,-78.8453556935,Galium aparine,catchweed bedstraw,Rubiaceae
 9823544,Suzanne Cadwell,https://inaturalist-open-data.s3.amazonaws.com/photos/13447890/medium.jpeg,35.92852952,-78.96612448,Youngia japonica,Oriental false hawksbeard,Asteraceae

@@ -40,6 +40,9 @@ function handleKeypress(e){
             nextPlant();
         }
     }
+    else if (guessing){
+        document.getElementById("guess").focus(); //this inputs the key we just typed as well
+    }
 }
 
 function handleClick(e){
@@ -218,11 +221,10 @@ function nextPlant(){
     inat_link.textContent = url;
     inat_link.href= url;
 
-    //reset and focus the input
+    //reset the input
     let guess_input = document.getElementById("guess");
     guess_input.value = "";
     guess_input.readOnly = false;
-    guess_input.focus();
 }
 
 
