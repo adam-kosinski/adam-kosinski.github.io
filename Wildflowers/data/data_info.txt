@@ -30,7 +30,7 @@ Fields:
 
 Dataset: Durham County 2018-2022
 
-Filename: durham_all.csv
+Filename: durham_county_2018_2022.csv
 Downloaded on 9-29-2022 at 5:45 pm ish.
 
 Taxon: Flowering Plants (subphylum angiospermae)
