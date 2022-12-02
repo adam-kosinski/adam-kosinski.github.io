@@ -84,29 +84,28 @@ function NSpeciesComparator(a,b){
 }
 
 
+function selectNone(){
+    selected_families = [];
+    nonselected_families = Object.keys(family_obs);
+    document.querySelectorAll(".family_choice").forEach(el => el.classList.remove("selected"));
+}
+
 
 function selectEasy(){
-    selected_families = [];
-    nonselected_families = [];
-    document.querySelectorAll(".family_choice").forEach(el => el.classList.remove("selected"));
+    selectNone();
 
     for(let f in family_obs){
         if(easy_families.has(f)){
             selected_families.push(f);
             document.getElementById(f + "_choice").classList.add("selected");
-        }
-        else {
-            nonselected_families.push(f);
+            nonselected_families.splice(nonselected_families.indexOf(f), 1);
         }
     }
 }
 
 
 function selectTopNDiverse(n){
-    //first select none
-    selected_families = [];
-    nonselected_families = Object.keys(family_obs);
-    document.querySelectorAll(".family_choice").forEach(el => el.classList.remove("selected"));
+    selectNone();
 
     //now select top 10 diverse families
     let sorted_diverse = Object.keys(family_obs).sort(NSpeciesComparator);
@@ -115,5 +114,21 @@ function selectTopNDiverse(n){
         selected_families.push(f);
         nonselected_families.splice(nonselected_families.indexOf(f), 1);
         document.getElementById(f + "_choice").classList.add("selected");
+    }
+}
+
+
+// select the families I'm currently working on - no UI trigger for this, will use the console
+let adam_families = ['Asteraceae', 'Lamiaceae', 'Fabaceae', 'Scrophulariaceae', 'Apiaceae', 'Geraniaceae', 'Rosaceae', 'Ericaceae', 'Orchidaceae', 'Brassicaceae', 'Boraginaceae', 'Saxifragaceae', 'Plantaginaceae', 'Convolvulaceae', 'Rubiaceae'];
+function selectAdam(){
+    selectNone();
+
+    for(let i=0; i<adam_families.length; i++){
+        let family = adam_families[i];
+        if(family_obs.hasOwnProperty(family)){
+            selected_families.push(family);
+            nonselected_families.splice(nonselected_families.indexOf(family), 1);
+            document.getElementById(family + "_choice").classList.add("selected");
+        }
     }
 }

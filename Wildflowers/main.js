@@ -98,17 +98,15 @@ function handleClick(e){
         return;
     }
     if(e.target.id == "select_none"){
-        selected_families = [];
-        nonselected_families = Object.keys(family_obs);
-        document.querySelectorAll(".family_choice").forEach(el => el.classList.remove("selected"));
+        selectNone(); //util.js
         return;
     }    
     if(e.target.id == "sort_alphabetical"){
-        sortFamilyChoices();
+        sortFamilyChoices(); //util.js
         return;
     }
     if(e.target.id == "sort_frequency"){
-        sortFamilyChoices(function(a,b){
+        sortFamilyChoices(function(a,b){ //util.js
             return family_obs[b].length - family_obs[a].length;
         });
         return;
