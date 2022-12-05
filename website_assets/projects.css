@@ -1,0 +1,43 @@
+#page_title {
+    font-size: 64px;
+}
+
+.project {
+    margin-bottom: 50px;
+}
+
+.project_title {
+    font-family: "Life Savers";
+    font-size: 36px;
+    margin: 0 0 36px 0;
+}
+
+.project_info {
+    display: flex;
+    gap: 48px;
+}
+
+.project img {
+    width: 300px;
+    align-self: flex-start;
+}
+
+.project_link {
+    /*override anchor tag styling*/
+    color: white;
+    text-decoration: none;
+
+    /*normal stuff*/
+    margin-top: 24px;
+    border: 1px solid #fff8;
+    cursor: pointer;
+    padding: 8px;
+    background-color: #fff3;
+    display: inline-block;
+    transition-property: all;
+    transition-duration: 250ms;
+}
+.project_link:hover {
+    background-color: white;
+    color: black;
+}
