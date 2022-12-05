@@ -35,5 +35,26 @@ body {
 }
 
 main {
-    padding: 45px 10vw 0 10vw; /*side padding and dodge the page header*/
+    padding: 65px 10vw 0 10vw; /*side padding and dodge the page header*/
+}
+
+
+.box_link {
+    /*override anchor tag styling*/
+    color: white;
+    text-decoration: none;
+
+    /*normal stuff*/
+    margin-top: 24px;
+    border: 1px solid #fff8;
+    cursor: pointer;
+    padding: 8px;
+    background-color: #fff3;
+    display: inline-block;
+    transition-property: all;
+    transition-duration: 250ms;
+}
+.box_link:hover {
+    background-color: white;
+    color: black;
 }
