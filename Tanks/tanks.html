@@ -1,37 +1,73 @@
 <!DOCTYPE html>
 <html>
-	<head>
-		<title>Tank Game</title>
-		<link type="text/css" rel="stylesheet" href="tanks.css"/>
-	</head>
-	<body>
-		<canvas id="canvas"></canvas>
-		<table id="scores">
-			<tbody>
-				<tr id="score_tr"></tr>
-			</tbody>
-		</table>
-		
-		<!--SCRIPTS-->
-		<script src="globals.js"></script>
-		
-		<script src="deepCopy.js"></script>
-		
-		<script src="tanks.js"></script>
-		<script src="bullets.js"></script>
-		<script src="explosions.js"></script>
-		<script src="obstacles.js"></script>
-		
-		<script src="tests.js"></script>
-		<script src="mainLoop.js"></script>
-		<script src="events.js"></script>
-		<script src="match.js"></script>
-		<script>
-			//page onload stuff
-			canvas.width = 500;
-			canvas.height = 500;
-			
-			startMatch();
-		</script>
-	</body>
+
+<head>
+	<title>Tank Game</title>
+	<link type="text/css" rel="stylesheet" href="tanks.css" />
+</head>
+
+<body>
+	<div id="main_container">
+		<div id="game">
+			<canvas id="canvas"></canvas>
+			<table id="scores">
+				<tbody>
+					<tr id="score_tr"></tr>
+				</tbody>
+			</table>
+		</div>
+		<div id="instructions">
+			<p><b>Your goal: shoot the other tank, without being shot yourself.</b></p>
+			<p>
+				Bullets bounce off walls. You have a max of 10 bullets that can be bouncing
+				around at any given time. If you use them all, you have to wait for some to
+				despawn before you can shoot again.
+			</p>
+			<p>
+				Red Tank Controls (use right hand for EDSF, left hand for Q):<br>
+				<ul>
+					<li>E to move forwards</li>
+					<li>D to move backwards</li>
+					<li>S to rotate counterclockwise</li>
+					<li>F to rotate clockwise</li>
+					<li>Q to shoot</li>
+				</ul>
+			</p>
+			<p>
+				Green Tank Controls (use right hand for arrow keys, left hand for M):<br>
+				<ul>
+					<li>&#8593; to move forwards</li>
+					<li>&#8595; to move backwards</li>
+					<li>&#8592; to rotate counterclockwise</li>
+					<li>&#8594; to rotate clockwise</li>
+					<li>M to shoot</li>
+				</ul>
+			</p>
+		</div>
+	</div>
+
+
+	<!--SCRIPTS-->
+	<script src="globals.js"></script>
+
+	<script src="deepCopy.js"></script>
+
+	<script src="tanks.js"></script>
+	<script src="bullets.js"></script>
+	<script src="explosions.js"></script>
+	<script src="obstacles.js"></script>
+
+	<script src="tests.js"></script>
+	<script src="mainLoop.js"></script>
+	<script src="events.js"></script>
+	<script src="match.js"></script>
+	<script>
+		//page onload stuff
+		canvas.width = 500;
+		canvas.height = 500;
+
+		startMatch();
+	</script>
+</body>
+
 </html>

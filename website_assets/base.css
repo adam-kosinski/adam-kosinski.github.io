@@ -23,6 +23,8 @@ body {
     padding: 10px;
     font-size: 18px;
     z-index: 10;
+    background-color: #000a;
+    box-shadow: 0 0 10px 10px #000a;
 }
 #header a {
     text-decoration: none;
