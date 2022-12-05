@@ -29,6 +29,10 @@ html, body {
   margin: 1vw;
 }
 
+#instructions p .smaller {
+  font-size: 1.5vw;
+}
+
 #done_button {
   display: block;
   margin: auto;
