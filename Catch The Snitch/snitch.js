@@ -1,40 +1,12 @@
 /*<<<<<<<<<< SET UP FIELD >>>>>>>>>>>>>>>>>>>>>>>>>>*/
 
 //get references
-var field = document.getElementById("field");
 var snitch = document.getElementById("snitch");
-var leftWing = document.getElementById("leftWing");
-var rightWing = document.getElementById("rightWing");
 var clickRegion = document.getElementById("clickRegion");
-var ballPicture = document.getElementById("ballPicture");
 
-
-//deal with field size - put below scalar declaration later
-function resizeField(){
-	field.style.height = window.innerHeight + "px";
-	field.style.width = window.innerWidth + "px";
-}
-resizeField(); //set field to intial window dimensions
-
-
-//deal with snitch size and styling
-var snitchSize = 50; //diameter of ball part of snitch in px
-
-snitch.style.width = snitchSize+"px";
-snitch.style.height = snitchSize+"px";
-clickRegion.style.width = snitchSize+"px";
-clickRegion.style.height = snitchSize+"px";
-clickRegion.style.borderRadius = snitchSize/2 + "px";
-
-ballPicture.style.width = snitchSize+"px";
-ballPicture.style.height = snitchSize+"px";
-ballPicture.firstElementChild.style.width = snitchSize+"px";
-ballPicture.firstElementChild.style.height = snitchSize+"px";
-
-leftWing.style.width = snitchSize + 2*(snitchSize*1.25) + "px" //width is ball plus twice the established 'width' of the wing
-leftWing.style.left = -(snitchSize*1.25)+"px" //offset it by wing width
-rightWing.style.width = snitchSize + 2*(snitchSize*1.25) + "px"
-rightWing.style.left = -(snitchSize*1.25)+"px"
+// get diameter of ball part of snitch in px, from css file
+var snitchSize = getComputedStyle(document.body).getPropertyValue("--snitch-size");
+snitchSize = Number(snitchSize.split("px")[0]);
 
 /*<<<<<<<<<<<<<<< SNITCH MOVEMENT >>>>>>>>>>>>>>>>>>*/
 var isSnitchCaught = false;
@@ -46,10 +18,24 @@ function updateFps(newFps){
 updateFps(6);
 var scalar = 10; //px per frame, essentially scaling factor b/c default is to move snitch one pixel, dilate the screen to move more per frame
 
+//set movement limits
+var maxXOffset, maxYOffset;
+function handleResize(){
+	maxYOffset = Math.floor((window.innerHeight - snitchSize)/scalar);
+	maxXOffset = Math.floor((window.innerWidth - snitchSize)/scalar);
+
+	//move snitch to a position where we're safe regardless of cDir
+	if(topOffset > maxYOffset-1){topOffset = maxYOffset-1;}
+	if(topOffset < 1){topOffset = 1;}
+	if(leftOffset > maxXOffset-1){leftOffset = maxXOffset-1;}
+	if(leftOffset < 1){maxXOffset = 1;}
+	snitch.style.top = topOffset*scalar + "px";
+	snitch.style.left = leftOffset*scalar + "px";
+}
+window.addEventListener("resize", handleResize);
+handleResize();
 
 //initialize snitch position
-var maxYOffset = Math.floor((window.innerHeight - snitchSize)/scalar);
-var maxXOffset = Math.floor((window.innerWidth - snitchSize)/scalar);
 var topOffset = 1 + Math.floor(Math.random()*(maxYOffset-2)); //1+ and minus 2 so that position is safe regardless of cDir
 var leftOffset = 1 + Math.floor(Math.random()*(maxXOffset-2)); //(there will be a valid dir regardless of cDir if snitch not at min/max offset)
 snitch.style.top = topOffset*scalar + "px";
@@ -62,7 +48,7 @@ function handleMouseMove(e){
 	mX = e.pageX;
 	mY = e.pageY;
 }
-field.addEventListener("mousemove",handleMouseMove);
+document.body.addEventListener("mousemove",handleMouseMove);
 
 var Dirs /*directions*/ = [[1,0],[1,1],[0,1],[-1,1],[-1,0],[-1,-1],[0,-1],[1,-1]]; //[x,y], array rotates clockwise (to right) from standard position
 var cDir = Math.floor(Math.random()*8); //current direction - stored as a number 0-7 corresponding to an array in Dirs
@@ -86,7 +72,7 @@ function moveSnitch(){ //interval function, called periodically over time
 	//pick a direction; change cDir
 	cDir = pickDirection();
 	
-	console.log("  cDir:"+cDir);
+	//console.log("  cDir:"+cDir);
 	
 	//change style (display)
 	snitch.style.left = (leftOffset + Dirs[cDir][0])*scalar + "px";
@@ -303,7 +289,7 @@ function isDirValid(dir){
 	x += Dirs[dir][0];
 	y += Dirs[dir][1];
 	
-		//if moving -> land outside of field, not valid
+		//if moving -> land outside of window, not valid
 	if(x<0 || x>maxXOffset || y<0 || y>maxYOffset){return false}
 	
 		//if diagonal movement (more efficient to check before vert/horz. b/c that one requires incrementing a second time)

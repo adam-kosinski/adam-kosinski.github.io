@@ -5,7 +5,7 @@ function draw(){
   //mouse
   if(mouse_pos){
     let gradient = ctx.createRadialGradient(mouse_pos[0], mouse_pos[1], FULLY_LIT_DISTANCE, mouse_pos[0], mouse_pos[1], LIGHT_END_DISTANCE);
-    gradient.addColorStop(0, "#fff0");
+    gradient.addColorStop(0, "#fff");
     gradient.addColorStop(1, "#aaa");
 
     ctx.save();
