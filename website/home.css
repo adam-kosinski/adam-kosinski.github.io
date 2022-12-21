@@ -19,7 +19,7 @@ body {
     height: 100%;
     position: absolute;
     z-index: -5;
-    opacity: 0.4;
+    opacity: 0.5;
 }
 
 header#header {
