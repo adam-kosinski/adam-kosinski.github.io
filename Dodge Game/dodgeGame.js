@@ -1,5 +1,5 @@
 var field = document.getElementById("field");
-var ctx = field.getContext("2d");
+var ctx = field.getContext("2d", {willReadFrequently: true});
 ctx.fillStyle = "rgb(255,0,0)";
 
 
@@ -21,8 +21,8 @@ field.addEventListener("click",function(e){
 	score = 0;
 	
 	//set mouse coords (relative to canvas)
-	mouseX = e.layerX;
-	mouseY = e.layerY;
+	mouseX = e.offsetX;
+	mouseY = e.offsetY;
 	
 	mainInterval = setInterval(function(){
 		//choose a new location
@@ -48,12 +48,12 @@ field.addEventListener("click",function(e){
 		
 		
 		score++;
-	}, 250);
+	}, 300);
 
 	gameOver = false;
 });
 
-//check for if mouse is on a red box every 20 milliseconds
+//check for if mouse is on a red box
 setInterval(function(){
 	if(gameOver) {return} /*to stop this from checking before any mouseCoords have been defined,
 	and also doesn't make much sense to check when game isn't going on*/
@@ -66,11 +66,11 @@ setInterval(function(){
 		alert("END OF GAME. Score: "+score);
 		gameOver = true;
 	}
-}, 20);
+}, 10);
 
 field.addEventListener("mousemove",function(e){
-	mouseX = e.layerX;
-	mouseY = e.layerY;
+	mouseX = e.offsetX;
+	mouseY = e.offsetY;
 });
 
 //detect if mouse moved out of field canvas
