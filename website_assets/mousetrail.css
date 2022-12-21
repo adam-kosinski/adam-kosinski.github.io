@@ -1,0 +1,32 @@
+.particle {
+    z-index: -1;
+
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%;
+    background: radial-gradient(var(--shadow-color), transparent);
+
+    color: white;
+    font-size: 12px;
+    user-select: none;
+    
+    transform: translate(-50%, -50%);
+
+    animation: fade 2000ms;
+    animation-fill-mode: forwards;
+}
+
+@keyframes fade {
+    from {
+        opacity: 1;
+    }
+    to {
+        opacity: 0;
+        top: var(--end-top);
+        left: var(--end-left);
+    }
+}

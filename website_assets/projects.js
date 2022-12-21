@@ -4,7 +4,7 @@ function updateVisibleProjects(){
     let projects = document.querySelectorAll(".project:not(.fade_in)");
     projects.forEach(p => {
         let box = p.getBoundingClientRect();
-        if(box.top + 150 < window.innerHeight){
+        if(box.top + 125 < window.innerHeight){
             p.classList.add("fade_in");
         }
     });
