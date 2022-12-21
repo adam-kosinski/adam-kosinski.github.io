@@ -34,7 +34,7 @@ function createParticle(pageX, pageY){
     p.style.setProperty("--end-top", pageY + drift_range*(1-2*Math.random()) + "px");
     p.style.setProperty("--end-left", pageX + drift_range*(1-2*Math.random()) + "px");
 
-    let colors = ["#00f5","#f0f5"];
+    let colors = ["#00f6","#f0f6"];
 
     let color = colors[Math.floor(colors.length*Math.random())];
     p.style.setProperty("--shadow-color", color);
