@@ -46,8 +46,8 @@ function alertEvent(type){
 
 let alert_messages = {
   circle_offscreen: [
-    "It looks like you let a circle wander offscreen. That wasn't very attentive of you, was it. If you can't get it back, you may need to reload the page...",
-    "Whoops, a circle seems to have wandered offscreen. That's really unfortunate, isn't it? If you can't get it back, you may need to reload the page...",
+    "It looks like you let a circle wander offscreen. That wasn't very attentive of you, was it. If it doesn't wander back, you won't be able to complete the task with all 10 circles and will need to reload the page...",
+    "Whoops, a circle seems to have wandered offscreen. That's really unfortunate, isn't it? If it doesn't wander back, you won't be able to complete the task with all 10 circles and will need to reload the page...",
   ],
   success: [
     "That took you long enough.",
@@ -61,8 +61,8 @@ let alert_messages = {
     "Yeah, I forgot to mention that the circles get scared when you move your mouse too fast. Sorry about that. Hopefully that doesn't mess with them staying in the boxes or anything."
   ],
   speeding: [
-    "Speedy speedy circles!",
-    "Circle go vroom vroom!"
+    "Speedy speedy circles! But really, you need to move your mouse more slowly or the circles will move too quickly for this task to be possible.",
+    "Circle go vroom vroom! I don't think this task will be possible unless you move your mouse more slowly to avoid scaring the circles."
   ],
   first_teleport: [
     "Oh yeah, they teleport too. Have fun!"
