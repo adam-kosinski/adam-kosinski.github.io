@@ -1,7 +1,22 @@
 let spawn_range = 20; // in px, max dist (x and y separate) away from the mouse we can spawn particles 
 let drift_range = 20; // in px, max dist (x and y separate) a particle can drift
 
-document.addEventListener("mousemove", function(e){
+document.addEventListener("mousemove", handleMoveEvent);
+
+let prev_touchmove;
+document.addEventListener("touchmove", function(e){
+    let touchmove = {
+        pageX: e.touches[0].pageX,
+        pageY: e.touches[0].pageY
+    };
+    touchmove.movementX = prev_touchmove ? touchmove.pageX - prev_touchmove.pageX : 0;
+    touchmove.movementY = prev_touchmove ? touchmove.pageY - prev_touchmove.pageY : 0;
+
+    handleMoveEvent(touchmove);
+    prev_touchmove = touchmove;
+});
+
+function handleMoveEvent(e){
     createParticle(e.pageX, e.pageY);
 
     //fill in the gap between mousemoves with another particle
@@ -13,7 +28,7 @@ document.addEventListener("mousemove", function(e){
     else if(dist > 20){
         createParticle(e.pageX - e.movementX/2, e.pageY - e.movementY/2);
     }
-});
+}
 
 function createParticle(pageX, pageY){
     let p = document.createElement("div");
