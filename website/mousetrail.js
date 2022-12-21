@@ -6,6 +6,8 @@ document.addEventListener("mousemove", handleMoveEvent);
 
 let prev_touchmove;
 document.addEventListener("touchmove", function(e){
+    e.preventDefault();
+
     let touchmove = {
         pageX: e.touches[0].pageX,
         pageY: e.touches[0].pageY
@@ -15,7 +17,8 @@ document.addEventListener("touchmove", function(e){
 
     handleMoveEvent(touchmove);
     prev_touchmove = touchmove;
-});
+
+}, {passive: false}); //iOS safari weirdness
 
 
 
