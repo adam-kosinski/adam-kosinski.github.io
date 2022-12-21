@@ -1,4 +1,4 @@
-addEventListener("wheel", updateVisibleProjects);
+addEventListener("scroll", updateVisibleProjects);
 
 function updateVisibleProjects(){
     let projects = document.querySelectorAll(".project:not(.fade_in)");
