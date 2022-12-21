@@ -3,6 +3,7 @@ let drift_range = 20; // in px, max dist (x and y separate) a particle can drift
 
 document.addEventListener("mousemove", handleMoveEvent);
 
+
 let prev_touchmove;
 document.addEventListener("touchmove", function(e){
     let touchmove = {
@@ -16,7 +17,12 @@ document.addEventListener("touchmove", function(e){
     prev_touchmove = touchmove;
 });
 
+
+
 function handleMoveEvent(e){
+    //prevent excessive particles if the mouse isn't moving very much
+    if(Math.hypot(e.movementX, e.movementY) < 2 && Math.random() < 0.5) return;
+
     createParticle(e.pageX, e.pageY);
 
     //fill in the gap between mousemoves with another particle
@@ -43,14 +49,15 @@ function createParticle(pageX, pageY){
         p.innerHTML = "&#10036;"; //8 pointed star
     }
 
+    //set star position, size, and movement direction
     p.style.top = pageY + spawn_range*Math.random() + "px";
     p.style.left = pageX + spawn_range*Math.random() + "px";
     p.style.transform = "scale(" + (0.25 + 1.5*Math.random()) + ")";
     p.style.setProperty("--end-top", pageY + drift_range*(1-2*Math.random()) + "px");
     p.style.setProperty("--end-left", pageX + drift_range*(1-2*Math.random()) + "px");
 
+    //set star shadow color
     let colors = ["#00f6","#f0f6"];
-
     let color = colors[Math.floor(colors.length*Math.random())];
     p.style.setProperty("--shadow-color", color);
 
