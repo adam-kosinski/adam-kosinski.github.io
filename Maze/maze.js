@@ -287,13 +287,16 @@ function executeMazeJSFile() {
         } else {
             
             // loop through 'files' array and look for a match to the maze name
-            for(var i = 0; i < files.length; i++) {
-                if(files[i][1] === mazeName) {
-                    // if match, change maze, change display on start screen, redefine the variables and stop this function
-                    maze = extractMazeFromString(files[i][0]);
-                    doPreliminaryStuff();
-                    return;
-                }
-            }
+            // for(var i = 0; i < files.length; i++) {
+            //     if(files[i][1] === mazeName) {
+            //         // if match, change maze, change display on start screen, redefine the variables and stop this function
+            //         maze = extractMazeFromString(files[i][0]);
+            //         doPreliminaryStuff();
+            //         return;
+            //     }
+            // }
+
+            maze = MAZES[mazeName];
+            doPreliminaryStuff();
         }
     }

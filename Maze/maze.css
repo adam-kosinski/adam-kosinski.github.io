@@ -103,7 +103,7 @@ table {
     width: 60px;
     height: 40px;
     margin: auto;
-    margin-top: 300px;
+    margin-top: 20px;
 }
 
 /* Maze Enter Styling -------------------------- */
@@ -132,14 +132,9 @@ table {
     
     outline: 0 solid black; /*have to specify border style and color b/c it'll complain if I just set outline: none;*/
     
-    width: 892px;
-    height: 617px;
-    
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
+    width: 600px;
+    height: 400px;
+
     margin: auto;
     z-index: 7;
 }
@@ -149,12 +144,6 @@ table {
     color: white;
     text-align: center;
     font-family: sans-serif;
-    
-    position: absolute;
-    top: 16px;
-    left: 0;
-    right: 0;
-    margin: auto;
     z-index: 7;
 }
 
@@ -163,12 +152,8 @@ table {
     width: 100px;
     height: 50px;
     font-size: 14px;
-    
-    position: absolute;
-    left: 0;
-    right: 0;
     margin: auto;
-    bottom: 20px;
+    margin-top: 20px;
     z-index: 7;
 }
 
