@@ -54,7 +54,7 @@ setTimeout(function(){
   focus_fail_rate = final_focus_fail_rate;
   final_dragstart_fail_rate = dragstart_fail_rate;
   console.log("fail rates set to normal values");
-}, 10*1000);
+}, 20*1000);
 
 
 function init() { //called in the html file

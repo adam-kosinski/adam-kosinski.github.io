@@ -89,7 +89,7 @@ body {
 	font-size: 12px;
 	display: none;
 
-	-webkit-user-select: text;
+	user-select: text;
 }
 
 
@@ -125,5 +125,5 @@ body {
 	font-family: sans-serif;
 	text-align: center;
 
-	-webkit-user-select: none;
+	user-select: none;
 }
