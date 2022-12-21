@@ -73,21 +73,26 @@ html, body {
   width: 3vw;
   height: 3vw;
   border-radius: 100%;
-  border: 1px solid black;
   position: absolute;
   transform: translate(-50%, -50%); /*So that center of circle is at its coordinate*/
 }
 
 .red {
   background-color: red;
+  border: 1px solid darkred;
+}
+.red.focus {
+  box-shadow: 0 0 0.4vw 0.2vw red;
+  border: 3px solid white;
 }
 
 .blue {
   background-color: blue;
+  border: 1px solid darkblue;
 }
-
-.circle.focus {
-  box-shadow: 0 0 0.4vw 0.2vw yellow;
+.blue.focus {
+  box-shadow: 0 0 0.4vw 0.2vw blue;
+  border: 3px solid white;
 }
 
 

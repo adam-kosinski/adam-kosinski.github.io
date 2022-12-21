@@ -1,15 +1,30 @@
-body {
-	margin:0;
-	overflow: hidden; /*hides scroll bars*/
+:root {
+	--snitch-size: 50px;
+	--wing-width: calc(1.25*var(--snitch-size));
 }
 
-#field {
+* {
+	user-select: none;
+}
+
+html, body {
+	width: 100%;
+	height: 100%;
+}
+
+body {
+	margin:0;
+	overflow: hidden; /*hides scroll bars when the snitch gets near the edge of the screen*/
 	position: relative;
-	background-color:green;
+	background-image: url('hogwarts.jpg');
+	background-size: cover;
+	background-position: center 25%;
 }
 
 #snitch { /*width and height set in js file*/
 	position:relative;
+	width: var(--snitch-size);
+	height: var(--snitch-size);
 	
 	transition-property: top left; /*every time I change these values w/ javascript, it will be smoothly animated*/
 	transition-duration: 25ms; /*stand-in value, technically set based on fps in js file*/
@@ -19,6 +34,7 @@ body {
 .wing img {
 	width: 40%;
 	opacity: 0.85;
+	position: absolute;
 }
 
 .wing {
@@ -27,7 +43,11 @@ body {
 	top: 0;
 	bottom: 0;
 	margin: auto;
-	
+
+	/*center of wing container is at center of snitch, to make rotation easier*/
+	width: calc(var(--snitch-size) + 2*var(--wing-width));
+	left: calc(-1*var(--wing-width));
+
 	animation-duration: 500ms;
 	animation-iteration-count: infinite;
 	animation-timing-function: linear;
@@ -45,10 +65,14 @@ body {
 #ballPicture {
 	position:absolute;
 	z-index:6;
+	width: var(--snitch-size);
+	height: var(--snitch-size);
 }
 
 #ballPicture img {
 	filter: blur(0.5px);
+	width: var(--snitch-size);
+	height: var(--snitch-size);
 }
 
 @keyframes flapLeft {
@@ -65,19 +89,10 @@ body {
 	to{transform: rotate(0deg) scaleX(-1);}
 }
 
-#clickAbsorber {
-	width: 4000px;
-	height: 4000px;
-	top: -1000px;
-	left: -1000px;
-	cursor: default; /*otherwise cursor turns into a circle w/ a line through it when try to drag*/
-	
-	position: fixed;
-	z-index: 8;
-}
-
 #clickRegion {
-	
+	width: var(--snitch-size);
+	height: var(--snitch-size);
+	border-radius: 50%;
 	position:absolute;
 	z-index:10
 }
