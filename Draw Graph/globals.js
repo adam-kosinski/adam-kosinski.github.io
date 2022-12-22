@@ -1,7 +1,10 @@
 //html references
 var canvas = document.getElementById("canvas");
+var canvas_width_fraction = 0.7; //fraction of window width the canvas takes up, the rest is taken up by the instructions
+	// IF UPDATE THIS ALSO UPDATE #instructions IN THE CSS
+
 var ctx = canvas.getContext("2d");
-var info = document.getElementById("info");
+var mode_display = document.getElementById("mode");
 var instructions = document.getElementById("instructions");
 var M_adj_display = document.getElementById("M_adj_display");
 var mainHitCanvas = document.getElementById("mainHitCanvas");

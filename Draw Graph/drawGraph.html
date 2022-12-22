@@ -6,33 +6,31 @@
 	</head>
 	<body>
 		<canvas id="canvas"></canvas>  <!--this will display edges; vertices will be displayed with divs-->
-		<p id="info">Move Vertex</p> <!--move vertex is the default mode-->
 		<div id="instructions">
+			<p id="info"><b>Mode</b><br><span id="mode">Move Vertex</span></p> <!--move vertex is the default mode-->
+			<p id="instructions_label">Instructions:</p>
 			<table>
 				<tbody>
 					<tr id="header">
 						<td class="key">Press Key</td><td>Description</td>
 					</tr>
 					<tr>
-						<td class="key">I</td><td>Open/close the instructions screen (when you've read the instructions, press this to begin)</td>
-					</tr>
-					<tr>
-						<td class="key">M</td><td>Show/hide the adjacency matrix of the graph.</td>
-					</tr>
-					<tr>
 						<td class="key">V</td><td>Enter/exit "Add Vertex" mode. Click to create a vertex.</td>
 					</tr>
 					<tr>
-						<td class="key">E</td><td>Enter/exit "Add Edge" mode. Click 2 vertices (can be the same) to add an edge between them.</td>
+						<td class="key">E</td><td>Enter/exit "Add Edge" mode. Click 2 vertices to add an edge between them. Multiple edges between vertices is supported. Loops can be created by clicking a vertex twice.</td>
 					</tr>
 					<tr>
 						<td class="key">D</td><td>Enter/exit "Delete" mode. Click vertices or edges to delete them.</td>
 					</tr>
 					<tr>
-						<td class="key">L</td><td>Enter/exit "Change Label" mode. Change the text of a label by clicking on it. The default label value is the index of the vertex in the adjacency matrix. </td>
+						<td class="key">M</td><td>Show/hide the adjacency matrix of the graph.</td>
 					</tr>
 					<tr>
 						<td class="key">Shift+L</td><td>Toggle labels on/off.</td>
+					</tr>
+					<tr>
+						<td class="key">L</td><td>Enter/exit "Change Label" mode. Change the text of a label by clicking on it. The default label value is the index of the vertex in the adjacency matrix. </td>
 					</tr>
 					<tr>
 						<td class="key">Any Other Key</td><td>Enter "Move Vertex" mode (default). Vertices can be moved by dragging and dropping.</td>
@@ -58,14 +56,14 @@
 		<script src="loopLocations.js"></script>
 		<script>
 			//initialize canvas dimensions
-			canvas.width = window.innerWidth;
+			canvas.width = window.innerWidth * canvas_width_fraction;
 			canvas.height = window.innerHeight;
-			canvas.style.width = window.innerWidth + "px";
+			canvas.style.width = window.innerWidth * canvas_width_fraction + "px";
 			canvas.style.height = window.innerHeight + "px";
 			
-			mainHitCanvas.width = window.innerWidth;
+			mainHitCanvas.width = window.innerWidth * canvas_width_fraction;
 			mainHitCanvas.height = window.innerHeight;
-			mainHitCanvas.style.width = window.innerWidth + "px";
+			mainHitCanvas.style.width = window.innerWidth * canvas_width_fraction + "px";
 			mainHitCanvas.style.height = window.innerHeight + "px";
 		</script>
 	</body>

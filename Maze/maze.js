@@ -15,7 +15,7 @@ function doPreliminaryStuff() {
     sideRegionLength = Math.floor(maze.length / 3);
     middleRegionLength = maze.length - (2 * sideRegionLength);
     
-        //determine region of end location
+    //determine region of end location
     for(var r = 0; r < maze.length; r++) {
         for(var c = 0; c < maze[r].length; c++) {
             if(maze[r][c] === 3) { //if found the end, figure out which region
@@ -42,8 +42,9 @@ function doPreliminaryStuff() {
     
     
     var instructions =
-        "Use the 'wasd' keys to move.<br><br>The goal is to get from the green square to the red square, \
-        which is located in the " + endRegion + " region of the maze.";
+        "Use the arrow keys or 'WASD' keys to move.<br><br>The goal is to get from the green square to the red square, \
+        which is located in the " + endRegion + " region of the maze. At any given time, only a 5x5 region \
+        of the full maze is visible.";
     
     document.getElementById("instructions").innerHTML = instructions;
     
@@ -220,16 +221,18 @@ function executeMazeJSFile() {
     }
     
     
-    document.getElementsByTagName("body")[0].addEventListener("keypress",keyPressed);
+    document.body.addEventListener("keydown",keyDown);
     
-    function keyPressed(e) {
-        var key;
-        if(e.which) {key = e.which}
-        switch(key) {
-            case 119: moveAvatar(-1,0); break; // w pressed, move up
-            case 97: moveAvatar(0,-1); break; // s pressed, move up
-            case 115: moveAvatar(1,0); break; // a pressed, move up
-            case 100: moveAvatar(0,1); break; // d pressed, move up
+    function keyDown(e) {
+        switch(e.key) {
+            case "w":
+            case "ArrowUp": moveAvatar(-1,0); break;
+            case "a":
+            case "ArrowLeft": moveAvatar(0,-1); break;
+            case "s":
+            case "ArrowDown": moveAvatar(1,0); break;
+            case "d":
+            case "ArrowRight": moveAvatar(0,1); break;
         }
     }
     

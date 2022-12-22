@@ -6,9 +6,9 @@ function windowResized(){
 	//loop through main canvas and hitCanvases (for edges), resetting them
 	let canvases = document.getElementsByTagName("canvas");
 	for(var i=0; i<canvases.length; i++){
-		canvases[i].width = window.innerWidth;
+		canvases[i].width = window.innerWidth * canvas_width_fraction;
 		canvases[i].height = window.innerHeight;
-		canvases[i].style.width = window.innerWidth + "px";
+		canvases[i].style.width = window.innerWidth * canvas_width_fraction + "px";
 		canvases[i].style.height= window.innerHeight + "px";
 	}
 
@@ -22,10 +22,6 @@ document.addEventListener("keypress", handleKeypress);
 
 function handleKeypress(e){
 	switch(e.key){
-		case "i":
-			if(instructions.style.display !== "none"){instructions.style.display = "none"}
-			else {instructions.style.display = "block"}
-			break;
 		case "m":
 			if(M_adj_display.style.display === "block"){M_adj_display.style.display = "none"}
 			else {
@@ -73,26 +69,24 @@ function updateAdjacencyMatrixDisplay(){
 }
 
 function switchMode(targetMode){ //targetMode is a string
-	if(instructions.style.display !== "none"){return} //don't do anything if the instructions are showing
-
 	mode = targetMode; //mode is a global variable
 	console.log("mode:",mode);
 
 	switch(targetMode){
 		case "move vertex":
-			info.innerText = "Move Vertex";
+			mode_display.innerText = "Move Vertex";
 			break;
 		case "add vertex":
-			info.innerText = "Add Vertex";
+			mode_display.innerText = "Add Vertex";
 			break;
 		case "add edge":
-			info.innerText = "Add Edge: Select 1st Vertex";
+			mode_display.innerText = "Add Edge: Select 1st Vertex";
 			break;
 		case "delete":
-			info.innerText = "Delete";
+			mode_display.innerText = "Delete";
 			break;
 		case "change label":
-			info.innerText = "Change Label";
+			mode_display.innerText = "Change Label";
 			break;
 	}
 
@@ -117,13 +111,13 @@ function handleClick(e){
 			if(e.target.className === "vertex"){ //check if we clicked on a vertex, b/c clicks indicate which vertices the new edge will be incident to
 				if(verticesForEdge.length === 0){
 					verticesForEdge.push(vertices.indexOf(e.target)); //push index of the vertex
-					info.innerText = "Add Edge: Select 2nd Vertex";
+					mode_display.innerText = "Add Edge: Select 2nd Vertex";
 				} else if(verticesForEdge.length === 1){
 					verticesForEdge.push(vertices.indexOf(e.target)); //push index of the vertex
 					addEdge(verticesForEdge[0], verticesForEdge[1]); //add the edge. function in addStuff.js
 
 					//reset for adding another edge
-					info.innerText = "Add Edge: Select 1st Vertex";
+					mode_display.innerText = "Add Edge: Select 1st Vertex";
 					verticesForEdge = [];
 				}
 			}
@@ -234,7 +228,7 @@ function handleMousemove(e){
 
 	//handle dragging
 		//stop the drag if leaving the window
-	if(mode === "move vertex" && (e.pageX<0 || e.pageX>window.innerWidth || e.pageY<0 || e.pageY>window.innerHeight)){
+	if(mode === "move vertex" && (e.pageX<0 || e.pageX>window.innerWidth * canvas_width_fraction || e.pageY<0 || e.pageY>window.innerHeight)){
 		draggedVertex = undefined;
 		M_adj_display.style.WebkitUserSelect = "text";
 	}
