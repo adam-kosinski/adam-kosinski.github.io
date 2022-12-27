@@ -118,13 +118,23 @@ function selectTopNDiverse(n){
 }
 
 
-// select the families I'm currently working on - no UI trigger for this, will use the console
-let adam_families = ['Asteraceae', 'Lamiaceae', 'Fabaceae', 'Scrophulariaceae', 'Apiaceae', 'Geraniaceae', 'Rosaceae', 'Ericaceae', 'Orchidaceae', 'Brassicaceae', 'Boraginaceae', 'Saxifragaceae', 'Plantaginaceae', 'Convolvulaceae', 'Rubiaceae'];
-function selectAdam(){
+//selections based on the global custom sets object (really just for Adam's use)
+function selectCustom(set_name){
     selectNone();
 
-    for(let i=0; i<adam_families.length; i++){
-        let family = adam_families[i];
+    //check if this custom set exists
+    if(!custom_sets.hasOwnProperty(set_name)){
+        console.warn("Can't find this custom set. Set names:");
+        for(let name in custom_sets){
+            console.log(name);
+        }
+        return;
+    }
+
+    let set = custom_sets[set_name];
+
+    for(let i=0; i<set.length; i++){
+        let family = set[i];
         if(family_obs.hasOwnProperty(family)){
             selected_families.push(family);
             nonselected_families.splice(nonselected_families.indexOf(family), 1);

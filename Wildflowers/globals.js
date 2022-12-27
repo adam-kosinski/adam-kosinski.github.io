@@ -39,3 +39,8 @@ let easy_families = new Set([
     "Violaceae",
     "Salicaceae"
 ]);
+
+let custom_sets = {
+    "adam": ['Asteraceae', 'Lamiaceae', 'Fabaceae', 'Scrophulariaceae', 'Apiaceae', 'Geraniaceae', 'Rosaceae', 'Ericaceae', 'Orchidaceae', 'Brassicaceae', 'Boraginaceae', 'Saxifragaceae', 'Plantaginaceae', 'Convolvulaceae', 'Rubiaceae'],
+    "five united petals": ['Apocynaceae', 'Boraginaceae', 'Campanulaceae', 'Cucurbitaceae', 'Ericaceae', 'Gentianaceae', 'Scrophulariaceae', 'Solanaceae', 'Verbenaceae', 'Vitaceae']
+}
