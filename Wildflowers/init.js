@@ -73,7 +73,27 @@ function init(csv){
         family_choices_grid.appendChild(div);
     }
 
-    selectEasy(); //default selection
+    //select families
+    if(selected_families.length == 0){
+        selectEasy(); //default selection
+    }
+    else {
+        //Try to keep same selections as before
+        let new_selected = [];
+        let new_nonselected = [];
+        for(let family in family_obs){
+            if(selected_families.includes(family)){
+                new_selected.push(family);
+                document.getElementById(family + "_choice").classList.add("selected");
+            }
+            else {
+                new_nonselected.push(family);
+                document.getElementById(family + "_choice").classList.remove("selected");
+            }
+        }
+        selected_families = new_selected;
+        nonselected_families = new_nonselected;
+    }
 
     sortFamilyChoices(NSpeciesComparator); //default sort
 
