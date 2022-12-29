@@ -1,11 +1,7 @@
 #gallery {
-    margin-top: 45px;
+    margin-top: 55px;
     width: 100%;
     height: calc(100vh - 45px);
     border: none;
     position: absolute;
-}
-
-header#header {
-    box-shadow: none;
 }
