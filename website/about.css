@@ -1,8 +1,22 @@
 #page_title {
     font-size: 48px;
+    margin-bottom: 24px;
 }
 
 #adam_pic {
     width: 300px;
-    margin-left: 40px;
+    max-width: 100%;
+    margin-bottom: 24px;
+}
+
+#text_content {
+    margin: 0;
+}
+
+
+@media (min-width: 850px) {
+    #adam_pic {
+        float: right;
+        margin-left: 48px;
+    }
 }
