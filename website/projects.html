@@ -8,14 +8,24 @@
     <link type="text/css" rel="stylesheet" href="projects.css" />
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Open+Sans&family=Life+Savers">
     <link rel="icon" href="images/favicon.png">
+
+    <script>
+        //stuff for the side nav menu on small screens
+        function toggleSideNav(){document.querySelector("#header").classList.toggle("nav-open");}
+        window.addEventListener("resize", function(){document.querySelector("#header").classList.remove("nav-open");});
+    </script>
 </head>
 
 <body>
     <header id="header">
-        <a href="../index.html">Home</a>
-        <a href="projects.html">Projects</a>
-        <a href="photo_gallery.html">Photography</a>
-        <a href="about.html">About</a>
+        <img id="hamburger" onclick="toggleSideNav()" src="images/hamburger_icon.png"/>
+        <div id="nav_blackout" onclick="toggleSideNav()"></div>
+        <nav>
+            <a href="../index.html">Home</a>
+            <a href="projects.html">Projects</a>
+            <a href="photo_gallery.html">Photography</a>
+            <a href="about.html">About</a>
+        </nav>
     </header>
 
     <main>
@@ -25,13 +35,13 @@
             <p class="project_title">Wildflower ID Training Tool</p>
             <div class="project_info">
                 <img src="images/wildflowers.png">
-                <div class="project_description">
+                <p class="project_description">
                     This is a tool I created to help me learn to identify wildflower families.
                     It repeatedly shows you images of wildflowers in my home area pulled from iNaturalist
                     and you have to guess the wildflower family.
                     <br>
                     <a href="../Wildflowers/index.html" class="box_link">Take a Look ></a>
-                </div>
+                </p>
             </div>
         </div>
 

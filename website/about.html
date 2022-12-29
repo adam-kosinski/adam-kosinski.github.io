@@ -7,13 +7,23 @@
         <link type="text/css" rel="stylesheet" href="about.css"/>
 		<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Open+Sans&family=Life+Savers">
 		<link rel="icon" href="images/favicon.png">
+
+        <script>
+            //stuff for the side nav menu on small screens
+            function toggleSideNav(){document.querySelector("#header").classList.toggle("nav-open");}
+            window.addEventListener("resize", function(){document.querySelector("#header").classList.remove("nav-open");});
+        </script>
     </head>
 	<body>
 		<header id="header">
-			<a href="../index.html">Home</a>
-			<a href="projects.html">Projects</a>
-            <a href="photo_gallery.html">Photography</a>
-			<a href="about.html">About</a>
+            <img id="hamburger" onclick="toggleSideNav()" src="images/hamburger_icon.png"/>
+            <div id="nav_blackout" onclick="toggleSideNav()"></div>
+            <nav>
+                <a href="../index.html">Home</a>
+                <a href="projects.html">Projects</a>
+                <a href="photo_gallery.html">Photography</a>
+                <a href="about.html">About</a>
+            </nav>
         </header>
         <main>
             <div style="display: flex;">

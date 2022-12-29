@@ -31,3 +31,13 @@
     width: 300px;
     align-self: flex-start;
 }
+
+.project_description {
+    margin: 0;
+}
+
+@media (max-width: 900px) {
+    .project_info {
+        flex-direction: column;
+    }
+}

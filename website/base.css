@@ -16,31 +16,9 @@ body {
     transition-duration: 1s;
 }
 
-#header {
-    position: fixed;
-    display: flex;
-    width: 100%;
-    top: 0;
-    gap: 15px;
-    padding: 10px;
-    font-size: 18px;
-    z-index: 10;
-    background-color: #000a;
-    box-shadow: 0 0 10px 10px #000a;
-}
-#header a {
-    text-decoration: none;
-    color: white;
-}
-#header a:hover {
-    font-weight: bold;
-    border-bottom: 1.5px solid white;
-}
-
 main {
     padding: 65px 10vw 0 10vw; /*side padding and dodge the page header*/
 }
-
 
 .box_link {
     /*override anchor tag styling*/
@@ -60,4 +38,79 @@ main {
 .box_link:hover {
     background-color: white;
     color: black;
+}
+
+
+/* header and navbar stuff */
+
+#header {
+    position: fixed;
+    height: 60px;
+    width: 100vw;
+    top: 0;
+    font-size: 18px;
+    z-index: 10;
+    background: linear-gradient(black, #0009 80%, transparent);
+}
+#hamburger {
+    display: none;
+}
+#nav_blackout {
+    display: none;
+}
+#header nav {
+    display: flex;
+    gap: 15px;
+    padding: 15px;
+    width: fit-content;
+}
+#header nav a {
+    text-decoration: none;
+    color: white;
+    width: fit-content;
+    max-width: 60vw;
+}
+#header nav a:hover {
+    font-weight: bold;
+    border-bottom: 1.5px solid white;
+    margin-bottom: -1.5px; /* offset effect of added border */
+}
+
+
+@media (max-width: 500px) { /*370 best*/
+    #hamburger {
+        display: block;
+        cursor: pointer;
+        position: absolute;
+        margin: 15px;
+    }
+    #nav_blackout {
+        display: block;
+        background-color: black;
+        opacity: 0;
+        width: 200vw;
+        height: 0;
+        position: absolute;
+        top: -50vh;
+        left: -50vw;
+        transition: opacity 0.5s;
+    }
+    #header nav {
+        flex-direction: column;
+        height: 100vh;
+        border-right: 1px solid gray;
+        background-color: black;
+
+        position: relative;
+        left: -100vw;
+        transition: left 0.5s;
+        transition-timing-function: ease-in-out;
+    }
+    #header.nav-open nav {
+        left: 0;
+    }
+    #header.nav-open #nav_blackout {
+        opacity: 0.5;
+        height: 200vh;
+    }
 }
