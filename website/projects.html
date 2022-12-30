@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 
 <head>
     <title>Adam Kosinski's Website</title>
@@ -11,16 +11,24 @@
 
     <script>
         //stuff for the side nav menu on small screens
-        function toggleSideNav(){document.querySelector("#header").classList.toggle("nav-open");}
-        window.addEventListener("resize", function(){document.querySelector("#header").classList.remove("nav-open");});
+        function toggleSideNav() {
+            let header = document.querySelector("#header");
+            header.classList.toggle("nav-open");
+            let visible = header.classList.contains("nav-open");
+            document.querySelectorAll("#header nav > *").forEach(el => el.setAttribute("tabindex", visible ? "0" : "-1"));
+        }
+        window.addEventListener("resize", function () { document.querySelector("#header").classList.remove("nav-open"); });
     </script>
 </head>
 
 <body>
     <header id="header">
-        <img id="hamburger" onclick="toggleSideNav()" src="images/hamburger_icon.png"/>
+        <button onclick="toggleSideNav()">
+            <img id="hamburger" src="images/hamburger_icon.png" alt="Open navigation menu" />
+        </button>
         <div id="nav_blackout" onclick="toggleSideNav()"></div>
         <nav>
+            <button id="close_sidenav" onclick="toggleSideNav()" aria-label="Close navigation menu">&#10006;</button>
             <a href="../index.html">Home</a>
             <a href="projects.html">Projects</a>
             <a href="photo_gallery.html">Photography</a>
@@ -50,7 +58,15 @@
             <div class="project_info">
                 <img src="images/PMAPS.png">
                 <div class="project_description">
-                    This is an app for Project WILD, a backpacking / outdoor activity preorientation program at Duke University. It lets staffers annotate and categorize locations on a trail map. These annotations can then be viewed by others, a fantastic way of sharing knowledge about an area. The app existed since 2014, but it stopped functioning around 2016. I became in charge of getting the project back up and running in Fall 2022, and in addition to doing so, improved the design a bit and added several new features (commenting, a legend, etc). Working on this gave me a lot of experience with the Google Maps API and Google Firebase's Realtime Database, which the project is built upon. It also gave me an appreciation for how cloud platforms can make creating genuinely useful apps much easier.<br><br>Note: No link for this one since the app is intended for Project WILD use only.
+                    This is an app for Project WILD, a backpacking / outdoor activity preorientation program at Duke
+                    University. It lets staffers annotate and categorize locations on a trail map. These annotations can
+                    then be viewed by others, a fantastic way of sharing knowledge about an area. The app existed since
+                    2014, but it stopped functioning around 2016. I became in charge of getting the project back up and
+                    running in Fall 2022, and in addition to doing so, improved the design a bit and added several new
+                    features (commenting, a legend, etc). Working on this gave me a lot of experience with the Google
+                    Maps API and Google Firebase's Realtime Database, which the project is built upon. It also gave me
+                    an appreciation for how cloud platforms can make creating genuinely useful apps much
+                    easier.<br><br>Note: No link for this one since the app is intended for Project WILD use only.
                 </div>
             </div>
         </div>
@@ -60,7 +76,9 @@
             <div class="project_info">
                 <img src="images/photo_gallery.png">
                 <div class="project_description">
-                    An interactive photo gallery layout I created from scratch to display some of my most artistic photos. This project helped me learn a lot about HTML flexbox, CSS variables, and CSS transitions. You can see the gallery at the link below or by navigating to the website's "Photography" tab.
+                    An interactive photo gallery layout I created from scratch to display some of my most artistic
+                    photos. This project helped me learn a lot about HTML flexbox, CSS variables, and CSS transitions.
+                    You can see the gallery at the link below or by navigating to the website's "Photography" tab.
                     <br>
                     <a href="https://adam-kosinski.github.io/Photo-Gallery/" class="box_link">Take a Look ></a>
                 </div>
@@ -72,7 +90,8 @@
             <div class="project_info">
                 <img src="images/pig.png">
                 <div class="project_description">
-                    Some JavaScript code I wrote that will translate any website into pig latin. This is one of my favorite projects.
+                    Some JavaScript code I wrote that will translate any website into pig latin. This is one of my
+                    favorite projects.
                     <br>
                     <a href="../Pig Latin/pigLatin.html" class="box_link">Take a Look ></a>
                 </div>
@@ -100,13 +119,14 @@
             <div class="project_info">
                 <img src="images/snitch.png">
                 <div class="project_description">
-                    A Harry-Potter inspired program where you have one goal - click on the flying snitch to catch it. The snitch stops moving once you've caught it. Sounds easy, right? Go on then, give it a try...
+                    A Harry-Potter inspired program where you have one goal - click on the flying snitch to catch it.
+                    The snitch stops moving once you've caught it. Sounds easy, right? Go on then, give it a try...
                     <br>
                     <a href="../Catch%20The%20Snitch/snitch.html" class="box_link">Take a Look ></a>
                 </div>
             </div>
         </div>
-        
+
         <div class="project">
             <p class="project_title">Shadows</p>
             <div class="project_info">
@@ -204,7 +224,8 @@
             <div class="project_info">
                 <img src="images/dodge_game.png">
                 <div class="project_description">
-                    A simple game a friend and I made in an hour-long coding challenge. You move your mouse to dodge the moving red boxes.
+                    A simple game a friend and I made in an hour-long coding challenge. You move your mouse to dodge the
+                    moving red boxes.
                     <br>
                     <a href="../Dodge Game/dodgeGame.html" class="box_link">Take a Look ></a>
                 </div>
@@ -216,7 +237,8 @@
             <div class="project_info">
                 <img src="images/maze.png">
                 <div class="project_description">
-                    A maze solver program, where you try to find your way through one of several mazes with limited vision. Good luck!
+                    A maze solver program, where you try to find your way through one of several mazes with limited
+                    vision. Good luck!
                     <br>
                     <a href="../Maze/maze.html" class="box_link">Take a Look ></a>
                 </div>
@@ -229,7 +251,7 @@
             <p>Game on Graphs Stuff: <a href="Game on Graphs/Version 2/graphs.html">link</a></p> -->
     </main>
     <script>
-        window.addEventListener("load", function(){document.body.style.opacity = 1;})
+        window.addEventListener("load", function () { document.body.style.opacity = 1; })
     </script>
     <script src="projects.js"></script>
 </body>

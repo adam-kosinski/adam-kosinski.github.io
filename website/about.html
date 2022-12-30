@@ -11,16 +11,24 @@
 
     <script>
         //stuff for the side nav menu on small screens
-        function toggleSideNav() { document.querySelector("#header").classList.toggle("nav-open"); }
+        function toggleSideNav() {
+            let header = document.querySelector("#header");
+            header.classList.toggle("nav-open");
+            let visible = header.classList.contains("nav-open");
+            document.querySelectorAll("#header nav > *").forEach(el => el.setAttribute("tabindex", visible ? "0" : "-1"));
+        }
         window.addEventListener("resize", function () { document.querySelector("#header").classList.remove("nav-open"); });
     </script>
 </head>
 
 <body>
     <header id="header">
-        <img id="hamburger" onclick="toggleSideNav()" src="images/hamburger_icon.png" />
+        <button onclick="toggleSideNav()">
+            <img id="hamburger" src="images/hamburger_icon.png" alt="Open navigation menu" />
+        </button>
         <div id="nav_blackout" onclick="toggleSideNav()"></div>
         <nav>
+            <button id="close_sidenav" onclick="toggleSideNav()" aria-label="Close navigation menu">&#10006;</button>
             <a href="../index.html">Home</a>
             <a href="projects.html">Projects</a>
             <a href="photo_gallery.html">Photography</a>
@@ -28,7 +36,7 @@
         </nav>
     </header>
     <main>
-        <img id="adam_pic" src="images/Adam_Kosinski.png" />
+        <img id="adam_pic" src="images/Adam_Kosinski.png" alt="Picture of Adam Kosinski"/>
         <p id="page_title">About Me</p>
         <p id="text_content">
             Hi there! My name is Adam Kosinski, and I'm an undergraduate student at Duke University majoring in
