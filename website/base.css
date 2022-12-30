@@ -52,8 +52,13 @@ main {
     z-index: 10;
     background: linear-gradient(black, #0009 80%, transparent);
 }
-#hamburger {
+button:has(#hamburger) {
     display: none;
+}
+#hamburger {
+    display: block; /* prevent extra space on bottom from inline styling */
+    width: 30px;
+    height: 30px;
 }
 #nav_blackout {
     display: none;
@@ -63,6 +68,9 @@ main {
     gap: 15px;
     padding: 15px;
     width: fit-content;
+}
+#close_sidenav {
+    display: none;
 }
 #header nav a {
     text-decoration: none;
@@ -78,11 +86,17 @@ main {
 
 
 @media (max-width: 370px) {
-    #hamburger {
+    button:has(#hamburger) {
         display: block;
         cursor: pointer;
         position: absolute;
         margin: 15px;
+        padding: 0;
+        background: none;
+        border: none;
+    }
+    button:has(#hamburger):focus {
+        outline: 1px solid white;
     }
     #nav_blackout {
         display: block;
@@ -106,11 +120,20 @@ main {
         transition: left 0.5s;
         transition-timing-function: ease-in-out;
     }
-    #header.nav-open nav {
-        left: 0;
+    #close_sidenav {
+        display: block;
+        background: none;
+        border: none;
+        color: white;
+        font-size: 18px;
+        padding: 0;
+        width: fit-content;
     }
     #header.nav-open #nav_blackout {
         opacity: 0.5;
         height: 200vh;
+    }
+    #header.nav-open nav {
+        left: 0;
     }
 }

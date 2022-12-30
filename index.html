@@ -1,45 +1,57 @@
 <!DOCTYPE html>
-<html>
-	<head>
-		<title>Adam Kosinski's Website</title>
-		<meta name="viewport" content="width=device-width initial-scale=1">
-		<link type="text/css" rel="stylesheet" href="website/base.css"/>
-		<link type="text/css" rel="stylesheet" href="website/home.css"/>
-		<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Open+Sans&family=Life+Savers">
-		<link rel="icon" href="website/images/favicon.png">
+<html lang="en">
 
-		<link type="text/css" rel="stylesheet" href="website/mousetrail.css"/>
+<head>
+	<title>Adam Kosinski's Website</title>
+	<meta name="viewport" content="width=device-width initial-scale=1">
+	<meta name="google-site-verification" content="Rx_2EKffIU4uD8hQb1YRo6jEPDEOMf4CtbiGodiaY0g" />
+	<link type="text/css" rel="stylesheet" href="website/base.css" />
+	<link type="text/css" rel="stylesheet" href="website/home.css" />
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Open+Sans&family=Life+Savers">
+	<link rel="icon" href="website/images/favicon.png">
 
-		<script>
-			//stuff for the side nav menu on small screens
-			function toggleSideNav(){document.querySelector("#header").classList.toggle("nav-open");}
-			window.addEventListener("resize", function(){document.querySelector("#header").classList.remove("nav-open");});
-		</script>
-	</head>
-	<body>
-		<div id="background_image"></div>
+	<link type="text/css" rel="stylesheet" href="website/mousetrail.css" />
 
-		<header id="header">
-			<img id="hamburger" onclick="toggleSideNav()" src="website/images/hamburger_icon.png"/>
-			<div id="nav_blackout" onclick="toggleSideNav()"></div>
-			<nav>
-				<a href="index.html">Home</a>
-				<a href="website/projects.html">Projects</a>
-				<a href="website/photo_gallery.html">Photography</a>
-				<a href="website/about.html">About</a>
-			</nav>
-		</header>
+	<script>
+        //stuff for the side nav menu on small screens
+        function toggleSideNav() {
+            let header = document.querySelector("#header");
+            header.classList.toggle("nav-open");
+            let visible = header.classList.contains("nav-open");
+            document.querySelectorAll("#header nav > *").forEach(el => el.setAttribute("tabindex", visible ? "0" : "-1"));
+        }
+        window.addEventListener("resize", function () { document.querySelector("#header").classList.remove("nav-open"); });
+    </script>
+</head>
 
-		<main>
-			<div id="intro">
-				<p id="hello">Hi, I'm Adam</p>
-				<a href="website/projects.html" class="box_link">View My Projects ></a>
-			</div>
-		</main>
+<body>
+	<div id="background_image"></div>
 
-		<script>
-			window.addEventListener("load", function(){document.body.style.opacity = 1;})
-		</script>
-		<script src="website/mousetrail.js"></script>
-	</body>
+	<header id="header">
+        <button onclick="toggleSideNav()">
+            <img id="hamburger" src="website/images/hamburger_icon.png" alt="Open navigation menu" />
+        </button>
+        <div id="nav_blackout" onclick="toggleSideNav()"></div>
+        <nav>
+            <button id="close_sidenav" onclick="toggleSideNav()" aria-label="Close navigation menu">&#10006;</button>
+            <a href="index.html">Home</a>
+            <a href="website/projects.html">Projects</a>
+            <a href="website/photo_gallery.html">Photography</a>
+            <a href="website/about.html">About</a>
+        </nav>
+    </header>
+
+	<main>
+		<div id="intro">
+			<p id="hello">Hi, I'm Adam</p>
+			<a href="website/projects.html" class="box_link">View My Projects ></a>
+		</div>
+	</main>
+
+	<script>
+		window.addEventListener("load", function () { document.body.style.opacity = 1; })
+	</script>
+	<script src="website/mousetrail.js"></script>
+</body>
+
 </html>
