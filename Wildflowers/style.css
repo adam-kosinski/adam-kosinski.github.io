@@ -271,7 +271,7 @@ p#elpel_keywords {
     cursor: pointer;
     padding: 5px;
 }
-#family_choices_header div.inline.clickable:hover {
+#family_choices_header div.inline.clickable:hover, #family_choices_header div.inline.clickable.selected {
     background-color: purple;
     color: beige;
 }

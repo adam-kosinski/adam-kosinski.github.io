@@ -72,6 +72,22 @@ function searchParents(child, attr, value){
     return null;
 }
 
+function sortFamilyChoices(compare_func){
+    let families = Object.keys(family_obs);
+
+    if(!compare_func){
+        families.sort();
+    }
+    else {
+        families.sort(compare_func);
+    }
+    
+    let grid = document.getElementById("family_choices_grid");
+    for(let i=0; i<families.length; i++){
+        grid.appendChild(document.getElementById(families[i] + "_choice"));
+    }
+}
+
 
 function NSpeciesComparator(a,b){
     //takes family names a,b

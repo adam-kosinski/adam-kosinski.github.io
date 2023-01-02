@@ -17,6 +17,15 @@ function init(csv){
         family_obs[family].push(tuple);
     }
 
+    //put species in each family into a set object, so we can count # species
+    family_species = {};
+    for(let family in family_obs){
+        let pics = family_obs[family];
+        let species_set = new Set();
+        family_obs[family].forEach(tuple => species_set.add(tuple.scientific_name));
+        family_species[family] = species_set;
+    }
+
     //get family data and organize into a dictionary by family scientific names
     let families_parsed = Papa.parse(families_csv, {header: true}).data;
     family_data = {};
@@ -67,15 +76,21 @@ function init(csv){
         div.appendChild(img);
 
         let p = document.createElement("p");
-        p.innerHTML = "<span>" + family + "</span><br>" + family_data[family].common_name + " (" + family_obs[family].length + ")";
+        p.innerHTML =
+            "<span>" + family + "</span><br>" + family_data[family].common_name + "<br>" +
+            " (" + family_species[family].size + " sp, " + family_obs[family].length + " pics)";
         div.appendChild(p);
 
         family_choices_grid.appendChild(div);
     }
 
     //select families
+    //clear previous selection, we don't know if the header label still applies
+    document.querySelectorAll("#family_choices_header div[data-group='select']").forEach(el => {el.classList.remove("selected")});
+    //select families, trying to keep same selections as before
     if(selected_families.length == 0){
         selectEasy(); //default selection
+        document.getElementById("select_easy").classList.add("selected");
     }
     else {
         //Try to keep same selections as before
@@ -96,6 +111,8 @@ function init(csv){
     }
 
     sortFamilyChoices(NSpeciesComparator); //default sort
+    document.querySelectorAll("#family_choices_header div[data-group='sort']").forEach(el => {el.classList.remove("selected")});
+    document.getElementById("sort_n_species").classList.add("selected");
 
     //add family image credits
     let credit_text = "All images sourced from iNaturalist.<br><br>";

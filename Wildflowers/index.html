@@ -75,8 +75,8 @@
                         will be in the selected families, but occasionally a plant not in these families will be
                         shown. Typing "Other" or the correct family will be considered correct for such plants.
                         Use the autocomplete feature, it helps avoid spelling errors. Also, clicking a family
-                        in the grid while holding Alt will send you to the family's info webpage. The number in parentheses
-                        is the number of photos available for that family.
+                        in the grid while holding Alt will send you to the family's info webpage. The # species and # photos for
+                        each family is shown in parentheses.
                     </p>
                     <label for="dataset_select">Select Dataset:</label>
                     <select id="dataset_select">
@@ -94,14 +94,14 @@
                 <div id="family_choices_header">
                     <p>Pick Families:</p>
                     <div class="inline" style="margin-left: 5px;"><u>Select:</u></div>
-                    <div class="inline clickable" id="select_easy">Easy</div>
-                    <div class="inline clickable" id="select_diverse">Top 10 Diverse</div>
-                    <div class="inline clickable" id="select_all">All</div>
-                    <div class="inline clickable" id="select_none">None</div>
+                    <div class="inline clickable" data-group="select" id="select_easy">Easy</div>
+                    <div class="inline clickable" data-group="select" id="select_diverse">Top 10 Diverse</div>
+                    <div class="inline clickable" data-group="select" id="select_all">All</div>
+                    <div class="inline clickable" data-group="select" id="select_none">None</div>
                     <div class="inline" style="margin-left: 20px;"><u>Sort By:</u></div>
-                    <div class="inline clickable" id="sort_n_species"># Species</div>
-                    <div class="inline clickable" id="sort_alphabetical">A-Z</div>
-                    <div class="inline clickable" id="sort_frequency"># Photos</div>
+                    <div class="inline clickable" data-group="sort" id="sort_n_species"># Species</div>
+                    <div class="inline clickable" data-group="sort" id="sort_alphabetical">A-Z</div>
+                    <div class="inline clickable" data-group="sort" id="sort_frequency"># Photos</div>
                     <p id="family_image_credit_link">Family Image Credits</p>
                 </div>
                 <div id="family_choices">

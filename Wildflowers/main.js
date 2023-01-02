@@ -47,6 +47,13 @@ function handleKeypress(e){
 
 function handleClick(e){
 
+    //select / sort highlighting
+    if(document.getElementById("family_choices_header").contains(e.target) && e.target.classList.contains("clickable")){
+        document.querySelectorAll(`#family_choices_header div[data-group="${e.target.dataset.group}"]`).forEach(el => {el.classList.remove("selected")});
+        e.target.classList.add("selected");
+        //don't return, more handlers might apply below
+    }
+
     if(e.target.id == "next_plant"){
         nextPlant();
         return;
@@ -139,6 +146,8 @@ function handleClick(e){
                 selected_families.splice(selected_families.indexOf(family_name), 1);
                 nonselected_families.push(family_name);
             }
+            //custom selection now, so remove selected item in the header
+            document.querySelectorAll("#family_choices_header div[data-group='select']").forEach(el => {el.classList.remove("selected")});
         }
         return;
     }
@@ -300,23 +309,4 @@ function checkAnswer(){
     //can see that the result was processed
     document.getElementById("zoom_img_container").style.display = "none";
     zoom_img_visible = false;
-}
-
-
-
-
-function sortFamilyChoices(compare_func){
-    let families = Object.keys(family_obs);
-
-    if(!compare_func){
-        families.sort();
-    }
-    else {
-        families.sort(compare_func);
-    }
-    
-    let grid = document.getElementById("family_choices_grid");
-    for(let i=0; i<families.length; i++){
-        grid.appendChild(document.getElementById(families[i] + "_choice"));
-    }
 }
