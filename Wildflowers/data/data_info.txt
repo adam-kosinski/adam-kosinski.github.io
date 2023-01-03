@@ -1,10 +1,79 @@
 ===============================================================
 TODO
 
+Dataset: Coastal NC
+
+Filename: coastal_nc.csv
+Downloaded on 1-2-2023 to 1-3-2023
+
+Queries:
+Currituck: https://www.inaturalist.org/observations/export?verifiable=true&page=1&spam=false&place_id=1113&user_id=&project_id=&swlng=&swlat=&nelng=&nelat=&lat=&lng=&radius=&taxon_id=47125&quality_grade=research&photos=true
+Dare: https://www.inaturalist.org/observations/export?verifiable=true&page=1&spam=false&photos=true&place_id=2446&quality_grade=research&taxon_id=47125&user_id=&project_id=&swlng=&swlat=&nelng=&nelat=&lat=&lng=&radius=
+Hyde: https://www.inaturalist.org/observations/export?verifiable=true&page=1&spam=false&photos=true&place_id=2078&quality_grade=research&taxon_id=47125&user_id=&project_id=&swlng=&swlat=&nelng=&nelat=&lat=&lng=&radius=
+Pamlico: https://www.inaturalist.org/observations/export?verifiable=true&page=1&spam=false&photos=true&place_id=578&quality_grade=research&taxon_id=47125&user_id=&project_id=&swlng=&swlat=&nelng=&nelat=&lat=&lng=&radius=
+Carteret: https://www.inaturalist.org/observations/export?verifiable=true&page=1&spam=false&photos=true&place_id=1269&quality_grade=research&taxon_id=47125&user_id=&project_id=&swlng=&swlat=&nelng=&nelat=&lat=&lng=&radius=
+Craven: https://www.inaturalist.org/observations/export?verifiable=true&page=1&spam=false&photos=true&place_id=660&quality_grade=research&taxon_id=47125&user_id=&project_id=&swlng=&swlat=&nelng=&nelat=&lat=&lng=&radius=
+Onslow: https://www.inaturalist.org/observations/export?verifiable=true&page=1&spam=false&photos=true&place_id=2669&quality_grade=research&taxon_id=47125&user_id=&project_id=&swlng=&swlat=&nelng=&nelat=&lat=&lng=&radius=
+Pender: https://www.inaturalist.org/observations/export?verifiable=true&page=1&spam=false&photos=true&place_id=513&quality_grade=research&taxon_id=47125&user_id=&project_id=&swlng=&swlat=&nelng=&nelat=&lat=&lng=&radius=
+New Hanover: https://www.inaturalist.org/observations/export?verifiable=true&page=1&spam=false&photos=true&place_id=455&quality_grade=research&taxon_id=47125&user_id=&project_id=&swlng=&swlat=&nelng=&nelat=&lat=&lng=&radius=
+Brunswick: https://www.inaturalist.org/observations/export?verifiable=true&page=1&spam=false&photos=true&place_id=490&quality_grade=research&taxon_id=47125&user_id=&project_id=&swlng=&swlat=&nelng=&nelat=&lat=&lng=&radius=
+
+    Taxon: Flowering Plants (subphylum angiospermae)
+
+    Filters:
+    - w/ photos
+    - Research grade
+    - Location:
+        Currituck County, NC
+        Dare County, NC
+        Hyde County, NC
+        Pamlico County, NC
+        Carteret County, NC
+        Craven County, NC
+        Onslow County, NC
+        Pender County, NC
+        New Hanover County, NC
+        Brunswick County, NC
+    - Photo Licensing: all
+    - Verifiable: Yes
+
+    Returned:
+
+    1279 observations (Currituck)   - 910 w/o copyrighted
+    7076 observations (Dare)        - 4718 w/o copyrighted
+    1216 observations (Hyde)        - 849 w/o copyrighted
+    204 observations (Pamlico)      - 147 w/o copyrighted
+    4582 observations (Carteret)    - 3238 w/o copyrighted
+    1663 observations (Craven)      - 1152 w/o copyrighted
+    1905 observations (Onslow)      - 987 w/o copyrighted
+    2972 observations (Pender)      - 2166 w/o copyrighted
+    8111 observations (New Hanover) - 5708 w/o copyrighted
+    7979 observations (Brunswick)   - 5315 w/o copyrighted
+
+    36987 observations total        - 25190 total w/o copyrighted
+
+Fields:
+- id (unique id for observation. https://www.inaturalist.org/observations/[insert id])
+- user_login (used for attribution)
+- user_name (used for attribution)
+- license
+- image_url
+- latitude
+- longitude
+- scientific_name
+- common_name
+- taxon_id
+- taxon_family_name
+
+Removed copyrighted photos and appended all the counties together into one csv.
+
+===============================================================
+TODO
+
 EXPORT FAILED 10 minutes in
 Dataset: Durham County All
 
-Filename: durham_county_all.csv
+Filename: ____
 Downloaded on 1-2-2023 at 10:26pm
 
 Taxon: Flowering Plants (subphylum angiospermae)
@@ -37,19 +106,19 @@ Dataset: Pisgah National Forest (Near Brevard, PWILD area)
 Filename: pisgah_national_forest.csv
 Downloaded on 1-2-2023 at 10:43pm
 
-Taxon: Flowering Plants (subphylum angiospermae)
-
 Query:
 https://www.inaturalist.org/observations/export?has[]=photos&quality_grade=research&identifications=any&lat=35.34969180049973&lng=-82.88541110606465&radius=20.413371675961386&taxon_id=47125&verifiable=true&spam=false
 
-Filters:
-- w/ photos
-- Research grade
-- Custom circle boundary: lat 35.34969180049973, long -82.88541110606465, radius 20.413371675961386 km
-- Photo Licensing: all
-- Verifiable: Yes
+    Taxon: Flowering Plants (subphylum angiospermae)
 
-Returned 12446 observations
+    Filters:
+    - w/ photos
+    - Research grade
+    - Custom circle boundary: lat 35.34969180049973, long -82.88541110606465, radius 20.413371675961386 km
+    - Photo Licensing: all
+    - Verifiable: Yes
+
+    Returned 12446 observations
 
 Fields:
 - id (unique id for observation. https://www.inaturalist.org/observations/[insert id])
@@ -64,6 +133,7 @@ Fields:
 - taxon_family_name
 
 After removing copyrighted images, there are 8347 observations.
+After removing Armin Weise's photos (copyrighted but license was CC), 8315 observations.
 
 ======================================================
 

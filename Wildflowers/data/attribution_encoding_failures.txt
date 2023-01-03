@@ -92,6 +92,7 @@ Cercidiphyllaceae
 
 Chloranthaceae
 ERROR, failed to encode attribution string: (c) Shipher (士緯) Wu (吳), some rights reserved (CC BY-NC-SA)
+- fixed hopefully
 
 Chrysobalanaceae
 Circaeasteraceae
@@ -156,6 +157,7 @@ Eupomatiaceae
 
 Eupteleaceae
 ERROR, failed to encode attribution string: (c) Σ64, some rights reserved (CC BY)
+- fixed hopefully
 
 Fabaceae
 Fagaceae
@@ -195,6 +197,7 @@ Hydatellaceae
 
 Hydrangeaceae
 ERROR, failed to encode attribution string: (c) 空猫 T. N, some rights reserved (CC BY-NC), uploaded by 空猫 T. N
+- fixed hopefully
 
 Hydrocharitaceae
 Hydroleaceae
@@ -312,6 +315,7 @@ Phrymaceae
 
 Phyllanthaceae
 ERROR, failed to encode attribution string: (c) 羅忠良, some rights reserved (CC BY-NC), uploaded by 羅忠良
+- fixed hopefully
 
 Phyllonomaceae
 Physenaceae
@@ -356,6 +360,7 @@ Sabiaceae
 
 Salicaceae
 ERROR, failed to encode attribution string: (c) Ольга Курякова, some rights reserved (CC BY-NC), uploaded by Ольга Курякова
+- fixed hopefully
 
 Salvadoraceae
 Santalaceae
@@ -370,6 +375,7 @@ Scheuchzeriaceae
 
 Schisandraceae
 ERROR, failed to encode attribution string: (c) Wei-Chun （維君） Chang （張）, some rights reserved (CC BY-NC-SA)
+- fixed hopefully
 
 Schlegeliaceae
 Schoepfiaceae
@@ -390,6 +396,7 @@ Stemonaceae
 
 Stemonuraceae
 ERROR, failed to encode attribution string: (c) 特有生物研究保育中心, some rights reserved (CC BY-NC), uploaded by 特有 生物研究保育中心
+- fixed hopefully
 
 Stilbaceae
 Strasburgeriaceae
@@ -400,10 +407,11 @@ Surianaceae
 
 Symplocaceae
 ERROR, failed to encode attribution string: (c) 阿橋 HQ, some rights reserved (CC BY-SA)
-
+- fixed hopefully
 
 Talinaceae
 ERROR, failed to encode attribution string: (c) Shipher (士緯) Wu (吳), some rights reserved (CC BY-NC-SA)
+- fixed hopefully
 
 Tamaricaceae
 Tapisciaceae

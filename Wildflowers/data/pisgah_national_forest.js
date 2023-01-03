@@ -2702,17 +2702,6 @@ datasets.pisgah_national_forest = `id,user_name,license,image_url,latitude,longi
 42718838,Rich Stevenson,CC-BY-NC,https://inaturalist-open-data.s3.amazonaws.com/photos/67840369/medium.jpg,35.28237909,-82.82888267,Pedicularis canadensis,Canadian lousewort,51227,Orobanchaceae
 42718932,Rich Stevenson,CC-BY-NC,https://inaturalist-open-data.s3.amazonaws.com/photos/67840533/medium.jpg,35.28357787,-82.82854596,Uvularia puberula,Appalachian bellwort,170096,Colchicaceae
 42719023,,CC-BY-NC,https://inaturalist-open-data.s3.amazonaws.com/photos/67840838/medium.jpg,35.45852458,-82.73548331,Trillium catesbaei,bashful wakerobin,169983,Melanthiaceae
-42727574,Armin Weise,CC-BY-NC,https://static.inaturalist.org/photos/67854012/medium.jpg,35.22041053,-82.91653858,Parnassia asarifolia,Grass-of-Parnassus,128774,Celastraceae
-42727577,Armin Weise,CC-BY-NC,https://static.inaturalist.org/photos/67854053/medium.jpg,35.327275,-82.888405,Helianthus atrorubens,Purpledisk Sunflower,163611,Asteraceae
-42727584,Armin Weise,CC-BY-NC,https://static.inaturalist.org/photos/67854079/medium.jpg,35.29922432,-82.85205471,Parnassia asarifolia,Grass-of-Parnassus,128774,Celastraceae
-42727585,Armin Weise,CC-BY-NC,https://static.inaturalist.org/photos/67854092/medium.jpg,35.24586501,-82.80679275,Parnassia asarifolia,Grass-of-Parnassus,128774,Celastraceae
-42728553,Armin Weise,CC-BY-NC,https://static.inaturalist.org/photos/67856392/medium.jpg,35.22316442,-82.73736473,Rudbeckia laciniata humilis,,118565,Asteraceae
-42728554,Armin Weise,CC-BY-NC,https://static.inaturalist.org/photos/67856403/medium.jpg,35.35192,-82.77525333,Lobelia amoena,Southern Lobelia,224046,Campanulaceae
-42728557,Armin Weise,CC-BY-NC,https://static.inaturalist.org/photos/67856416/medium.jpg,35.351665,-82.77180833,Helenium autumnale,common sneezeweed,77349,Asteraceae
-42728558,Armin Weise,CC-BY-NC,https://static.inaturalist.org/photos/67856430/medium.jpg,35.35170833,-82.77185667,Vernonia noveboracensis,New York ironweed,142979,Asteraceae
-42728559,Armin Weise,CC-BY-NC,https://static.inaturalist.org/photos/67856437/medium.jpg,35.35922167,-82.76409833,Lobelia amoena,Southern Lobelia,224046,Campanulaceae
-42728562,Armin Weise,CC-BY-NC,https://static.inaturalist.org/photos/67856449/medium.jpg,35.36288833,-82.752825,Veratrum parviflorum,mountain bunchflower,362548,Melanthiaceae
-42728564,Armin Weise,CC-BY-NC,https://static.inaturalist.org/photos/67856473/medium.jpg,35.36298167,-82.75224667,Monarda didyma,Scarlet Beebalm,52735,Lamiaceae
 42777659,,CC-BY-NC,https://inaturalist-open-data.s3.amazonaws.com/photos/67934039/medium.jpg,35.47612874,-82.94798316,Cornus florida,flowering dogwood,54777,Cornaceae
 42779356,,CC-BY-NC,https://inaturalist-open-data.s3.amazonaws.com/photos/67936608/medium.jpeg,35.47695127,-82.85672676,Podophyllum peltatum,mayapple,49288,Berberidaceae
 42783738,,CC-BY-NC,https://inaturalist-open-data.s3.amazonaws.com/photos/67943295/medium.jpg,35.2940502,-82.84977286,Aphyllon uniflorum,one-flowered cancer-root,802714,Orobanchaceae
@@ -2761,9 +2750,6 @@ datasets.pisgah_national_forest = `id,user_name,license,image_url,latitude,longi
 43476597,,CC-BY-NC,https://inaturalist-open-data.s3.amazonaws.com/photos/68980768/medium.jpeg,35.515127,-82.87243,Veronica serpyllifolia,thyme-leaved speedwell,55749,Plantaginaceae
 43496686,,CC-BY-NC,https://inaturalist-open-data.s3.amazonaws.com/photos/69011059/medium.jpeg,35.48203513,-82.86194269,Pseudognaphalium obtusifolium,sweet everlasting,143859,Asteraceae
 43500902,Brian Fuxan,CC-BY-NC,https://inaturalist-open-data.s3.amazonaws.com/photos/69017738/medium.jpeg,35.41499269,-82.74879058,Chelone lyonii,pink turtlehead,160493,Plantaginaceae
-43516463,Armin Weise,CC-BY-NC,https://static.inaturalist.org/photos/69038744/medium.jpg,35.36290833,-82.75253333,Cirsium muticum,swamp thistle,81603,Asteraceae
-43516474,Armin Weise,CC-BY-NC,https://static.inaturalist.org/photos/69038991/medium.jpg,35.363015,-82.75216167,Cirsium muticum,swamp thistle,81603,Asteraceae
-43516480,Armin Weise,CC-BY-NC,https://static.inaturalist.org/photos/69039066/medium.jpg,35.363015,-82.75218833,Eupatorium perfoliatum,common boneset,119045,Asteraceae
 43605535,Steve O'Neil,CC-BY-NC,https://static.inaturalist.org/photos/69178243/medium.jpeg,35.28493517,-82.68721025,Hexastylis arifolia,little brown jug,122183,Aristolochiaceae
 43605717,Steve O'Neil,CC-BY-NC,https://static.inaturalist.org/photos/69178511/medium.jpeg,35.28561281,-82.68747244,Rhododendron maximum,great rhododendron,83059,Ericaceae
 43606396,Steve O'Neil,CC-BY-NC,https://static.inaturalist.org/photos/69179549/medium.jpeg,35.28512456,-82.68762566,Toxicodendron radicans,eastern poison ivy,58732,Anacardiaceae
@@ -3520,7 +3506,6 @@ datasets.pisgah_national_forest = `id,user_name,license,image_url,latitude,longi
 53766794,,CC-BY-NC,https://inaturalist-open-data.s3.amazonaws.com/photos/85526813/medium.jpg,35.32329167,-82.87654167,Phleum pratense,Timothy grass,57190,Poaceae
 53766918,,CC-BY-NC,https://inaturalist-open-data.s3.amazonaws.com/photos/85527063/medium.jpg,35.33227167,-82.87688333,Diervilla sessilifolia,Southern bush honeysuckle,161898,Caprifoliaceae
 53777069,,CC-BY-NC,https://inaturalist-open-data.s3.amazonaws.com/photos/85547803/medium.jpg,35.48826672,-83.00389382,Solanum emulans,eastern black nightshade,1038940,Solanaceae
-53803527,Armin Weise,CC-BY-NC,https://static.inaturalist.org/photos/85585705/medium.jpg,35.35292733,-82.77028,Trillium undulatum,painted trillium,51435,Melanthiaceae
 53805458,,CC-BY-NC,https://inaturalist-open-data.s3.amazonaws.com/photos/85590186/medium.jpg,35.40276333,-82.94542,Monarda media,Purple Bergamot,133093,Lamiaceae
 53875126,,CC-BY-NC,https://inaturalist-open-data.s3.amazonaws.com/photos/85700639/medium.jpg,35.44821971,-82.72081247,Achillea millefolium,common yarrow,52821,Asteraceae
 53888057,,CC-BY-NC,https://inaturalist-open-data.s3.amazonaws.com/photos/85721506/medium.jpg,35.43632404,-82.72693587,Acer pensylvanicum,striped maple,48095,Sapindaceae
@@ -6508,7 +6493,6 @@ datasets.pisgah_national_forest = `id,user_name,license,image_url,latitude,longi
 111574811,,CC-BY-NC,https://inaturalist-open-data.s3.amazonaws.com/photos/188366014/medium.jpeg,35.2948601,-82.844406,Trillium erectum,red trillium,50855,Melanthiaceae
 111583246,,CC-BY-NC,https://inaturalist-open-data.s3.amazonaws.com/photos/188612444/medium.jpeg,35.27424622,-82.77663422,Xanthorhiza simplicissima,Shrub Yellowroot,170344,Ranunculaceae
 111583626,,CC-BY-NC,https://inaturalist-open-data.s3.amazonaws.com/photos/188382784/medium.jpg,35.42144818,-82.95916804,Trillium erectum,red trillium,50855,Melanthiaceae
-111674938,Armin Weise,CC-BY-NC,https://static.inaturalist.org/photos/188541709/medium.jpg,35.39825825,-82.83535566,Pieris floribunda,mountain andromeda,49705,Ericaceae
 111688469,,CC-BY-NC,https://inaturalist-open-data.s3.amazonaws.com/photos/192442153/medium.jpeg,35.45632784,-82.73257447,Mertensia virginica,Virginia bluebells,59771,Boraginaceae
 111726369,David Peterson,CC-BY-NC,https://inaturalist-open-data.s3.amazonaws.com/photos/188635383/medium.jpeg,35.33820332,-82.90352136,Cardamine concatenata,cut-leaved toothwort,60438,Brassicaceae
 111726372,David Peterson,CC-BY-NC,https://inaturalist-open-data.s3.amazonaws.com/photos/188635889/medium.jpeg,35.33819718,-82.90346686,Cardamine diphylla,Two-leaved Toothwort,118512,Brassicaceae
@@ -8255,7 +8239,6 @@ datasets.pisgah_national_forest = `id,user_name,license,image_url,latitude,longi
 143228828,Rich Stevenson,CC-BY-NC,https://inaturalist-open-data.s3.amazonaws.com/photos/245613356/medium.jpg,35.29514316,-82.75574841,Tiarella austrina,Southern Foamflower,1426513,Saxifragaceae
 143229187,Rich Stevenson,CC-BY-NC,https://inaturalist-open-data.s3.amazonaws.com/photos/245614459/medium.jpg,35.29460188,-82.75567543,Mitchella repens,partridgeberry,83799,Rubiaceae
 143360716,,CC-BY-NC,https://inaturalist-open-data.s3.amazonaws.com/photos/245851800/medium.jpeg,35.52603691,-82.92598408,Celastrus orbiculatus,Oriental bittersweet,64540,Celastraceae
-143475868,Armin Weise,CC-BY-NC,https://static.inaturalist.org/photos/246064472/medium.jpg,35.29130279,-82.91397113,Robinia hispida,Bristly locust,129107,Fabaceae
 143594478,,CC-BY-NC,https://inaturalist-open-data.s3.amazonaws.com/photos/246288878/medium.jpg,35.22462635,-83.00528763,Kalmia latifolia,mountain laurel,49397,Ericaceae
 143663404,Brian-Sean Early,CC-BY-NC,https://inaturalist-open-data.s3.amazonaws.com/photos/246494133/medium.jpeg,35.30622006,-82.77504975,Leucothoe fontanesiana,mountain doghobble,164664,Ericaceae
 143701108,,CC-BY-NC,https://inaturalist-open-data.s3.amazonaws.com/photos/246492198/medium.jpg,35.47876257,-82.9957936,Monarda didyma,Scarlet Beebalm,52735,Lamiaceae
@@ -8322,21 +8305,6 @@ datasets.pisgah_national_forest = `id,user_name,license,image_url,latitude,longi
 77158355,Chris Canipe,CC-BY-NC-SA,https://inaturalist-open-data.s3.amazonaws.com/photos/126173154/medium.jpg,35.30495833,-82.77462778,Ajuga reptans,carpet bugle,56099,Lamiaceae
 88199976,Amy Youngs,CC-BY-NC-SA,https://inaturalist-open-data.s3.amazonaws.com/photos/145495962/medium.jpeg,35.31811263,-82.86643311,Galax urceolata,galax,53925,Diapensiaceae
 97962885,Chris Canipe,CC-BY-NC-SA,https://inaturalist-open-data.s3.amazonaws.com/photos/163008801/medium.jpg,35.29151,-82.763088,Podophyllum peltatum,mayapple,49288,Berberidaceae
-18416622,Armin Weise,CC-BY-ND,https://static.inaturalist.org/photos/28152217/medium.jpg,35.23195342,-82.86240626,Hypericum buckleyi,Buckley's St. John's wort,355623,Hypericaceae
-18416623,Armin Weise,CC-BY-ND,https://static.inaturalist.org/photos/28152237/medium.jpg,35.35620368,-82.98283228,Spiranthes ochroleuca,yellow nodding ladies' tresses,169271,Orchidaceae
-25443717,Armin Weise,CC-BY-ND,https://static.inaturalist.org/photos/39466665/medium.jpg,35.48683667,-82.90151167,Primula meadia,eastern shooting star,549981,Primulaceae
-28197267,Armin Weise,CC-BY-ND,https://static.inaturalist.org/photos/43936324/medium.jpg,35.295365,-82.78162167,Rhododendron minus,gorge rhododendron,167818,Ericaceae
-28197269,Armin Weise,CC-BY-ND,https://static.inaturalist.org/photos/43937813/medium.jpg,35.39527833,-82.76277833,Rhododendron carolinianum,Carolina Rhododendron,133396,Ericaceae
-28677968,Armin Weise,CC-BY-ND,https://static.inaturalist.org/photos/44718573/medium.jpg,35.29465167,-82.77968333,Rhododendron maximum,great rhododendron,83059,Ericaceae
-28678049,Armin Weise,CC-BY-ND,https://static.inaturalist.org/photos/44719145/medium.jpg,35.38166667,-82.785,Castilleja coccinea,Painted-cup Paintbrush,49342,Orobanchaceae
-28678059,Armin Weise,CC-BY-ND,https://static.inaturalist.org/photos/44719201/medium.jpg,35.32611,-82.87668167,Trillium erectum,red trillium,50855,Melanthiaceae
-28678074,Armin Weise,CC-BY-ND,https://static.inaturalist.org/photos/44719310/medium.jpg,35.32225,-82.84713167,Trillium undulatum,painted trillium,51435,Melanthiaceae
-28678077,Armin Weise,CC-BY-ND,https://static.inaturalist.org/photos/44719325/medium.jpg,35.32051,-82.84696,Maianthemum canadense,Canada mayflower,67748,Asparagaceae
-28678086,Armin Weise,CC-BY-ND,https://static.inaturalist.org/photos/44719395/medium.jpg,35.29163,-82.77793333,Monarda clinopodia,white bergamot,165505,Lamiaceae
-40862709,Armin Weise,CC-BY-ND,https://static.inaturalist.org/photos/64779964/medium.jpg,35.39527833,-82.76277833,Houstonia caerulea,azure bluet,69752,Rubiaceae
-40862713,Armin Weise,CC-BY-ND,https://static.inaturalist.org/photos/64779984/medium.jpg,35.381945,-82.785,Houstonia caerulea,azure bluet,69752,Rubiaceae
-40862738,Armin Weise,CC-BY-ND,https://static.inaturalist.org/photos/64780394/medium.jpg,35.316785,-82.87454333,Prunus pensylvanica,fire cherry,54833,Rosaceae
-40862739,Armin Weise,CC-BY-ND,https://static.inaturalist.org/photos/64780446/medium.jpg,35.32248,-82.84749833,Rhododendron vaseyi,pinkshell azalea,167821,Ericaceae
 39829102,M Fonda,CC-BY-SA,https://inaturalist-open-data.s3.amazonaws.com/photos/63229575/medium.jpg,35.29538321,-82.78110382,Goodyera pubescens,downy rattlesnake plantain,62406,Orchidaceae
 94576506,Brian Finzel,CC-BY-SA,https://inaturalist-open-data.s3.amazonaws.com/photos/172813043/medium.jpeg,35.39665333,-83.0426555,Agastache scrophulariifolia,purple giant hyssop,158084,Lamiaceae
 94576622,Brian Finzel,CC-BY-SA,https://inaturalist-open-data.s3.amazonaws.com/photos/173932765/medium.jpeg,35.36268333,-82.99151667,Gentianella quinquefolia,agueweed,119901,Gentianaceae

@@ -115,11 +115,12 @@ function init(csv){
     document.getElementById("sort_n_species").classList.add("selected");
 
     //add family image credits
-    let credit_text = "All images sourced from iNaturalist.<br><br>";
+    let attributions = ["All images sourced from iNaturalist.<br>"];
     for(family in family_obs){
-        credit_text += "<b>" + family + "</b>: " + family_data[family].attribution + "<br>";
+        attributions.push("<b>" + family + "</b>: " + family_data[family].attribution);
     }
-    document.getElementById("family_image_credits_list").innerHTML = credit_text;
+    attributions.sort();
+    document.getElementById("family_image_credits_list").innerHTML = attributions.join("<br>");
 }
 
 

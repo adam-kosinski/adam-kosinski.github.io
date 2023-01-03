@@ -222,7 +222,7 @@ function nextPlant(){
 
     //update image credit
     let author_name = current_tuple.user_name;
-    document.getElementById("img_author").textContent = author_name.length > 0 ? author_name + ". ": "";
+    document.getElementById("img_author").textContent = author_name.length > 0 ? "© " + author_name + ". ": "";
     
     document.getElementById("license_description").textContent = current_tuple.license == "CC0" ? "No rights reserved" : "Some rights reserved";
     let license_link = document.getElementById("license_link");
