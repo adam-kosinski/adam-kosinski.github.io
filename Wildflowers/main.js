@@ -223,6 +223,12 @@ function nextPlant(){
     //update image credit
     let author_name = current_tuple.user_name;
     document.getElementById("img_author").textContent = author_name.length > 0 ? author_name + ". ": "";
+    
+    document.getElementById("license_description").textContent = current_tuple.license == "CC0" ? "No rights reserved" : "Some rights reserved";
+    let license_link = document.getElementById("license_link");
+    license_link.textContent = current_tuple.license;
+    license_link.href = license_links[current_tuple.license]; //global config var
+    
     let inat_link = document.getElementById("inat_url");
     let url = "https://inaturalist.org/observations/" + current_tuple.id;
     inat_link.textContent = url;

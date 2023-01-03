@@ -1,3 +1,61 @@
+Dataset: Durham County All
+
+Filename: durham_county_all.csv
+Downloaded on ___
+
+Taxon: Flowering Plants (subphylum angiospermae)
+
+Filters:
+- w/ photos
+- Research grade
+- Location: Durham County, NC
+- Photo Licensing: all
+- Verifiable: Yes
+
+Returned 30971 observations
+
+Fields:
+- id (unique id for observation. https://www.inaturalist.org/observations/[insert id])
+- user_name (used for attribution)
+- image_url
+- latitude
+- longitude
+- scientific_name
+- common_name
+- taxon_id
+- taxon_family_name
+
+======================================================
+
+Dataset: Pisgah National Forest (Near Brevard)
+
+Filename: pisgah_national_forest.csv
+Downloaded on 1-2-2023 at 6:48pm
+
+Taxon: Flowering Plants (subphylum angiospermae)
+
+Filters:
+- w/ photos
+- Research grade
+- Custom circle boundary: lat 35.34969180049973, long -82.88541110606465, radius 20.413371675961386 km
+- Photo Licensing: all
+- Verifiable: Yes
+
+Returned 12446 observations
+
+Fields:
+- id (unique id for observation. https://www.inaturalist.org/observations/[insert id])
+- user_name (used for attribution)
+- image_url
+- latitude
+- longitude
+- scientific_name
+- common_name
+- taxon_id
+- taxon_family_name
+
+===============================================================
+
 Dataset: Orange County All
 
 Filename: orange_county_all.csv
@@ -17,6 +75,7 @@ Returned 22965 observations
 Fields:
 - id (unique id for observation. https://www.inaturalist.org/observations/[insert id])
 - user_name (used for attribution)
+- license
 - image_url
 - latitude
 - longitude
@@ -77,8 +136,8 @@ Returned 5085 observations
 Fields:
 - id (unique id for observation. https://www.inaturalist.org/observations/[insert id])
 - user_name (used for attribution)
-- image_url
 - license (to filter out copyrighted ones)
+- image_url
 - latitude
 - longitude
 - scientific_name
