@@ -65,11 +65,10 @@ Fields:
 Removed copyrighted photos and appended all the counties together into one csv.
 
 ===============================================================
-TODO
 
 Dataset: Durham County
 
-Filename: ____
+Filename: durham_county.csv
 Downloaded on 1-3-2023 at 3:43 am
 
 Query: https://www.inaturalist.org/observations/export?verifiable=true&page=1&spam=false&photos=true&place_id=471&quality_grade=research&taxon_id=47125&user_id=&project_id=&swlng=&swlat=&nelng=&nelat=&lat=&lng=&radius=&photo_license=CC-BY-NC
@@ -165,6 +164,7 @@ Fields:
 
 ======================================================
 
+NO LONGER USED, MOVED TO "original_data" FOLDER
 Dataset: Durham County 2018-2022
 
 Filename: durham_county_2018_2022.csv
