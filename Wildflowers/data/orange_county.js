@@ -1,4 +1,4 @@
-datasets.orange_county_all = `id,user_name,license,image_url,latitude,longitude,scientific_name,common_name,taxon_id,taxon_family_name
+datasets.orange_county = `id,user_name,license,image_url,latitude,longitude,scientific_name,common_name,taxon_id,taxon_family_name
 188584,Suzanne Cadwell,CC-BY-NC,https://inaturalist-open-data.s3.amazonaws.com/photos/242706/medium.jpg,35.98542046,-79.05861497,Smilax rotundifolia,roundleaf greenbrier,60746,Smilacaceae
 188657,Suzanne Cadwell,CC-BY-NC,https://inaturalist-open-data.s3.amazonaws.com/photos/242777/medium.jpg,35.99040343,-79.05420542,Asclepias syriaca,common milkweed,47911,Apocynaceae
 190469,Suzanne Cadwell,CC-BY-NC,https://inaturalist-open-data.s3.amazonaws.com/photos/245015/medium.jpg,35.985542,-79.05878663,Ilex decidua,possumhaw,120006,Aquifoliaceae

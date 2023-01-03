@@ -1,7 +1,11 @@
+===============================================================
+TODO
+
+EXPORT FAILED 10 minutes in
 Dataset: Durham County All
 
 Filename: durham_county_all.csv
-Downloaded on ___
+Downloaded on 1-2-2023 at 10:26pm
 
 Taxon: Flowering Plants (subphylum angiospermae)
 
@@ -12,11 +16,12 @@ Filters:
 - Photo Licensing: all
 - Verifiable: Yes
 
-Returned 30971 observations
+Returned 30974 observations
 
 Fields:
 - id (unique id for observation. https://www.inaturalist.org/observations/[insert id])
 - user_name (used for attribution)
+- license
 - image_url
 - latitude
 - longitude
@@ -25,14 +30,17 @@ Fields:
 - taxon_id
 - taxon_family_name
 
-======================================================
+=====================================================================
 
-Dataset: Pisgah National Forest (Near Brevard)
+Dataset: Pisgah National Forest (Near Brevard, PWILD area)
 
 Filename: pisgah_national_forest.csv
-Downloaded on 1-2-2023 at 6:48pm
+Downloaded on 1-2-2023 at 10:43pm
 
 Taxon: Flowering Plants (subphylum angiospermae)
+
+Query:
+https://www.inaturalist.org/observations/export?has[]=photos&quality_grade=research&identifications=any&lat=35.34969180049973&lng=-82.88541110606465&radius=20.413371675961386&taxon_id=47125&verifiable=true&spam=false
 
 Filters:
 - w/ photos
@@ -46,6 +54,7 @@ Returned 12446 observations
 Fields:
 - id (unique id for observation. https://www.inaturalist.org/observations/[insert id])
 - user_name (used for attribution)
+- license
 - image_url
 - latitude
 - longitude
@@ -54,11 +63,13 @@ Fields:
 - taxon_id
 - taxon_family_name
 
-===============================================================
+After removing copyrighted images, there are 8347 observations.
 
-Dataset: Orange County All
+======================================================
 
-Filename: orange_county_all.csv
+Dataset: Orange County
+
+Filename: orange_county.csv
 Downloaded on 11-15-2022 at 12:58pm
 
 Taxon: Flowering Plants (subphylum angiospermae)
@@ -83,7 +94,6 @@ Fields:
 - common_name
 - taxon_id
 - taxon_family_name
-
 
 ======================================================
 
