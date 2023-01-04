@@ -1,0 +1,13 @@
+Get website to appear in search results for my name
+
+
+SEO / accessibility stuff
+
+Fix navbar tabbing bug
+- original page load tabbing for small navbar, also hidden navbar on small nav then transition to normal navbar -> tabbing fails
+Resize images appropriately
+Change page titles
+Meta description tags
+Alt attribute for all images
+robots.txt + sitemap
+Meaningful image names? (gallery)
