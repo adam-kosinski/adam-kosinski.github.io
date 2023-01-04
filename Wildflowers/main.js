@@ -12,21 +12,18 @@ document.getElementById("dataset_select").addEventListener("change", function(e)
 
 function handleWindowBlur(e){
     //clear the elpel page highlighting (b/c the Alt keyup event won't be processed)
-    document.querySelectorAll(".elpel_page_exists").forEach(el => el.classList.remove("bold_border"));
     document.querySelectorAll(".no_elpel_page_exists").forEach(el => el.classList.remove("faded"));
 }
 
 function handleKeydown(e){
     if(e.key == "Alt"){
         e.preventDefault();
-        document.querySelectorAll(".elpel_page_exists").forEach(el => el.classList.add("bold_border"));
         document.querySelectorAll(".no_elpel_page_exists").forEach(el => el.classList.add("faded"));
     }
 }
 
 function handleKeyup(e){
     if(e.key == "Alt"){
-        document.querySelectorAll(".elpel_page_exists").forEach(el => el.classList.remove("bold_border"));
         document.querySelectorAll(".no_elpel_page_exists").forEach(el => el.classList.remove("faded"));
     }
 }
@@ -45,6 +42,19 @@ function handleKeypress(e){
     }
 }
 
+//click event handling
+
+//elpel zoom image
+document.getElementById("elpel_img").addEventListener("click", function(e){
+    let elpel_zoom_img = document.getElementById("elpel_zoom_img");
+    elpel_zoom_img.src = e.target.src;
+    document.getElementById("elpel_zoom_img_container").style.display = "block";
+});
+document.getElementById("elpel_zoom_img_container").addEventListener("click", function(e){
+    document.getElementById("elpel_zoom_img_container").style.display = "none";
+});
+
+
 function handleClick(e){
 
     //select / sort highlighting
@@ -58,16 +68,7 @@ function handleClick(e){
         nextPlant();
         return;
     }
-    if(e.target.id == "elpel_img"){
-        let elpel_zoom_img = document.getElementById("elpel_zoom_img");
-        elpel_zoom_img.src = e.target.src;
-        document.getElementById("elpel_zoom_img_container").style.display = "block";
-        return;
-    }
-    if(searchParents(e.target, "id", "elpel_zoom_img_container")){
-        document.getElementById("elpel_zoom_img_container").style.display = "none";
-        return;
-    }
+    
     if(searchParents(e.target, "id", "exit_settings")){
         if(selected_families.length == 0){
             alert("You must select some families");
@@ -156,23 +157,19 @@ function handleClick(e){
 function handleMousemove(e){
     //Check if plant image is fully loaded. Can't do stuff relying on if on/off of image w/o it being loaded
     if(document.getElementById("plant_img").complete){
-        let img_box = getImageBox(); //util.js
         let zoom_container = document.getElementById("zoom_img_container");
         let zoom_img = document.getElementById("zoom_img");
 
-        if(mouseOverImage(e, img_box) && zoom_img.complete){ //util.js
+        if(e.target.id == "plant_img" && zoom_img.complete){
 
             if(!zoom_img_visible){
                 zoom_container.style.display = "block";
                 zoom_img_visible = true;
             }
 
-            let offset_x = e.offsetX - img_box.x;
-            let offset_y = e.offsetY - img_box.y;
-
-            let zoom_factor = zoom_img.clientWidth / img_box.width;
-            let left = zoom_container.clientWidth/2 - (offset_x * zoom_factor);
-            let top = zoom_container.clientHeight/2 - (offset_y * zoom_factor);
+            let zoom_factor = zoom_img.clientWidth / e.target.clientWidth;
+            let left = zoom_container.clientWidth/2 - (e.offsetX * zoom_factor);
+            let top = zoom_container.clientHeight/2 - (e.offsetY * zoom_factor);
             left = Math.max(-zoom_img.clientWidth + zoom_container.clientWidth , Math.min(0, left));
             top = Math.max(-zoom_img.clientHeight + zoom_container.clientHeight , Math.min(0, top));
             zoom_img.style.left = left + "px";
