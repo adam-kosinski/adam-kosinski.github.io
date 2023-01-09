@@ -27,18 +27,20 @@ function toggleFamily(family) {
     selectPreset(null);
 }
 
-//event handling
+//preset selection
+
 document.getElementById("select_options").addEventListener("click", function(e){
     if(!e.target.className.includes("select")) return;
     selectPreset(e.target.id);
 });
 
 function selectPreset(id){
+    //id is the id of the preset element, in family_choices_header
+
     //switch preset highlighting
     document.querySelectorAll(".select").forEach(el => el.classList.remove("selected"));
-    if(id){document.querySelector("#" + id).classList.add("selected");}
+    if(id){document.querySelector("#" + id).classList.add("selected");} //can pass id=null to just remove highlighting
 
-    //id is the id of the preset element, in family_choices_header
     if(id == "select_all"){
         nonselected_families.forEach((f) => {select(f)});
     }

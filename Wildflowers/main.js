@@ -83,20 +83,6 @@ function handleClick(e){
     else if(e.target.id == "family_image_credits_exit"){
         document.getElementById("family_image_credits").close();
     }
-    if(e.target.id == "sort_alphabetical"){
-        sortFamilyChoices(); //util.js
-        return;
-    }
-    if(e.target.id == "sort_frequency"){
-        sortFamilyChoices(function(a,b){ //util.js
-            return family_obs[b].length - family_obs[a].length;
-        });
-        return;
-    }
-    if(e.target.id == "sort_n_species"){
-        sortFamilyChoices(NSpeciesComparator); //util.js
-        return;
-    }
 }
 
 function handleMousemove(e){
@@ -134,6 +120,12 @@ function handleMousemove(e){
 
 
 // NON EVENT HANDLER FUNCTIONS ---------------------------------------------------------
+
+function capitalize(str){
+    return str.replace(/^\w|(?<=\s)\w|-\w/g, function(char){
+        return char.toUpperCase();
+    });
+}
 
 function nextPlant(){
 

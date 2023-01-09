@@ -118,9 +118,7 @@ function init(csv){
         }
     }
 
-    sortFamilyChoices(NSpeciesComparator); //default sort
-    document.querySelectorAll("#family_choices_header div[data-group='sort']").forEach(el => {el.classList.remove("selected")});
-    document.getElementById("sort_n_species").classList.add("selected");
+    sortPreset("sort_n_species"); //default sort
 
     //add family image credits
     let attributions = ["All images sourced from iNaturalist.<br>"];
