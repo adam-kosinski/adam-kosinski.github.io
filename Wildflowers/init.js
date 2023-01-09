@@ -84,8 +84,8 @@ function init(csv){
         div.addEventListener("click", function(e){
             if(e.altKey){
                 //redirect to the elpel webpage on this family - sneaky hidden feature
-                if(family_data[family_name].id_notes.length > 0 || family_data[family_name].elpel_image_exists == "True"){
-                    window.open("https://www.wildflowers-and-weeds.com/Plant_Families/" + family_name + ".htm", "_blank");
+                if(family_data[family].id_notes.length > 0 || family_data[family].elpel_image_exists == "True"){
+                    window.open("https://www.wildflowers-and-weeds.com/Plant_Families/" + family + ".htm", "_blank");
                     return;
                 }
                 alert("Info webpage doesn't seem to exist for this family...");
