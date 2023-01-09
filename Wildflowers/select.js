@@ -1,6 +1,6 @@
 let presets = {
     //key is the HTML id of the element you click
-    "select_easy": [],
+    "select_easy": ["Asteraceae", "Poaceae", "Liliaceae", "Lamiaceae", "Brassicaceae", "Apiaceae", "Fabaceae", "Rosaceae"],
     "select_medium": ["Asteraceae", "Boraginaceae", "Cactaceae", "Typhaceae", "Onagraceae", "Scrophulariaceae", "Geraniaceae", "Grossulariaceae", "Cucurbitaceae", "Vitaceae", "Poaceae", "Ericaceae", "Iridaceae", "Liliaceae", "Malvaceae", "Lamiaceae", "Brassicaceae", "Solanaceae", "Orchidaceae", "Arecaceae", "Apiaceae", "Fabaceae", "Caryophyllaceae", "Rosaceae", "Saxifragaceae", "Urticaceae", "Violaceae", "Salicaceae"],
     "select_five_united_petals": ["Apocynaceae", "Boraginaceae", "Campanulaceae", "Cucurbitaceae", "Ericaceae", "Gentianaceae", "Scrophulariaceae", "Solanaceae", "Verbenaceae", "Vitaceae"],
     "select_lily_like": ["Liliaceae", "Melanthiaceae", "Colchiaceae", "Amaryllidaceae", "Asparagaceae", "Asphodelaceae", "Pontederiaceae"],
@@ -36,10 +36,12 @@ document.getElementById("select_options").addEventListener("click", function(e){
 
 function selectPreset(id){
     //id is the id of the preset element, in family_choices_header
+    //if an invalid HTML id is passed, this function will just remove preset highlighting instead of adding it
 
     //switch preset highlighting
     document.querySelectorAll(".select").forEach(el => el.classList.remove("selected"));
-    if(id){document.querySelector("#" + id).classList.add("selected");} //can pass id=null to just remove highlighting
+    let element = document.querySelector("#" + id);
+    if(element) element.classList.add("selected");
 
     if(id == "select_all"){
         nonselected_families.forEach((f) => {select(f)});

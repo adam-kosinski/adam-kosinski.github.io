@@ -5,10 +5,12 @@ document.getElementById("sort_options").addEventListener("click", function(e){
 
 function sortPreset(id) {
     //id is the id of the preset element, in family_choices_header
+    //if an invalid HTML id is passed, this function will just remove preset highlighting instead of adding it
 
     //switch preset highlighting
     document.querySelectorAll(".sort").forEach(el => el.classList.remove("selected"));
-    if (id) { document.querySelector("#" + id).classList.add("selected"); } //can pass id=null to just remove highlighting
+    let element = document.querySelector("#" + id);
+    if(element) element.classList.add("selected");
 
     if(id == "sort_n_species"){
         sortFamilyChoices(NSpeciesComparator);
