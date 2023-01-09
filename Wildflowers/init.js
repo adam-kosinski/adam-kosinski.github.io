@@ -38,7 +38,7 @@ function init(csv){
     let datalist = document.getElementById("family_names");
     datalist.innerHTML = "";
 
-    for(family in family_obs){
+    for(let family in family_obs){
         let scientific_option = document.createElement("option");
         scientific_option.value = family;
         datalist.appendChild(scientific_option);
@@ -60,10 +60,10 @@ function init(csv){
     let family_choices_grid = document.getElementById("family_choices_grid");
     family_choices_grid.innerHTML = "";
 
-    for(family in family_obs){
+    for(let family in family_obs){
         let div = document.createElement("div");
         div.id = family + "_choice";
-        div.className = "family_choice";
+        div.classList.add("family_choice");
         if(family_data[family].id_notes.length > 0 || family_data[family].elpel_image_exists == "True"){
             div.classList.add("elpel_page_exists");
         }
@@ -81,33 +81,41 @@ function init(csv){
             " (" + family_species[family].size + " sp, " + family_obs[family].length + " pics)";
         div.appendChild(p);
 
+        div.addEventListener("click", function(e){
+            if(e.altKey){
+                //redirect to the elpel webpage on this family - sneaky hidden feature
+                if(family_data[family_name].id_notes.length > 0 || family_data[family_name].elpel_image_exists == "True"){
+                    window.open("https://www.wildflowers-and-weeds.com/Plant_Families/" + family_name + ".htm", "_blank");
+                    return;
+                }
+                alert("Info webpage doesn't seem to exist for this family...");
+                return;
+            }
+            //default click behavior
+            toggleFamily(family); //select.js
+        });
+
         family_choices_grid.appendChild(div);
     }
 
-    //select families
-    //clear previous selection, we don't know if the header label still applies
-    document.querySelectorAll("#family_choices_header div[data-group='select']").forEach(el => {el.classList.remove("selected")});
-    //select families, trying to keep same selections as before
-    if(selected_families.length == 0){
-        selectEasy(); //default selection
-        document.getElementById("select_easy").classList.add("selected");
+    //select families, trying to keep the same selections as before
+    if(selected_families.size == 0){
+        //update the family list then select the easy ones (default)
+        selected_families = new Set([]);
+        nonselected_families = new Set(Object.keys(family_obs));
+        selectPreset("select_easy");
     }
     else {
         //Try to keep same selections as before
-        let new_selected = [];
-        let new_nonselected = [];
+
+        selectPreset(null); //remove highlighting, we don't know if previous preset still holds
+        
+        let prev_selected = new Set(selected_families);
+        selected_families = new Set([]);
+        nonselected_families = new Set([]);
         for(let family in family_obs){
-            if(selected_families.includes(family)){
-                new_selected.push(family);
-                document.getElementById(family + "_choice").classList.add("selected");
-            }
-            else {
-                new_nonselected.push(family);
-                document.getElementById(family + "_choice").classList.remove("selected");
-            }
+            prev_selected.has(family) ? select(family) : deselect(family); //select.js
         }
-        selected_families = new_selected;
-        nonselected_families = new_nonselected;
     }
 
     sortFamilyChoices(NSpeciesComparator); //default sort
@@ -116,7 +124,7 @@ function init(csv){
 
     //add family image credits
     let attributions = ["All images sourced from iNaturalist.<br>"];
-    for(family in family_obs){
+    for(let family in family_obs){
         attributions.push("<b>" + family + "</b>: " + family_data[family].attribution);
     }
     attributions.sort();

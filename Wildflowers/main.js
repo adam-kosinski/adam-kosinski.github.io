@@ -44,6 +44,23 @@ function handleKeypress(e){
 
 //click event handling
 
+//start button
+document.getElementById("exit_settings").addEventListener("click", function(e){
+    if(selected_families.size == 0){
+        alert("You must select some families");
+        return;
+    }
+    nextPlant();
+    document.getElementById("settings").style.display = "none";
+});
+
+//return to settings button
+document.getElementById("enter_settings").addEventListener("click", function(){
+    guessing = false;
+    document.getElementById("settings").style.display = "block";
+    document.getElementById("elpel_zoom_img_container").style.display = "none"; //in case it was open
+});
+
 //elpel zoom image
 document.getElementById("elpel_img").addEventListener("click", function(e){
     let elpel_zoom_img = document.getElementById("elpel_zoom_img");
@@ -57,58 +74,15 @@ document.getElementById("elpel_zoom_img_container").addEventListener("click", fu
 
 function handleClick(e){
 
-    //select / sort highlighting
-    if(document.getElementById("family_choices_header").contains(e.target) && e.target.classList.contains("clickable")){
-        document.querySelectorAll(`#family_choices_header div[data-group="${e.target.dataset.group}"]`).forEach(el => {el.classList.remove("selected")});
-        e.target.classList.add("selected");
-        //don't return, more handlers might apply below
-    }
-
     if(e.target.id == "next_plant"){
         nextPlant();
-        return;
     }
-    
-    if(searchParents(e.target, "id", "exit_settings")){
-        if(selected_families.length == 0){
-            alert("You must select some families");
-            return;
-        }
-        nextPlant();
-        document.getElementById("settings").style.display = "none";
-        return;
+    else if(e.target.id == "family_image_credit_link"){
+        document.getElementById("family_image_credits").showModal();
     }
-    if(e.target.id == "family_image_credit_link"){
-        document.getElementById("family_image_credits_container").style.display = "block";
-        return;
+    else if(e.target.id == "family_image_credits_exit"){
+        document.getElementById("family_image_credits").close();
     }
-    if(e.target.id == "family_image_credits_exit"){
-        document.getElementById("family_image_credits_container").style.display = "none";
-        return;
-    }
-    if(searchParents(e.target, "id", "enter_settings")){
-        guessing = false;
-        document.getElementById("settings").style.display = "block";
-        document.getElementById("elpel_zoom_img_container").style.display = "none"; //in case it was open
-        return;
-    }
-    if(e.target.id == "select_easy"){
-        selectEasy(); //util.js
-    }
-    if(e.target.id == "select_diverse"){
-        selectTopNDiverse(10); //util.js
-        return;
-    }
-    if(e.target.id == "select_all"){
-        selected_families = Object.keys(family_obs);
-        nonselected_families = [];
-        document.querySelectorAll(".family_choice").forEach(el => el.classList.add("selected"));
-        return;
-    }
-    if(e.target.id == "select_none"){
-        selectNone(); //util.js
-        return;
-    }    
     if(e.target.id == "sort_alphabetical"){
         sortFamilyChoices(); //util.js
         return;
@@ -123,38 +97,10 @@ function handleClick(e){
         sortFamilyChoices(NSpeciesComparator); //util.js
         return;
     }
-
-    let family_choice_match = searchParents(e.target, "class", "family_choice");
-    if(family_choice_match){
-        let family_name = family_choice_match.id.split("_")[0];
-        if(e.altKey){
-            //redirect to the elpel webpage on this family - sneaky hidden feature
-            if(family_data[family_name].id_notes.length > 0 || family_data[family_name].elpel_image_exists == "True"){
-                window.open("https://www.wildflowers-and-weeds.com/Plant_Families/" + family_name + ".htm", "_blank");
-            }
-            else {
-                alert("Info webpage doesn't seem to exist for this family...");
-            }
-        }
-        else {
-            //normal behavior
-            let is_selected = family_choice_match.classList.toggle("selected");
-            if(is_selected){
-                selected_families.push(family_name);
-                nonselected_families.splice(nonselected_families.indexOf(family_name), 1);
-            }
-            else {
-                selected_families.splice(selected_families.indexOf(family_name), 1);
-                nonselected_families.push(family_name);
-            }
-            //custom selection now, so remove selected item in the header
-            document.querySelectorAll("#family_choices_header div[data-group='select']").forEach(el => {el.classList.remove("selected")});
-        }
-        return;
-    }
 }
 
 function handleMousemove(e){
+    //Image zoom on hover feature
     //Check if plant image is fully loaded. Can't do stuff relying on if on/off of image w/o it being loaded
     if(document.getElementById("plant_img").complete){
         let zoom_container = document.getElementById("zoom_img_container");
@@ -199,15 +145,15 @@ function nextPlant(){
 
     //new tuple
     let next_family;
-    if(Math.random() < other_rate && nonselected_families.length > 0){
-        next_family = nonselected_families[Math.floor(Math.random() * nonselected_families.length)];
+    if(Math.random() < other_rate && nonselected_families.size > 0){
+        next_family = Array.from(nonselected_families)[Math.floor(Math.random() * nonselected_families.size)];
     }
     else {
-        if(selected_families.length == 0){
+        if(selected_families.size == 0){
             console.error("Somehow selected_families is empty");
             return;
         }
-        next_family = selected_families[Math.floor(Math.random() * selected_families.length)];
+        next_family = Array.from(selected_families)[Math.floor(Math.random() * selected_families.size)];
     }
     let tuples = family_obs[next_family];
     current_tuple = tuples[Math.floor(Math.random() * tuples.length)]; //global var in init.js
@@ -245,7 +191,7 @@ function checkAnswer(){
     let feedback = document.getElementById("feedback");
 
     let guess_string = guess_input.value.toLowerCase();
-    let is_other = !selected_families.includes(current_tuple.taxon_family_name);
+    let is_other = !selected_families.has(current_tuple.taxon_family_name);
 
     if(
         guess_string == current_tuple.taxon_family_name.toLowerCase() ||

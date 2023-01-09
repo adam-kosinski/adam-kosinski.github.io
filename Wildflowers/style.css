@@ -175,8 +175,8 @@ p#elpel_keywords {
     padding: 0 10px 10px 10px;
     
     display: grid;
-    grid-template-columns: 300px auto;
-    grid-template-rows: 50px 45px 1fr;
+    grid-template-columns: 310px auto;
+    grid-template-rows: 50px auto auto;
     grid-template-areas:
         "header header"
         "left right_header"
@@ -192,7 +192,7 @@ p#elpel_keywords {
     grid-area: header;
     border-bottom: 2px solid peru;
     display: flex;
-    justify-content: space-around;
+    justify-content: space-evenly;
 }
 
 
@@ -247,7 +247,7 @@ p#elpel_keywords {
 }
 
 #flower2 {
-    height: 90px;
+    height: 80px;
     margin-top: 18px;
     margin-left: 5px;
     display: inline-block;
@@ -255,6 +255,7 @@ p#elpel_keywords {
 
 #family_choices_header {
     grid-area: right_header;
+    margin-bottom: -10px; /* negate grid gap */
     position: relative; /*because of absolutely positioned child*/
 }
 
@@ -262,20 +263,20 @@ p#elpel_keywords {
     margin: 0;
 }
 
-#family_choices_header div.inline {
-    display: inline-block;
-    margin-top: 2px;
-    font-size: 14px;
+.option_row {
+    display: flex;
+    gap: 0.5rem;
+    margin: 5px;
+}
+.option_row div {
+    padding: 5px;
+    font-size: 0.875rem;
     border-radius: 5px;
 }
-
-#family_choices_header div.inline.clickable {
-    cursor: pointer;
-    padding: 5px;
-}
-#family_choices_header div.inline.clickable:hover, #family_choices_header div.inline.clickable.selected {
+#family_choices_header div.clickable:hover, #family_choices_header .selected {
     background-color: purple;
     color: beige;
+    cursor: pointer;
 }
 
 #family_image_credit_link {
@@ -288,13 +289,9 @@ p#elpel_keywords {
     color: peru;
 }
 
-
-#family_choices {
-    grid-area: right_grid;
-    overflow: auto;
-}
-
 #family_choices_grid {
+    grid-area: right_grid;
+    overflow-y: auto;
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(115px, 1fr));
     gap: 10px;
@@ -339,31 +336,21 @@ p#elpel_keywords {
     text-align: center;
 }
 
-#family_image_credits_container {
-    position: absolute;
-    height: 100%;
-    width: 100%;
-    background-color: rgba(0,0,0,0.5);
-    z-index: 10;
-    display: none;
-}
-
 #family_image_credits {
-    position: absolute;
     width: 700px;
     height: 450px;
     background-color: white;
-    left: 0;
-    right: 0;
-    top: 0;
-    bottom: 0;
-    margin: auto;
     color: black;
     padding: 10px;
+    border: none;
+    overflow: hidden;
+}
+
+#family_image_credits::backdrop {
+    background-color: #0008;
 }
 
 #family_image_credits_exit {
-    margin: 0;
     position: absolute;
     top: 0;
     right: 5px;
@@ -372,11 +359,11 @@ p#elpel_keywords {
 }
 
 #family_image_credits_title {
-    margin: 0;
     font-size: 20px;
 }
 
 #family_image_credits_list {
     overflow-y: auto;
     height: 415px;
+    margin-bottom: 0;
 }

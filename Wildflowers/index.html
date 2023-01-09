@@ -1,144 +1,155 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <title>Wildflowers</title>
-        <link type="text/css" rel="stylesheet" href="style.css">
-        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Shadows+Into+Light">
-        <link rel="icon" href="icon.png">
-        <meta charset="UTF-8">
-    </head>
-    <body>
-        
-        <div id="img_container">
-            <img id="plant_img">
-        </div>
 
-        <div id="info_container">
-            <datalist id="family_names"></datalist> <!--values to suggest to the user, see init.js-->
-            <label for="guess">Enter family name (scientific or common):<br></label>
-            <input type="text" id="guess" list="family_names" autocomplete="on">
-            <p id="feedback"></p>
-    
-            <div id="answers">
-                <p>
-                    <span id="common_name"></span><br>
-                    <span id="scientific_name"></span>
-                </p>
-                <p id="family_name"></p>
-                <p id="elpel_keywords"></p>
-                <a id="more_info_link" target="_blank">More Info</a>
-                <img id="elpel_img">
-                <p id="class_name"></p>
-                
-                <button id="next_plant">Next Plant ></button>
-            </div>
-            
-            <p id="img_credit">
-                <b>Image credit:</b><br>
-                <span id="img_author"></span>
-                <span id="license_description"></span>
-                (<a id="license_link" target="_blank"></a>).<br>
-                <a id="inat_url" target="_blank"></a>
+<head>
+    <title>Wildflowers</title>
+    <link type="text/css" rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Shadows+Into+Light">
+    <link rel="icon" href="icon.png">
+    <meta charset="UTF-8">
+</head>
+
+<body>
+
+    <div id="img_container">
+        <img id="plant_img">
+    </div>
+
+    <div id="info_container">
+        <datalist id="family_names"></datalist> <!--values to suggest to the user, see init.js-->
+        <label for="guess">Enter family name (scientific or common):<br></label>
+        <input type="text" id="guess" list="family_names" autocomplete="on">
+        <p id="feedback"></p>
+
+        <div id="answers">
+            <p>
+                <span id="common_name"></span><br>
+                <span id="scientific_name"></span>
             </p>
+            <p id="family_name"></p>
+            <p id="elpel_keywords"></p>
+            <a id="more_info_link" target="_blank">More Info</a>
+            <img id="elpel_img">
+            <p id="class_name"></p>
 
-            <div id="elpel_zoom_img_container">
-                <img id="elpel_zoom_img">
-            </div>
-
-            <div id="zoom_img_container">
-                <img id="zoom_img">
-            </div>
-
+            <button id="next_plant">Next Plant ></button>
         </div>
 
-        <div id="enter_settings">
-            <p>Return to<br>Settings</p>
-            <img src="flower1.png">
+        <p id="img_credit">
+            <b>Image credit:</b><br>
+            <span id="img_author"></span>
+            <span id="license_description"></span>
+            (<a id="license_link" target="_blank"></a>).<br>
+            <a id="inat_url" target="_blank"></a>
+        </p>
+
+        <div id="elpel_zoom_img_container">
+            <img id="elpel_zoom_img">
         </div>
 
-        <div id="settings">
-            <div id="settings_panel">
-                <div id="settings_header">
-                    <img src="line_flowers.png">
-                    <img src="vine_swish.png" style="transform: scaleX(-1);">
-                    <p>Welcome to Wildflower Families!</p>
-                    <img src="vine_swish.png">
-                    <img src="line_flowers.png" style="transform: scaleX(-1);">
-                </div>
-                <div id="settings_left">
-                    <p>
-                        This tool is designed to help you identify wildflower families. The idea comes
-                        from Thomas J. Elpel's book Botany in a Day, and the ID tips are sourced from his accompanying website
-                        (<a target="_blank" href="https://www.wildflowers-and-weeds.com/">link</a>). The photo and ID data is
-                        pulled from iNaturalist.
-                    </p>
-                    <p>
-                        <b><u>To use:</u></b> First, click which families you would like to practice (purple = selected).
-                        Then click START. Type your guess for the photo and press the enter key to check. Most photos shown
-                        will be in the selected families, but occasionally a plant not in these families will be
-                        shown. Typing "Other" or the correct family will be considered correct for such plants.
-                        Use the autocomplete feature, it helps avoid spelling errors. Also, clicking a family
-                        in the grid while holding Alt will send you to the family's info webpage. The # species and # photos for
-                        each family in the current dataset is shown in parentheses.
-                    </p>
-                    <label for="dataset_select">Select Dataset:</label>
-                    <select id="dataset_select">
-                        <!-- value must match key in datasets global var -->
-                        <option value="nc_popular">NC Popular (3858 pics)</option>
-                        <option value="durham_county">Durham County, NC (15219 pics)</option>
-                        <option value="orange_county">Orange County, NC (22965 pics)</option>
-                        <option value="pisgah_national_forest">Pisgah National Forest (8315 pics)</option>
-                        <option value="coastal_nc">Coastal NC (25190 pics)</option>
-                    </select>
-                    <br>
-                    <img id="flower2" src="flower2_rotated.png">
-                    <div id="exit_settings">
-                        <img src="wood_sign.png">
-                        <p>START</p>
-                    </div>
-                </div>
-                <div id="family_choices_header">
-                    <p>Pick Families:</p>
-                    <div class="inline" style="margin-left: 5px;"><u>Select:</u></div>
-                    <div class="inline clickable" data-group="select" id="select_easy">Easy</div>
-                    <div class="inline clickable" data-group="select" id="select_diverse">Top 10 Diverse</div>
-                    <div class="inline clickable" data-group="select" id="select_all">All</div>
-                    <div class="inline clickable" data-group="select" id="select_none">None</div>
-                    <div class="inline" style="margin-left: 20px;"><u>Sort By:</u></div>
-                    <div class="inline clickable" data-group="sort" id="sort_n_species"># Species</div>
-                    <div class="inline clickable" data-group="sort" id="sort_alphabetical">A-Z</div>
-                    <div class="inline clickable" data-group="sort" id="sort_frequency"># Photos</div>
-                    <p id="family_image_credit_link">Family Image Credits</p>
-                </div>
-                <div id="family_choices">
-                    <div id="family_choices_grid"></div>
+        <div id="zoom_img_container">
+            <img id="zoom_img">
+        </div>
+
+    </div>
+
+    <div id="enter_settings">
+        <p>Return to<br>Settings</p>
+        <img src="flower1.png">
+    </div>
+
+    <div id="settings">
+        <div id="settings_panel">
+            <div id="settings_header">
+                <img src="line_flowers.png">
+                <img src="vine_swish.png" style="transform: scaleX(-1);">
+                <p>Welcome to Wildflower Families!</p>
+                <img src="vine_swish.png">
+                <img src="line_flowers.png" style="transform: scaleX(-1);">
+            </div>
+            <div id="settings_left">
+                <p>
+                    This tool is designed to help you identify wildflower families. The idea comes
+                    from Thomas J. Elpel's book Botany in a Day, and the ID tips are sourced from his accompanying
+                    website
+                    (<a target="_blank" href="https://www.wildflowers-and-weeds.com/">link</a>). The photo and ID data
+                    is
+                    pulled from iNaturalist.
+                </p>
+                <p>
+                    <b><u>To use:</u></b> First, click which families you would like to practice (purple = selected).
+                    Then click START. Type your guess for the photo and press the enter key to check. Most photos shown
+                    will be in the selected families, but occasionally a plant not in these families will be
+                    shown. Typing "Other" or the correct family will be considered correct for such plants.
+                    Use the autocomplete feature, it helps avoid spelling errors. Also, clicking a family
+                    in the grid while holding Alt will send you to the family's info webpage. The # species and # photos
+                    for
+                    each family in the current dataset is shown in parentheses.
+                </p>
+                <label for="dataset_select">Select Dataset:</label>
+                <select id="dataset_select">
+                    <!-- value must match key in datasets global var -->
+                    <option value="nc_popular">NC Popular (3858 pics)</option>
+                    <option value="durham_county">Durham County, NC (15219 pics)</option>
+                    <option value="orange_county">Orange County, NC (22965 pics)</option>
+                    <option value="pisgah_national_forest">Pisgah National Forest (8315 pics)</option>
+                    <option value="coastal_nc">Coastal NC (25190 pics)</option>
+                </select>
+                <br>
+                <img id="flower2" src="flower2_rotated.png">
+                <div id="exit_settings">
+                    <img src="wood_sign.png">
+                    <p>START</p>
                 </div>
             </div>
-        </div>
-
-        <div id="family_image_credits_container">
-            <div id="family_image_credits">
-                <p id="family_image_credits_exit">&#10006;</p>
-                <p id="family_image_credits_title">Family Image Credits</p>
-                <p id="family_image_credits_list">Hi</p>
+            <div id="family_choices_header">
+                <p id="family_image_credit_link">Family Image Credits</p>
+                <p>Pick Families:</p>
+                <div id="select_options" class="option_row">
+                    <div><u>Select:</u></div>
+                    <div class="clickable select" data-group="select" id="select_all">All</div>
+                    <div class="clickable select" data-group="select" id="select_none">None</div>
+                    <div class="clickable select" data-group="select" id="select_easy">Easy</div>
+                    <div class="clickable select" data-group="select" id="select_medium">Medium</div>
+                    <div class="clickable select" data-group="select" id="select_diverse">Top 10 Diverse</div>
+                    <div class="clickable select" data-group="select" id="select_lily_like">Lily-Like</div>
+                    <div class="clickable select" data-group="select" id="select_five_united_petals">5 United Petals</div>
+                </div>
+                <div id="sort_options" class="option_row">
+                    <div><u>Sort By:</u></div>
+                    <div class="clickable" data-group="sort" id="sort_n_species"># Species</div>
+                    <div class="clickable" data-group="sort" id="sort_alphabetical">A-Z</div>
+                    <div class="clickable" data-group="sort" id="sort_frequency"># Photos</div>
+                </div>
             </div>
+            <div id="family_choices_grid"></div>
         </div>
+    </div>
+
+    <dialog id="family_image_credits">
+        <span id="family_image_credits_exit">&#10006;</span>
+        <span id="family_image_credits_title">Family Image Credits</span>
+        <p id="family_image_credits_list">Hi</p>
+    </dialog>
 
 
-        <script src="papaparse.js"></script>
+    <script src="papaparse.js"></script>
 
-        <script src="globals.js"></script>
+    <script src="globals.js"></script>
 
-        <script src="data/nc_popular.js"></script>
-        <script src="data/durham_county.js"></script>
-        <script src="data/orange_county.js"></script>
-        <script src="data/pisgah_national_forest.js"></script>
-        <script src="data/coastal_nc.js"></script>
-        <script src="data/families.js"></script>
+    <script src="data/nc_popular.js"></script>
+    <script src="data/durham_county.js"></script>
+    <script src="data/orange_county.js"></script>
+    <script src="data/pisgah_national_forest.js"></script>
+    <script src="data/coastal_nc.js"></script>
+    <script src="data/families.js"></script>
 
-        <script src="util.js"></script>
-        <script src="main.js"></script>
+    <script src="util.js"></script>
+    <script src="select.js"></script>
+    <script src="sort.js"></script>
+    <script src="main.js"></script>
 
-        <script src="init.js"></script>
-    </body>
+    <script src="init.js"></script>
+</body>
+
 </html>
