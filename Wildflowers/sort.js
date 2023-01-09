@@ -53,9 +53,8 @@ function sortSelected(){
 }
 
 function updateSortSelected(from_click=false){
-    console.log(from_click)
     //function is called when we select/deselect, need to update order if was sorted selected-first
-    //from_click - If selected by clicking, remove sort highlighting and don't sort (so the family you just clicked doesn't jump away)
+    //from_click - if selected by clicking, remove sort highlighting and don't sort (so the family you just clicked doesn't jump away)
     let selected_elem = document.querySelector("#sort_options .selected")
     if(selected_elem && selected_elem.id == "sort_selected_first"){
         from_click ? sortPreset(null) : sortSelected();

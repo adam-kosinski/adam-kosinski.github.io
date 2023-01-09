@@ -60,8 +60,8 @@ function selectPreset(id){
     else if(id == "select_diverse"){
         //select top 10 families with the most species
         let sorted_diverse = Object.keys(family_obs).sort(NSpeciesComparator); //sort.js
-        for(let i=0; i<10; i++){
-            select(sorted_diverse[i]);
+        for(let i=0; i<sorted_diverse.length; i++){
+            i < 10 ? select(sorted_diverse[i]) : deselect(sorted_diverse[i]);
         }
     }
 }
