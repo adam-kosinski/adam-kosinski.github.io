@@ -10,20 +10,22 @@ let presets = {
 
 //basic select functions
 
-function select(family) {
+function select(family, from_click=false) {
     selected_families.add(family);
     nonselected_families.delete(family);
     document.getElementById(family + "_choice").classList.add("selected");
+    updateSortSelected(from_click); //since sort order might not be correct anymore
 }
-function deselect(family) {
+function deselect(family, from_click=false) {
     selected_families.delete(family);
     nonselected_families.add(family);
     document.getElementById(family + "_choice").classList.remove("selected");
+    updateSortSelected(from_click); //since sort order might not be correct anymore
 }
 function toggleFamily(family) {
     //function called whenever you click on a family choice in the settings grid, see init.js
     let was_selected = document.getElementById(family + "_choice").classList.contains("selected");
-    was_selected ? deselect(family) : select(family);
+    was_selected ? deselect(family, true) : select(family, true);  //this was triggered by a click, so from_click = true
     //custom selection now, so remove highlighted item in the selection header
     selectPreset(null);
 }

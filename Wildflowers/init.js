@@ -118,7 +118,7 @@ function init(csv){
         }
     }
 
-    sortPreset("sort_n_species"); //default sort
+    sortPreset("sort_selected_first"); //default sort
 
     //add family image credits
     let attributions = ["All images sourced from iNaturalist.<br>"];

@@ -23,6 +23,9 @@ function sortPreset(id) {
             return family_obs[b].length - family_obs[a].length;
         });
     }
+    else if(id == "sort_selected_first"){
+        sortSelected();
+    }
 }
 
 function sortFamilyChoices(compare_func) {
@@ -41,4 +44,20 @@ function NSpeciesComparator(a, b) { //used in select.js as well
     //takes family names a,b
     //returns -1, 0, or 1 appropriately
     return family_species[b].size - family_species[a].size;
+}
+
+function sortSelected(){
+    sortFamilyChoices(function(a,b){
+        return selected_families.has(b) - selected_families.has(a);
+    });
+}
+
+function updateSortSelected(from_click=false){
+    console.log(from_click)
+    //function is called when we select/deselect, need to update order if was sorted selected-first
+    //from_click - If selected by clicking, remove sort highlighting and don't sort (so the family you just clicked doesn't jump away)
+    let selected_elem = document.querySelector("#sort_options .selected")
+    if(selected_elem && selected_elem.id == "sort_selected_first"){
+        from_click ? sortPreset(null) : sortSelected();
+    }
 }
