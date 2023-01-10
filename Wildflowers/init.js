@@ -64,7 +64,7 @@ function init(csv){
         let div = document.createElement("div");
         div.id = family + "_choice";
         div.classList.add("family_choice");
-        if(family_data[family].id_notes.length > 0 || family_data[family].elpel_image_exists == "True"){
+        if(family_data[family].id_notes.length > 0 || family_data[family].elpel_image_exists == "True" || family in elpel_redirects){
             div.classList.add("elpel_page_exists");
         }
         else {
@@ -86,6 +86,10 @@ function init(csv){
                 //redirect to the elpel webpage on this family - sneaky hidden feature
                 if(family_data[family].id_notes.length > 0 || family_data[family].elpel_image_exists == "True"){
                     window.open("https://www.wildflowers-and-weeds.com/Plant_Families/" + family + ".htm", "_blank");
+                    return;
+                }
+                else if(family in elpel_redirects){
+                    window.open(elpel_redirects[family]);
                     return;
                 }
                 alert("Info webpage doesn't seem to exist for this family...");

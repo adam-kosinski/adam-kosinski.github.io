@@ -2,8 +2,8 @@ let presets = {
     //key is the HTML id of the element you click
     "select_easy": ["Asteraceae", "Poaceae", "Liliaceae", "Lamiaceae", "Brassicaceae", "Apiaceae", "Fabaceae", "Rosaceae"],
     "select_medium": ["Asteraceae", "Boraginaceae", "Cactaceae", "Typhaceae", "Onagraceae", "Scrophulariaceae", "Geraniaceae", "Grossulariaceae", "Cucurbitaceae", "Vitaceae", "Poaceae", "Ericaceae", "Iridaceae", "Liliaceae", "Malvaceae", "Lamiaceae", "Brassicaceae", "Solanaceae", "Orchidaceae", "Arecaceae", "Apiaceae", "Fabaceae", "Caryophyllaceae", "Rosaceae", "Saxifragaceae", "Urticaceae", "Violaceae", "Salicaceae"],
-    "select_five_united_petals": ["Apocynaceae", "Boraginaceae", "Campanulaceae", "Caprifoliaceae", "Convolvulaceae", "Cucurbitaceae", "Ericaceae", "Gentianaceae", "Menyanthaceae", "Oleaceae", "Polemoniaceae", "Primulaceae", "Rubiaceae", "Scrophulariaceae", "Solanaceae", "Verbenaceae", "Vitaceae"],
-    "select_lily_like": ["Liliaceae", "Melanthiaceae", "Colchicaceae", "Amaryllidaceae", "Asparagaceae", "Asphodelaceae", "Pontederiaceae"],
+    "select_five_united_petals": ["Apocynaceae", "Boraginaceae", "Campanulaceae", "Caprifoliaceae", "Convolvulaceae", "Cucurbitaceae", "Ericaceae", "Gentianaceae", "Menyanthaceae", "Oleaceae", "Polemoniaceae", "Primulaceae", "Rubiaceae", "Scrophulariaceae", "Solanaceae", "Verbenaceae", "Viburnaceae", "Vitaceae"],
+    "select_lily_like": ["Liliaceae", "Melanthiaceae", "Colchicaceae", "Amaryllidaceae", "Asparagaceae", "Asphodelaceae", "Pontederiaceae", "Tofieldiaceae"],
     "adam": ['Asteraceae', 'Lamiaceae', 'Fabaceae', 'Scrophulariaceae', 'Apiaceae', 'Geraniaceae', 'Rosaceae', 'Ericaceae', 'Orchidaceae', 'Brassicaceae', 'Boraginaceae', 'Saxifragaceae', 'Plantaginaceae', 'Convolvulaceae', 'Rubiaceae']
 }
 

@@ -17,3 +17,11 @@ let license_links = {
     "CC-BY-ND": "https://creativecommons.org/licenses/by-nd/4.0/",
     "CC-BY-SA": "https://creativecommons.org/licenses/by-sa/4.0/"
 };
+
+//List of families with some info on T.J.Elpel's website, but not in the typical format (or a renamed family, etc)
+//We check this list only if the usual method doesn't work (see init.js)
+let elpel_redirects = {
+    "Viburnaceae": "https://www.wildflowers-and-weeds.com/Plant_Families/Caprifoliaceae.htm",
+    "Plantaginaceae": "https://www.wildflowers-and-weeds.com/Plant_Families/Plantaginaceae.htm", //because no notes or image
+    "Sapindaceae": "https://www.wildflowers-and-weeds.com/Plant_Families/Aceraceae.htm" //maple subfamily only on the website
+};
