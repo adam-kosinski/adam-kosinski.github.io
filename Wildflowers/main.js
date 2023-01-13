@@ -104,6 +104,10 @@ function checkAnswer() {
         more_info.href = "https://www.wildflowers-and-weeds.com/Plant_Families/" + f_sci + ".htm"
         more_info.style.display = "inline";
     }
+    else if(f_sci in elpel_redirects){
+        more_info.href = elpel_redirects[f_sci];
+        more_info.style.display = "inline";
+    }
     else {
         more_info.style.display = "none";
     }
