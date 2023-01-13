@@ -122,7 +122,14 @@ function init(csv){
         }
     }
 
-    sortPreset("sort_selected_first"); //default sort
+    //sort families, try to keep same sort method as before
+    let selected_sort = document.querySelector(".sort.selected");
+    if(selected_sort){
+        sortPreset(selected_sort.id);
+    }
+    else {
+        sortPreset("sort_selected_first"); //default sort
+    }
 
     //add family image credits
     let attributions = ["All images sourced from iNaturalist.<br>"];
