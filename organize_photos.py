@@ -43,9 +43,9 @@ def search_for_date(filename, dir, files):
     without_ext = os.path.splitext(filename)[0]
     for test_filename in files:
         if without_ext in test_filename and test_filename != filename:
-            possible_date = creation_date(os.path.join(dir,test_filename))
-            if possible_date:
-                return possible_date, None
+            date = creation_date(os.path.join(dir,test_filename))
+            if date:
+                return date, None
     
     # Look at first files before and after this file that have valid creation dates. If the day matches, use that day (not enough info to infer time of day)
     # If the day doesn't match, use the month instead
