@@ -13,6 +13,7 @@ HachoirConfig.quiet = True
 
 
 def creation_date(filename):
+    # filename includes path
     parser = createParser(filename)
     metadata = extractMetadata(parser)
 
@@ -29,6 +30,22 @@ def creation_date(filename):
     return None
 
 
+def search_for_date(filename, dir, files):
+    # filename of file (without path), dir is path to current directory, files is a list of all other files in the same directory
+    # employs proxies to find the date if creation_date() failed, mostly used for .AAE and .PNG files
+    
+    print("SEARCHING FOR DATE")
+
+    # search for other files with the same name but different extension (works for AEE files for example)
+    # use that file's creation date instead, and set that file as paired to this one (so that this file will be renamed the same way if a rename occurs)
+    without_ext = os.path.splitext(filename)[0]
+    for test_filename in files:
+        if without_ext in test_filename and test_filename != filename:
+            possible_date = creation_date(os.path.join(dir,test_filename))
+            if possible_date:
+                return possible_date
+
+    return None
 
 
 def main(src, dest, rename=False):
@@ -36,47 +53,52 @@ def main(src, dest, rename=False):
 
     # get total number of files for progress printing
     file_count = 0
-    for root, dirs, files in os.walk(src):
+    for cur_dir, dirs, files in os.walk(src):
         # default is to put the dest folder inside the src folder, don't look into it for photos
-        if dest in root:
+        if dest in cur_dir:
             continue
         file_count += len(files)
 
     # go through folder structure, finding all files, and processing them
     file_num = 0
-    for root, dirs, files in os.walk(src):
-        if dest in root:
+    for cur_dir, dirs, files in os.walk(src):
+        if dest in cur_dir:
             continue
-
+        
         # process this directory
         for filename in files:
+            # print out progress
             file_num += 1 # starts at 0, first file should be 1
-            filepath = os.path.join(root, filename)
-            print(f"{file_num}/{file_count}", filepath)
+            filepath = os.path.join(cur_dir, filename)
+            print(f"{file_num}/{file_count}", filepath)            
 
-            # get destination folder, determined by year-month
+            # get date the image / video / file was originally made
             date = creation_date(filepath) # datetime object
             if not date:
-                print("CAN'T FIND DATE")
-                
-                continue
+                # try using proxy methods
+                date = search_for_date(filename, cur_dir, files)
+                if not date:
+                    print("CAN'T FIND DATE")
+                    continue
+            
+            # get destination folder, determined by year-month
             dest_folder_path = os.path.join(dest, date.strftime("%Y-%m")) # year-month
             if not os.path.exists(dest_folder_path):
                 os.makedirs(dest_folder_path)
-            
+
+            # file rename
             if rename:
-                filename = date.strftime("%Y-%m-%d") + os.path.splitext(filename)[1]
-            
-            # prevent replacing existing files with the duplicate counter
+                filename = str(date) + os.path.splitext(filename)[1]
+            # prevent replacing existing files with the duplicate counter: append _(#)
             filename_split = os.path.splitext(filename)
             duplicate_counter = 0
             while os.path.exists(os.path.join(dest_folder_path, filename)):
                 filename = filename_split[0] + (f"_({duplicate_counter})" if duplicate_counter > 0 else "") + filename_split[1]
                 duplicate_counter += 1
 
-            # copy file to sorted folder
+            # copy file to sorted folder, don't do this for paired files since we don't know all the renames yet
             shutil.copy2(filepath, os.path.join(dest_folder_path, filename))
-
+            
 
 if __name__ == "__main__":
     # check syntax
@@ -107,7 +129,7 @@ if __name__ == "__main__":
             exit()
 
     # prompt for rename option
-    print("Would you also like to rename the files with format 'yyyy-mm-dd_(#)' based on date taken?")
+    print("Would you also like to rename the files with their date and time taken?")
     print("yes/no:", end=" ")
     res = input().lower()
     rename = (res == "yes" or res == "y")
