@@ -34,6 +34,8 @@ def search_for_date(filename, dir, files):
     # filename of file (without path), dir is path to current directory, files is a list of all other files in the same directory
     # employs proxies to find the date if creation_date() failed, mostly used for .AAE and .PNG files
     
+    # returns the date, and the rename string if special (e.g. could only narrow down the month) in a tuple
+
     print("SEARCHING FOR DATE")
 
     # search for other files with the same name but different extension (works for AEE files for example)
@@ -43,9 +45,12 @@ def search_for_date(filename, dir, files):
         if without_ext in test_filename and test_filename != filename:
             possible_date = creation_date(os.path.join(dir,test_filename))
             if possible_date:
-                return possible_date
+                return possible_date, None
+    
+    # Look at first files before and after this file that have valid creation dates. If the day matches, use that day (not enough info to infer time of day)
+    # If the day doesn't match, use the month instead
 
-    return None
+    return None, None
 
 
 def main(src, dest, rename=False):
@@ -74,11 +79,16 @@ def main(src, dest, rename=False):
 
             # get date the image / video / file was originally made
             date = creation_date(filepath) # datetime object
+            rename_string = None # used by search_for_date() to provide a date rename string with less precision than default
             if not date:
                 # try using proxy methods
-                date = search_for_date(filename, cur_dir, files)
+                date, rename_string = search_for_date(filename, cur_dir, files)
                 if not date:
-                    print("CAN'T FIND DATE")
+                    print("CAN'T FIND DATE, COPYING TO 'DATE_NOT_FOUND' FOLDER")
+                    error_path = os.path.join(dest, "DATE_NOT_FOUND")
+                    if not os.path.exists(error_path):
+                        os.makedirs(error_path)
+                    shutil.copy2(filepath, os.path.join(error_path, filename))
                     continue
             
             # get destination folder, determined by year-month
@@ -88,7 +98,8 @@ def main(src, dest, rename=False):
 
             # file rename
             if rename:
-                filename = str(date) + os.path.splitext(filename)[1]
+                filename = rename_string if rename_string else str(date) + os.path.splitext(filename)[1]
+                
             # prevent replacing existing files with the duplicate counter: append _(#)
             filename_split = os.path.splitext(filename)
             duplicate_counter = 0
