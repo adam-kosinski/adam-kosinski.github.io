@@ -58,6 +58,7 @@ def main(src, dest, rename=False):
             date = creation_date(filepath) # datetime object
             if not date:
                 print("CAN'T FIND DATE")
+                
                 continue
             dest_folder_path = os.path.join(dest, date.strftime("%Y-%m")) # year-month
             if not os.path.exists(dest_folder_path):
@@ -81,7 +82,7 @@ if __name__ == "__main__":
     # check syntax
     if not (len(sys.argv) == 2 or len(sys.argv) == 3):
         print("Syntax:")
-        print("python3 photo_organize.py [folder with photos] [folder to copy organized photos into (optional)]")
+        print(f"python3 {__file__} [folder with photos] [folder to copy organized photos into (optional)]")
         exit()
     
     if not os.path.isdir(sys.argv[1]):
