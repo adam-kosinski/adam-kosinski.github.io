@@ -38,8 +38,8 @@ def search_for_date(filename, dir, files):
 
     print("SEARCHING FOR DATE")
 
-    # search for other files with the same name but different extension (works for AEE files for example)
-    # use that file's creation date instead, and set that file as paired to this one (so that this file will be renamed the same way if a rename occurs)
+    # search for other files with the same name but different extension (works for AAE files for example)
+    # use that file's creation date, it's probably right
     without_ext = os.path.splitext(filename)[0]
     for test_filename in files:
         if without_ext in test_filename and test_filename != filename:
@@ -49,6 +49,7 @@ def search_for_date(filename, dir, files):
     
     # Look at first files before and after this file that have valid creation dates. If the day matches, use that day (not enough info to infer time of day)
     # If the day doesn't match, use the month instead
+    # TODO
 
     return None, None
 
