@@ -7,9 +7,14 @@ from hachoir.metadata import extractMetadata
 from hachoir.core import config as HachoirConfig
 HachoirConfig.quiet = True
 
-
-# TODO guess date based on neighbors/filename if can't find date in metadata (useful for AAE, PNG files)
-# TODO test for hachoir install, automate that if user agrees in prompt
+# TODO make IMG numbering play nice (e.g. if from long ago or diff phone, will have a diff numbering)
+    # corollary: same IMG name with different dates? Poor organization
+    # maybe this isn't an issue - check phone change boundary
+# TODO account for already existing images - add as a command line input option, default is to not create duplicates
+    # this comes up when saving new photos from my phone, where I'll have some photos that were copied and organized previously
+    # issue of how can we be sure this is a duplicate - has same IMG number, and same date via creation_date()
+# TODO put search for date in creation date - just one function to get the date
+# TODO test for hachoir install, if not installed provide install instructions
 
 
 def creation_date(filename):
@@ -47,11 +52,45 @@ def search_for_date(filename, dir, files):
             if date:
                 return date, None
     
-    # Look at first files before and after this file that have valid creation dates. If the day matches, use that day (not enough info to infer time of day)
-    # If the day doesn't match, use the month instead
-    # TODO
+    # Look at first files before and after this file that have valid creation dates.
+    # Use the date from the before file, and if not available, the after date (arbitrary convention)
+    file_index = files.index(filename)
 
-    return None, None
+    before_date = None
+    before_index = file_index-1
+    while before_index >= 0:
+        before_date = creation_date(os.path.join(dir, files[before_index]))
+        if before_date:
+            break
+        before_index -= 1
+    
+    after_date = None
+    after_index = file_index+1
+    if not after_date: # no need to look if we already have a before date
+        while after_index < len(files):
+            after_date = creation_date(os.path.join(dir, files[after_index]))
+            if after_date:
+                break
+            after_index += 1
+    
+    # get date
+    date = before_date if before_date else after_date
+    if not date:
+        return None, None
+    
+    # For renaming, only print fields of {year, month, day} that match
+    date_suffix = None
+    if before_date and after_date:
+        if before_date.month != after_date.month:
+            date_suffix = date.strftime(" %Y")
+        elif before_date.day != after_date.day:
+            date_suffix = date.strftime(" %Y-%m")
+        else:
+            date_suffix = date.strftime(" %Y-%m-%d")
+    filename_split = os.path.splitext(filename)
+    rename_string = filename_split[0] + (date_suffix if date_suffix else "") + filename_split[1]
+
+    return date, rename_string
 
 
 def main(src, dest, rename=False):
@@ -98,11 +137,13 @@ def main(src, dest, rename=False):
                 os.makedirs(dest_folder_path)
 
             # file rename
+            filename_split = os.path.splitext(filename)
             if rename:
-                filename = rename_string if rename_string else str(date) + os.path.splitext(filename)[1]
+                filename = filename_split[0] + " " + date.strftime("%Y-%m-%d") + filename_split[1]
+                if rename_string:
+                    filename = rename_string
                 
             # prevent replacing existing files with the duplicate counter: append _(#)
-            filename_split = os.path.splitext(filename)
             duplicate_counter = 0
             while os.path.exists(os.path.join(dest_folder_path, filename)):
                 filename = filename_split[0] + (f"_({duplicate_counter})" if duplicate_counter > 0 else "") + filename_split[1]
