@@ -48,7 +48,12 @@ function NSpeciesComparator(a, b) { //used in select.js as well
 
 function sortSelected(){
     sortFamilyChoices(function(a,b){
-        return selected_families.has(b) - selected_families.has(a);
+        let compare = selected_families.has(b) - selected_families.has(a);
+        if (compare == 0) {
+            //sort non-selected families by n species, so that more common families show up first
+            compare = NSpeciesComparator(a,b);
+        }
+        return compare;
     });
 }
 
