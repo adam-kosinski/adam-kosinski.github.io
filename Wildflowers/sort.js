@@ -50,7 +50,7 @@ function sortSelected(){
     sortFamilyChoices(function(a,b){
         let compare = selected_families.has(b) - selected_families.has(a);
         if (compare == 0) {
-            //sort non-selected families by n species, so that more common families show up first
+            //if same selected status, sort by n species, so that more common families show up first
             compare = NSpeciesComparator(a,b);
         }
         return compare;

@@ -4,6 +4,7 @@ let presets = {
     "select_medium": ["Asteraceae", "Boraginaceae", "Cactaceae", "Typhaceae", "Onagraceae", "Scrophulariaceae", "Geraniaceae", "Grossulariaceae", "Cucurbitaceae", "Vitaceae", "Poaceae", "Ericaceae", "Iridaceae", "Liliaceae", "Malvaceae", "Lamiaceae", "Brassicaceae", "Solanaceae", "Orchidaceae", "Arecaceae", "Apiaceae", "Fabaceae", "Caryophyllaceae", "Rosaceae", "Saxifragaceae", "Urticaceae", "Violaceae", "Salicaceae"],
     "select_five_united_petals": ["Apocynaceae", "Boraginaceae", "Campanulaceae", "Caprifoliaceae", "Convolvulaceae", "Cucurbitaceae", "Ericaceae", "Gentianaceae", "Menyanthaceae", "Oleaceae", "Phrymaceae", "Polemoniaceae", "Primulaceae", "Rubiaceae", "Scrophulariaceae", "Solanaceae", "Verbenaceae", "Viburnaceae", "Vitaceae"],
     "select_lily_like": ["Liliaceae", "Melanthiaceae", "Colchicaceae", "Amaryllidaceae", "Asparagaceae", "Asphodelaceae", "Pontederiaceae", "Tofieldiaceae"],
+    "select_four_petals": ["Brassicaceae", "Campanulaceae", "Cleomaceae", "Cornaceae", "Crassulaceae", "Ericaceae", "Gentianaceae", "Grossulariaceae", "Haloragaceae", "Hamamelidaceae", "Hydrangeaceae", "Hypericaceae", "Loasaceae", "Lythraceae", "Montiaceae", "Oleaceae", "Onagraceae", "Papaveraceae", "Plantaginaceae", "Polemoniaceae", "Portulacaceae", "Primulaceae", "Ranunculaceae", "Rhamnaceae", "Rosaceae", "Rubiaceae", "Sapindaceae", "Vitaceae"],
     "adam": ['Asteraceae', 'Lamiaceae', 'Fabaceae', 'Scrophulariaceae', 'Apiaceae', 'Geraniaceae', 'Rosaceae', 'Ericaceae', 'Orchidaceae', 'Brassicaceae', 'Boraginaceae', 'Saxifragaceae', 'Plantaginaceae', 'Convolvulaceae', 'Rubiaceae']
 }
 
@@ -52,16 +53,21 @@ function selectPreset(id){
     else if(id == "select_none"){
         selected_families.forEach((f) => {deselect(f)});
     }
-    else if(id in presets){
-        for(let f in family_obs){
-            presets[id].includes(f) ? select(f) : deselect(f);
-        }
-    }
     else if(id == "select_diverse"){
         //select top 10 families with the most species
         let sorted_diverse = Object.keys(family_obs).sort(NSpeciesComparator); //sort.js
         for(let i=0; i<sorted_diverse.length; i++){
             i < 10 ? select(sorted_diverse[i]) : deselect(sorted_diverse[i]);
+        }
+    }
+    else if(id == "select_monocots"){
+        for(let f in family_obs){
+            family_data[f].class == "Monocots" ? select(f) : deselect(f);
+        }
+    }
+    else if(id in presets){
+        for(let f in family_obs){
+            presets[id].includes(f) ? select(f) : deselect(f);
         }
     }
 }
