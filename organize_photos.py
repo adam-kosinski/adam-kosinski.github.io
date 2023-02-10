@@ -1,15 +1,16 @@
 import sys
 import os
 import shutil
+import filecmp
 
 from hachoir.parser import createParser
 from hachoir.metadata import extractMetadata
 from hachoir.core import config as HachoirConfig
 HachoirConfig.quiet = True
 
-# TODO make IMG numbering play nice (e.g. if from long ago or diff phone, will have a diff numbering)
-    # corollary: same IMG name with different dates? Poor organization
-    # maybe this isn't an issue - check phone change boundary
+# TODO movies are gotten in UTC
+# relevant thread: https://exiftool.org/forum/index.php?topic=7691.0
+
 # TODO account for already existing images - add as a command line input option, default is to not create duplicates
     # this comes up when saving new photos from my phone, where I'll have some photos that were copied and organized previously
     # issue of how can we be sure this is a duplicate - has same IMG number, and same date via creation_date()
@@ -17,9 +18,8 @@ HachoirConfig.quiet = True
 # TODO test for hachoir install, if not installed provide install instructions
 
 
-def creation_date(filename):
-    # filename includes path
-    parser = createParser(filename)
+def creation_date(filepath):
+    parser = createParser(filepath)
     metadata = extractMetadata(parser)
 
     if not metadata:
@@ -28,6 +28,7 @@ def creation_date(filename):
     # Check for creation date keys, in order of most likely to be correct
     # note: can get metadata keys like so:
     # print(metadata.exportPlaintext(human=False))
+
     if metadata.has('date_time_original'):
         return metadata.get('date_time_original')
     if metadata.has('creation_date'):
@@ -53,44 +54,46 @@ def search_for_date(filename, dir, files):
                 return date, None
     
     # Look at first files before and after this file that have valid creation dates.
-    # Use the date from the before file, and if not available, the after date (arbitrary convention)
+    # Use the date from the before file, and if not available, the after date (sort of makes sense, but sort of arbitrary)
+
     file_index = files.index(filename)
 
+    # look before
     before_date = None
-    before_index = file_index-1
-    while before_index >= 0:
-        before_date = creation_date(os.path.join(dir, files[before_index]))
+    for i in range(file_index-1, 0, -1): # loop because may have several PNGs in a row
+        before_date = creation_date(os.path.join(dir, files[i]))
         if before_date:
             break
-        before_index -= 1
-    
+    # look after
     after_date = None
-    after_index = file_index+1
-    if not after_date: # no need to look if we already have a before date
-        while after_index < len(files):
-            after_date = creation_date(os.path.join(dir, files[after_index]))
-            if after_date:
-                break
-            after_index += 1
+    for i in range(file_index+1, len(files), 1):
+        after_date = creation_date(os.path.join(dir, files[i]))
+        if after_date:
+            break
     
-    # get date
     date = before_date if before_date else after_date
-    if not date:
-        return None, None
-    
+
     # For renaming, only print fields of {year, month, day} that match
-    date_suffix = None
+    date_string = date.strftime(" %Y")
     if before_date and after_date:
-        if before_date.month != after_date.month:
-            date_suffix = date.strftime(" %Y")
-        elif before_date.day != after_date.day:
-            date_suffix = date.strftime(" %Y-%m")
+        if before_date.day != after_date.day:
+            date_string = date.strftime(" %Y-%m")
         else:
-            date_suffix = date.strftime(" %Y-%m-%d")
-    filename_split = os.path.splitext(filename)
-    rename_string = filename_split[0] + (date_suffix if date_suffix else "") + filename_split[1]
+            date_string = date.strftime(" %Y-%m-%d")
+    
+    rename_string = date_string + os.path.splitext(filename)[1]
 
     return date, rename_string
+
+
+
+def file_in_dir(filepath, dir):
+    for f in os.listdir(dir):
+        if filecmp.cmp(filepath, os.path.join(dir, f)):
+            return True
+    return False
+
+
 
 
 def main(src, dest, rename=False):
@@ -109,13 +112,16 @@ def main(src, dest, rename=False):
     for cur_dir, dirs, files in os.walk(src):
         if dest in cur_dir:
             continue
+
+        for cur_dir_, dirs_, files_ in os.walk(dest):
+            print(filecmp.dircmp(cur_dir, cur_dir_).same_files)
         
         # process this directory
         for filename in files:
             # print out progress
             file_num += 1 # starts at 0, first file should be 1
             filepath = os.path.join(cur_dir, filename)
-            print(f"{file_num}/{file_count}", filepath)            
+            print(f"{file_num}/{file_count}", filepath)     
 
             # get date the image / video / file was originally made
             date = creation_date(filepath) # datetime object
@@ -137,23 +143,39 @@ def main(src, dest, rename=False):
                 os.makedirs(dest_folder_path)
 
             # file rename
-            filename_split = os.path.splitext(filename)
             if rename:
-                filename = filename_split[0] + " " + date.strftime("%Y-%m-%d") + filename_split[1]
+                new_filename = str(date.date()) + " [" + str(date.time()) + "]" + os.path.splitext(filename)[1]
                 if rename_string:
-                    filename = rename_string
-                
-            # prevent replacing existing files with the duplicate counter: append _(#)
+                    new_filename = rename_string
+            else:
+                new_filename = filename
+
+            # destination path
+            dest_path = os.path.join(dest_folder_path, new_filename)
+            
+            in_dir = file_in_dir(filepath, dest_folder_path)
+            print("in_dir", in_dir, "--------------------------------------------" if not in_dir else "")
+            if in_dir:
+                continue
+
+            # if a file with the same name already exists, and is a different file, append "_(#)" to the filename
             duplicate_counter = 0
-            while os.path.exists(os.path.join(dest_folder_path, filename)):
-                filename = filename_split[0] + (f"_({duplicate_counter})" if duplicate_counter > 0 else "") + filename_split[1]
+            name, extension = os.path.splitext(new_filename)
+            while os.path.exists(dest_path):
+                new_filename = name + (f"_({duplicate_counter})" if duplicate_counter > 0 else "") + extension
+                dest_path = os.path.join(dest_folder_path, new_filename)
                 duplicate_counter += 1
 
-            # copy file to sorted folder, don't do this for paired files since we don't know all the renames yet
-            shutil.copy2(filepath, os.path.join(dest_folder_path, filename))
-            
+            # copy file to sorted folder
+            shutil.copy2(filepath, dest_path)
+
+
+
 
 if __name__ == "__main__":
+
+    filecmp.clear_cache()
+
     # check syntax
     if not (len(sys.argv) == 2 or len(sys.argv) == 3):
         print("Syntax:")
