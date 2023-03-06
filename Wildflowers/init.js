@@ -14,6 +14,8 @@ Could technically count observations by family by querying only the family and 1
 
 Could also count observations by family within the 200 observation page
 - I think this is still helpful
+- And if willing to wait, can load more than just one page to make this count
+- Will need family taxon ids to be added to CSV, then can check if family id is in an observation's ancestry
 
 */
 

@@ -109,7 +109,7 @@ function handleMousemove(e) {
     }
 }
 
-let last_place_search_time = -Infinity;
+let last_search_time = -Infinity;
 let timeout_id = undefined;
 function updatePlaceSearchResults(e){
     //retrieve possible place names from iNaturalist, only do once per second at most
@@ -119,18 +119,18 @@ function updatePlaceSearchResults(e){
     clearTimeout(timeout_id);
 
     let now = performance.now();
-    let diff = now - last_place_search_time;
+    let diff = now - last_search_time;
     if (diff < 1000){
         timeout_id = setTimeout(updatePlaceSearchResults, 1001-diff, e); //extra 1ms to be safe
     }
     else {
-        last_place_search_time = now;
+        last_search_time = now;
 
         fetch(`https://api.inaturalist.org/v1/places/autocomplete?q=${e.target.value}&order_by=area`)
             .then(response => response.json())
             .then(data => {
                 console.log(data)
-                //sort places by assigning scores = bounding box area / long-lat distance
+                //sort places by assigning scores = bounding box area / long-lat distance from user
                 //bigger scores are ranked higher
                 //i.e. want small distance and large bounding box area, but balanced out sort of
                 data.results.sort((a,b) => {
