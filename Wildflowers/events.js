@@ -4,8 +4,15 @@ window.addEventListener("blur", handleWindowBlur)
 document.addEventListener("keypress", handleKeypress);
 document.addEventListener("click", handleClick);
 document.addEventListener("mousemove", handleMousemove);
+document.getElementById("place_search").addEventListener("input", updatePlaceSearchResults);
 document.getElementById("dataset_select").addEventListener("change", function (e) {
-    init(datasets[e.target.value]);
+    if (e.target.value != "custom") {
+        init(datasets[e.target.value]);
+    }
+    else {
+        console.log("selected custom");
+        document.getElementById("custom_place_dialog").showModal();
+    }
 });
 
 function handleWindowBlur(e) {
@@ -68,8 +75,8 @@ function handleClick(e) {
     else if (e.target.id == "family_image_credit_link") {
         document.getElementById("family_image_credits").showModal();
     }
-    else if (e.target.id == "family_image_credits_exit") {
-        document.getElementById("family_image_credits").close();
+    else if (e.target.classList.contains("exit_dialog")) {
+        e.target.parentElement.close();
     }
 }
 
@@ -99,5 +106,58 @@ function handleMousemove(e) {
             zoom_container.style.display = "none";
             zoom_img_visible = false;
         }
+    }
+}
+
+let last_place_search_time = -Infinity;
+let timeout_id = undefined;
+function updatePlaceSearchResults(e){
+    //retrieve possible place names from iNaturalist, only do once per second at most
+    //do this by checking time since last api call, and if not more than 1 sec, setting a timeout
+    //whenever this function is called, cancel the timeout, since we have new data
+
+    clearTimeout(timeout_id);
+
+    let now = performance.now();
+    let diff = now - last_place_search_time;
+    if (diff < 1000){
+        timeout_id = setTimeout(updatePlaceSearchResults, 1001-diff, e); //extra 1ms to be safe
+    }
+    else {
+        last_place_search_time = now;
+
+        fetch(`https://api.inaturalist.org/v1/places/autocomplete?q=${e.target.value}&order_by=area`)
+            .then(response => response.json())
+            .then(data => {
+                console.log(data)
+                //sort places by assigning scores = bounding box area / long-lat distance
+                //bigger scores are ranked higher
+                //i.e. want small distance and large bounding box area, but balanced out sort of
+                data.results.sort((a,b) => {
+                    let a_split = a.location.split(",");
+                    let a_lat = Number(a_split[0]);
+                    let a_long = Number(a_split[1]);
+                    let a_dist = Math.hypot(user_location.latitude - a_lat, user_location.longitude - a_long);
+
+                    let b_split = b.location.split(",");
+                    let b_lat = Number(b_split[0]);
+                    let b_long = Number(b_split[1]);
+                    let b_dist = Math.hypot(user_location.latitude - b_lat, user_location.longitude - b_long);
+
+                    return b.bbox_area/b_dist - a.bbox_area/a_dist;
+                });
+
+                //display results
+                let search_results = document.getElementById("search_results");
+                search_results.innerHTML = "";
+                data.results.forEach(place => {
+                    let li = document.createElement("li");
+                    li.textContent = place.display_name;
+                    search_results.appendChild(li);
+                });
+                //tell the user if no results were found
+                document.getElementById("no_results_found").style.display = 
+                    (data.results.length == 0 && e.target.value.length > 0 ? "block" : "none");
+            })
     }
 }

@@ -1,3 +1,24 @@
+/*
+For the custom location:
+- query the observation search, with per_page=1 and only_id=true to get total num results
+- pick a page (size 200) at random from the first 10,000 observations (max API range)
+    - could also pick at random from all observations, then set id_above/below appropriately to target correct range (have to do more single-id queries to figure out boundary)
+    - but honestly 10,000 observations is fine
+- query the whole page, either with all details, or just with only_id=true (and then query full details for like 10 plants at a time as the user progresses)
+    - second option is faster but more complicated
+    - if use second option, could integrate with existing downloaded data to fetch all the photos, not just one
+- disable family selection, or see other ideas below
+
+Could technically count observations by family by querying only the family and 1 result (+ only_id=true), then counting results
+- downside that we need a separate query for each family, and abiding by 1 query / sec means like minute(s) to load
+
+Could also count observations by family within the 200 observation page
+- I think this is still helpful
+
+*/
+
+
+
 //can call init after the first time, giving a different csv
 //it will re-initialize everything to use the new csv
 

@@ -1,5 +1,10 @@
 let datasets = {}; //populated by the csv js files
 
+let custom_place = {
+    display_name: undefined,
+    id: undefined
+};
+
 let obs, family_obs, family_species, family_data;
 let selected_families = new Set([]); //families selected in settings panel
 let nonselected_families = new Set([]);
@@ -7,6 +12,12 @@ let other_rate = 1 / 5; //rate at which to show a non-selected family, to be ide
 let current_tuple;
 let guessing = false; //for handling pressing the enter key
 let zoom_img_visible = false; //see mousemove event handler, so we don't need to ref the DOM every mousemove
+
+// user location, used for sorting place search results intelligently
+let user_location;
+fetch("https://geolocation-db.com/json/")
+    .then(response => response.json())
+    .then((data) => {user_location = data})
 
 let license_links = {
     "CC0": "https://creativecommons.org/publicdomain/zero/1.0/",

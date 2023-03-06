@@ -350,7 +350,7 @@ p#elpel_keywords {
     background-color: #0008;
 }
 
-#family_image_credits_exit {
+.exit_dialog {
     position: absolute;
     top: 0;
     right: 5px;

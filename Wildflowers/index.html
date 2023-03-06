@@ -94,6 +94,7 @@
                     <option value="orange_county">Orange County, NC (22965 pics)</option>
                     <option value="pisgah_national_forest">Pisgah National Forest (8315 pics)</option>
                     <option value="coastal_nc">Coastal NC (25190 pics)</option>
+                    <option value="custom">Custom: <span id="custom_place">[pick location]</span></option>
                 </select>
                 <br>
                 <img id="flower2" src="flower2_rotated.png">
@@ -130,9 +131,17 @@
     </div>
 
     <dialog id="family_image_credits">
-        <span id="family_image_credits_exit">&#10006;</span>
+        <span class="exit_dialog">&#10006;</span>
         <span id="family_image_credits_title">Family Image Credits</span>
         <p id="family_image_credits_list">Hi</p>
+    </dialog>
+
+    <dialog id="custom_place_dialog">
+        <span class="exit_dialog">&#10006;</span>
+        <input id="place_search" type="text" placeholder="Search location">
+        <ul id="search_results"></ul>
+        <p id="no_results_found" style="display: none;">No results found</p>
+        <button id="confirm_custom_place">OK</button>
     </dialog>
 
 
