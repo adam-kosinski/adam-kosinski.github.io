@@ -23,12 +23,16 @@ On the other hand, if not counting family presence, can load a small page initia
 
 
 
+
 //can call init after the first time, giving a different csv
 //it will re-initialize everything to use the new csv
 
-function init(csv){
+function init(csv, obs_to_add=[]){
     //get observations data
-    obs = Papa.parse(csv, {header: true}).data;
+    if(csv !== undefined){
+        obs = Papa.parse(csv, {header: true}).data;
+    }
+    obs = obs.concat(obs_to_add);
 
     //construct object organizing observations by family - object: {family1: [observations], etc.}
     family_obs = {};
