@@ -17,6 +17,8 @@ Could also count observations by family within the 200 observation page
 - And if willing to wait, can load more than just one page to make this count
 - Will need family taxon ids to be added to CSV, then can check if family id is in an observation's ancestry
 
+On the other hand, if not counting family presence, can load a small page initially - fast loading
+
 */
 
 

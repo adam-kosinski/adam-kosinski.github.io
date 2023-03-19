@@ -4,14 +4,15 @@ window.addEventListener("blur", handleWindowBlur)
 document.addEventListener("keypress", handleKeypress);
 document.addEventListener("click", handleClick);
 document.addEventListener("mousemove", handleMousemove);
-document.getElementById("place_search").addEventListener("input", updatePlaceSearchResults);
+document.getElementById("place_input").addEventListener("input", updatePlaceSearchResults);
 document.getElementById("dataset_select").addEventListener("change", function (e) {
-    if (e.target.value != "custom") {
-        init(datasets[e.target.value]);
+    if (e.target.value == "custom") {
+        document.getElementById("custom_place").style.display = "block";
+        document.getElementById("family_choices_grid").innerHTML = "";
     }
     else {
-        console.log("selected custom");
-        document.getElementById("custom_place_dialog").showModal();
+        document.getElementById("custom_place").style.display = "none";
+        init(datasets[e.target.value]);
     }
 });
 
@@ -109,8 +110,11 @@ function handleMousemove(e) {
     }
 }
 
+
+
 let last_search_time = -Infinity;
 let timeout_id = undefined;
+
 function updatePlaceSearchResults(e){
     //retrieve possible place names from iNaturalist, only do once per second at most
     //do this by checking time since last api call, and if not more than 1 sec, setting a timeout
@@ -129,7 +133,6 @@ function updatePlaceSearchResults(e){
         fetch(`https://api.inaturalist.org/v1/places/autocomplete?q=${e.target.value}&order_by=area`)
             .then(response => response.json())
             .then(data => {
-                console.log(data)
                 //sort places by assigning scores = bounding box area / long-lat distance from user
                 //bigger scores are ranked higher
                 //i.e. want small distance and large bounding box area, but balanced out sort of
@@ -147,17 +150,36 @@ function updatePlaceSearchResults(e){
                     return b.bbox_area/b_dist - a.bbox_area/a_dist;
                 });
 
-                //display results
-                let search_results = document.getElementById("search_results");
-                search_results.innerHTML = "";
+                
+
+                // check if input value is a valid place
+                let datalistID = e.target.getAttribute("list");
+                let datalist = document.getElementById(datalistID);
+                let options = datalist.childNodes;
+
+                let valid_place = false;
+                for(let i=0; i<data.results.length; i++){
+                    if(data.results[i].display_name == e.target.value){
+                        document.getElementById("valid_place").style.display = "inline-block";
+                        document.getElementById("invalid_place").style.display = "none";
+                        document.getElementById("fetch_observations").removeAttribute("disabled");
+                        return;
+                    }
+                }
+                // not valid, update display
+                document.getElementById("valid_place").style.display = "none";
+                document.getElementById("invalid_place").style.display = "inline-block";
+                document.getElementById("fetch_observations").disabled = true;
+                
+
+                // if not valid place, update datalist and custom place options, also indicate not valid place
+                // only doing if not valid place so we don't re-popup the datalist
+                datalist.innerHTML = "";
                 data.results.forEach(place => {
-                    let li = document.createElement("li");
-                    li.textContent = place.display_name;
-                    search_results.appendChild(li);
+                    let option = document.createElement("option");
+                    option.textContent = place.display_name;
+                    datalist.appendChild(option);
                 });
-                //tell the user if no results were found
-                document.getElementById("no_results_found").style.display = 
-                    (data.results.length == 0 && e.target.value.length > 0 ? "block" : "none");
-            })
+            });
     }
 }

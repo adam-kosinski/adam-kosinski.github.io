@@ -221,6 +221,10 @@ p#elpel_keywords {
     font-size: 14px;
 }
 
+.valid_place_indicator {
+    display: inline-block;
+}
+
 #exit_settings {
     cursor: pointer;
     border: none;

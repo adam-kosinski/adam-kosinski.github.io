@@ -18,7 +18,7 @@
     <div id="info_container">
         <datalist id="family_names"></datalist> <!--values to suggest to the user, see init.js-->
         <label for="guess">Enter family name (scientific or common):<br></label>
-        <input type="text" id="guess" list="family_names" autocomplete="on">
+        <input type="text" id="guess" list="family_names">
         <p id="feedback"></p>
 
         <div id="answers">
@@ -94,8 +94,16 @@
                     <option value="orange_county">Orange County, NC (22965 pics)</option>
                     <option value="pisgah_national_forest">Pisgah National Forest (8315 pics)</option>
                     <option value="coastal_nc">Coastal NC (25190 pics)</option>
-                    <option value="custom">Custom: <span id="custom_place">[pick location]</span></option>
+                    <option value="custom">Custom: <span id="custom_place">[pick place]</span></option>
                 </select>
+                <div id="custom_place" style="display: none;">
+                    <datalist id="place_list"></datalist>
+                    <br>
+                    <input id="place_input" type="text" list="place_list" placeholder="Search Place" autocomplete="off"/>
+                    <div id="valid_place" title="Valid iNaturalist place" style="display: none; color: green; user-select: none;">&#10004;</div>
+                    <div id="invalid_place" title="Place not found on iNaturalist" style="display: inline-block; color: red; user-select: none;">&#10006;</div>
+                    <button id="fetch_observations" disabled>Fetch Images</button>
+                </div>
                 <br>
                 <img id="flower2" src="flower2_rotated.png">
                 <div id="exit_settings">
@@ -134,14 +142,6 @@
         <span class="exit_dialog">&#10006;</span>
         <span id="family_image_credits_title">Family Image Credits</span>
         <p id="family_image_credits_list">Hi</p>
-    </dialog>
-
-    <dialog id="custom_place_dialog">
-        <span class="exit_dialog">&#10006;</span>
-        <input id="place_search" type="text" placeholder="Search location">
-        <ul id="search_results"></ul>
-        <p id="no_results_found" style="display: none;">No results found</p>
-        <button id="confirm_custom_place">OK</button>
     </dialog>
 
 
