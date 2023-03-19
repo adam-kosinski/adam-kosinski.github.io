@@ -111,6 +111,9 @@ function fetchObservations(place_id, taxon_id){
     document.getElementById("place_input").disabled = true;
     document.getElementById("fetch_observations").disabled = true;
 
+    //start loader
+    document.getElementById("loader").classList.add("loading");
+
     //get the next page from the shuffled order
     let page = pages_to_fetch.pop();
     let url = obsURL(place_id, taxon_id, 200, page);
@@ -141,6 +144,9 @@ function fetchObservations(place_id, taxon_id){
         });
 
         init(undefined, obs_to_add);
+
+        //stop loader
+        document.getElementById("loader").classList.remove("loading");
 
         //enable input
         document.getElementById("dataset_select").removeAttribute("disabled");

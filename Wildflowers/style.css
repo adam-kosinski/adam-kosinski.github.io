@@ -221,8 +221,29 @@ p#elpel_keywords {
     font-size: 14px;
 }
 
-.valid_place_indicator {
-    display: inline-block;
+
+#fetch_button_flex {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+    margin-top: 0.25rem;
+}
+#loader {
+    transition: transform 0.5s;
+    transform: scale(0);
+}
+#loader.loading {
+    transform: scale(1);
+}
+#loader img {
+    height: 1rem;
+    animation: spin 1.5s infinite linear;
+    transition: transform 3s;
+    transform: scale(0);
+}
+@keyframes spin {
+    0% {transform: rotate(0deg)}
+    100% {transform: rotate(360deg)}
 }
 
 #exit_settings {

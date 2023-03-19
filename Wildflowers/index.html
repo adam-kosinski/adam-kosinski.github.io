@@ -102,7 +102,12 @@
                     <input id="place_input" type="text" list="place_list" placeholder="Search Place" autocomplete="off"/>
                     <div id="valid_place" title="Valid iNaturalist place" style="display: none; color: green; user-select: none;">&#10004;</div>
                     <div id="invalid_place" title="Place not found on iNaturalist" style="display: inline-block; color: red; user-select: none;">&#10006;</div>
-                    <button id="fetch_observations" disabled>Fetch Images</button>
+                    <div id="fetch_button_flex">
+                        <button id="fetch_observations" disabled>Fetch Images</button>
+                        <div id="loader">
+                            <img src="loader.png"/>
+                        </div>
+                    </div>
                     <p id="all_images_fetched" style="display: none;">All Images Fetched</p>
                 </div>
                 <br>
