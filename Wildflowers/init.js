@@ -22,12 +22,39 @@ On the other hand, if not counting family presence, can load a small page initia
 */
 
 
+function clearData(){
+    obs = [];
+    family_obs = {};
+    family_species = {};
+    pages_to_fetch = [];
+    document.getElementById("family_choices_grid").innerHTML = "";
+
+    document.getElementById("fetch_observations").style.display = "block";
+    document.getElementById("fetch_observations").textContent = "Fetch Images"; //reset to original text
+
+    document.getElementById("all_images_fetched").style.display = "none";
+}
+
+
+function getFamilyData(){
+    //get family data and organize into a dictionary by family scientific names
+    let families_parsed = Papa.parse(families_csv, {header: true}).data;
+    family_data = {};
+    for(let i=0; i<families_parsed.length; i++){
+        let tuple = families_parsed[i];
+        family_data[tuple.scientific_name] = tuple;
+    }
+}
 
 
 //can call init after the first time, giving a different csv
 //it will re-initialize everything to use the new csv
 
 function init(csv, obs_to_add=[]){
+    if(!family_data){
+        getFamilyData();
+    }
+
     //get observations data
     if(csv !== undefined){
         obs = Papa.parse(csv, {header: true}).data;
@@ -53,14 +80,6 @@ function init(csv, obs_to_add=[]){
         let species_set = new Set();
         family_obs[family].forEach(tuple => species_set.add(tuple.scientific_name));
         family_species[family] = species_set;
-    }
-
-    //get family data and organize into a dictionary by family scientific names
-    let families_parsed = Papa.parse(families_csv, {header: true}).data;
-    family_data = {};
-    for(let i=0; i<families_parsed.length; i++){
-        let tuple = families_parsed[i];
-        family_data[tuple.scientific_name] = tuple;
     }
     
     //initialize datalist, to suggest family names to user

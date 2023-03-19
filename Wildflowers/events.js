@@ -5,9 +5,15 @@ document.addEventListener("keypress", handleKeypress);
 document.addEventListener("click", handleClick);
 document.addEventListener("mousemove", handleMousemove);
 document.getElementById("dataset_select").addEventListener("change", function (e) {
+    clearData();
     if (e.target.value == "custom") {
+        //reset input field, also needed so input will be re-checked upon change, and button enabled (wouldn't happen if previous valid value was there)
+        document.getElementById("place_input").value = "";
+        //mark as invalid place (because empty)
+        document.getElementById("valid_place").style.display = "none";
+        document.getElementById("invalid_place").style.display = "inline-block";
+        //show the custom place input
         document.getElementById("custom_place").style.display = "block";
-        document.getElementById("family_choices_grid").innerHTML = "";
     }
     else {
         document.getElementById("custom_place").style.display = "none";

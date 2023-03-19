@@ -1,6 +1,12 @@
 // data stuff
 let datasets = {}; //populated by the csv js files
-let obs, family_obs, family_species, family_data;
+
+let family_data = undefined;
+
+let obs = [];
+let family_obs = {};
+let family_species = {};
+let pages_to_fetch = []; //for custom place
 
 // selection state
 let selected_families = new Set([]); //families selected in settings panel
@@ -13,7 +19,7 @@ let zoom_img_visible = false; //see mousemove event handler, so we don't need to
 
 // custom place stuff
 let custom_place = undefined; // when defined, is a JSON object representing the place (given by the iNaturalist API)
-let user_location; //used for sorting place search results intelligently
+let user_location = undefined; //used for sorting place search results intelligently
 fetch("https://geolocation-db.com/json/")
     .then(response => response.json())
     .then((data) => {user_location = data})
