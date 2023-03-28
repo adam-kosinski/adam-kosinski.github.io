@@ -1,16 +1,28 @@
 function clearData(){
     obs = [];
     family_obs = {};
+    family_indices = {};
     family_species = {};
     pages_to_fetch = [];
     document.getElementById("family_choices_grid").innerHTML = "";
 
-    document.getElementById("fetch_observations").style.display = "block";
+    document.getElementById("fetch_button_flex").style.display = "flex";
     document.getElementById("fetch_observations").textContent = "Fetch Images"; //reset to original text
-
     document.getElementById("all_images_fetched").style.display = "none";
 }
 
+function shuffleFamily(f_name){
+    //shuffles the order of tuples of one family in family_obs
+    //used at the beginning, and whenever we need to loop back around for a family
+    let new_order = [];
+    let tuples = family_obs[f_name];
+    while(tuples.length > 0){
+        let idx = Math.floor(tuples.length*Math.random());
+        let tuple = tuples.splice(idx, 1)[0];
+        new_order.push(tuple);
+    }
+    family_obs[f_name] = new_order;
+}
 
 function getFamilyData(){
     //get family data and organize into a dictionary by family scientific names
@@ -58,6 +70,12 @@ function init(csv, obs_to_add=[]){
         let species_set = new Set();
         family_obs[family].forEach(tuple => species_set.add(tuple.scientific_name));
         family_species[family] = species_set;
+    }
+
+    //shuffle families, and init family_indices to 0
+    for(let family in family_obs){
+        shuffleFamily(family);
+        family_indices[family] = 0;
     }
     
     //initialize datalist, to suggest family names to user

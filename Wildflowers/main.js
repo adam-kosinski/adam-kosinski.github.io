@@ -12,7 +12,7 @@ function nextPlant() {
     document.getElementById("elpel_zoom_img_container").style.display = "none";
     guessing = true;
 
-    //new tuple
+    //get next family
     let next_family;
     if (Math.random() < other_rate && nonselected_families.size > 0) {
         next_family = Array.from(nonselected_families)[Math.floor(Math.random() * nonselected_families.size)];
@@ -24,9 +24,18 @@ function nextPlant() {
         }
         next_family = Array.from(selected_families)[Math.floor(Math.random() * selected_families.size)];
     }
-    let tuples = family_obs[next_family];
-    current_tuple = tuples[Math.floor(Math.random() * tuples.length)]; //global var in init.js
 
+    //get next tuple
+    let tuples = family_obs[next_family];
+    current_tuple = tuples[family_indices[next_family]]; //current_tuple is a global var in init.js
+    
+    //increment next photo index for this family
+    family_indices[next_family]++;
+    if(family_indices[next_family] >= family_obs[next_family].length){
+        //loop back around and use a different shuffling
+        family_indices[next_family] = 0;
+        shuffleFamily(next_family);
+    }
 
     //update plant image
     document.getElementById("plant_img").src = current_tuple.image_url;
@@ -61,10 +70,12 @@ function checkAnswer() {
 
     let guess_string = guess_input.value.toLowerCase();
     let is_other = !selected_families.has(current_tuple.taxon_family_name);
+    let family_name = current_tuple.taxon_family_name.toLowerCase();
+    let common_name = family_data[current_tuple.taxon_family_name].common_name.toLowerCase();
 
     if (
-        guess_string == current_tuple.taxon_family_name.toLowerCase() ||
-        guess_string == family_data[current_tuple.taxon_family_name].common_name.toLowerCase() ||
+        guess_string == family_name ||
+        (common_name.length > 0 && guess_string == common_name) ||
         (is_other && guess_string == "other")
     ) {
         feedback.className = "correct";

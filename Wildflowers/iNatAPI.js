@@ -157,7 +157,7 @@ function fetchObservations(place_id, taxon_id){
             document.getElementById("fetch_observations").textContent = "Fetch More Images";
         }
         else {
-            document.getElementById("fetch_observations").style.display = "none";
+            document.getElementById("fetch_button_flex").style.display = "none";
             document.getElementById("all_images_fetched").style.display = "block";
         }
     });

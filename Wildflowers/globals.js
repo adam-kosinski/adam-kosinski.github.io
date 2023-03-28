@@ -5,6 +5,7 @@ let family_data = undefined;
 
 let obs = [];
 let family_obs = {};
+let family_indices = {}; //key is family name, value is index of next tuple to show from that family, indices increment, call shuffleFamily() when reach the end
 let family_species = {};
 let pages_to_fetch = []; //for custom place
 
