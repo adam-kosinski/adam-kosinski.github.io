@@ -125,7 +125,7 @@ function checkAnswer() {
 
     //elpel image
     let elpel_img = document.getElementById("elpel_img");
-    if (family_data[f_sci].elpel_image_exists == "True") {
+    if (family_data[f_sci].elpel_image_exists == "TRUE") {
         elpel_img.src = "https://www.wildflowers-and-weeds.com/Plant_Families/" + f_sci + "_pics/" + f_sci + ".jpg";
         elpel_img.style.display = "block";
     }
