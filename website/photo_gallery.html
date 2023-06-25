@@ -4,6 +4,7 @@
 <head>
 	<title>Adam M. Kosinski's Website - Photography</title>
 	<meta name="viewport" content="width=device-width initial-scale=1">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Allura">
 	<link type="text/css" rel="stylesheet" href="base.css" />
 	<link type="text/css" rel="stylesheet" href="photo_gallery.css" />
 	<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Open+Sans&family=Life+Savers">
@@ -35,9 +36,25 @@
             <a href="about.html">About</a>
         </nav>
     </header>
-	<iframe id="gallery" src="https://adam-kosinski.github.io/Photo-Gallery/"></iframe>
+
+	<!-- <div id="scroll_container"> -->
+        <!-- <p id="title">Adam's Photo Gallery</p> -->
+        <div id="gallery">
+            <div class="column"></div>
+            <div class="column"></div>
+            <div class="column"></div>
+        </div>
+    <!-- </div> -->
+
+    <div id="zoom_img_container">
+        <div id="blackout"></div>
+        <img draggable="false">
+    </div>
+
+    <script src="https://adam-kosinski.github.io/Photo-Gallery/images/filenames.js"></script>
+    <script src="photo_gallery.js"></script>
 	<script>
-		window.addEventListener("load", function () { document.body.style.opacity = 1; })
+		window.addEventListener("load", function () { document.body.style.opacity = 1; });
 	</script>
 </body>
 
