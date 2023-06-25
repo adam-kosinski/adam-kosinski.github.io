@@ -40,24 +40,30 @@ function handleMoveEvent(e){
 }
 
 function createParticle(pageX, pageY){
-    let p = document.createElement("div");
+    let p = document.createElement("img");
     p.classList.add("particle");
 
     //set star type
-    p.innerHTML = "&#11089;"; //small star
     if(Math.random() < 0.3){
-        p.innerHTML = "&#128964;"; //4 pointed star
+        p.src = "website/images/four_pointed_star.svg";
     }
-    else if(Math.random() < 0.1){
-        p.innerHTML = "&#10036;"; //8 pointed star
+    else if(Math.random() < 0.4){
+        p.src = "website/images/eight_pointed_star.svg";
+    }
+    else {
+        p.src = "website/images/small_star.svg";
     }
 
     //set star position, size, and movement direction
     p.style.top = pageY + spawn_range*Math.random() + "px";
     p.style.left = pageX + spawn_range*Math.random() + "px";
-    p.style.transform = "scale(" + (0.25 + 1.5*Math.random()) + ")";
-    p.style.setProperty("--end-top", pageY + drift_range*(1-2*Math.random()) + "px");
-    p.style.setProperty("--end-left", pageX + drift_range*(1-2*Math.random()) + "px");
+    let scale = "scale(" + (0.25 + 1.5*Math.random()) + ")";
+    p.style.transform = scale + " translate(-50%, -50%)";
+    let translateX = "calc(-50% + " + drift_range*(1-2*Math.random()) + "px)";
+    let translateY = "calc(-50% + " + drift_range*(1-2*Math.random()) + "px)";
+    p.style.setProperty("--end-transform", `translate(${translateX}, ${translateY}) ${scale}`)
+    // p.style.setProperty("--end-top", pageY + drift_range*(1-2*Math.random()) + "px");
+    // p.style.setProperty("--end-left", pageX + drift_range*(1-2*Math.random()) + "px");
 
     //set star shadow color
     let colors = ["#00f6","#f0f6"];
