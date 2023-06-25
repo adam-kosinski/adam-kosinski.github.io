@@ -45,12 +45,13 @@ main {
 
 #header {
     position: fixed;
-    height: 55px;
+    height: 85px;
     width: 100vw;
-    top: 0;
+    top: -20px; /* sometimes scrolling reveals a little above */
+    padding-top: 20px;
     font-size: 18px;
     z-index: 10;
-    background: linear-gradient(black, #0009 80%, transparent);
+    background: linear-gradient(black, #000e 65%, transparent);
 }
 button:has(#hamburger) {
     display: none;
@@ -78,10 +79,20 @@ button:has(#hamburger) {
     width: fit-content;
     max-width: 60vw;
 }
-#header nav a:hover {
-    font-weight: bold;
-    border-bottom: 1.5px solid white;
-    margin-bottom: -1.5px; /* offset effect of added border */
+#header nav a::after {
+    content: '';
+    display: block;
+    width: 0%;
+    height: 1.5px;
+    background-color: white;
+}
+#header nav a:hover::after {
+    width: 100%;
+}    
+@media (hover: hover) {
+    #header nav a::after {
+       transition: width 0.15s;
+    }    
 }
 
 
