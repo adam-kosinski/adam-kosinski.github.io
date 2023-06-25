@@ -1,5 +1,5 @@
 function capitalize(str) {
-    return str.replace(/^\w|(?<=\s)\w|-\w/g, function (char) {
+    return str.replace(/^\w|\s\w|-\w/g, function (char) {
         return char.toUpperCase();
     });
 }
