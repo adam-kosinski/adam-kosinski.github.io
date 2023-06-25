@@ -10,7 +10,6 @@ if(process.argv.length < 3){
 
 const html_path = process.argv[2];
 const directory = path.dirname(html_path);
-console.log(html_path, directory)
 
 //need to call app.get() first, since if we use express.static first it will default to index.html always
 app.get("/", function(req, res){
