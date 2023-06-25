@@ -1,5 +1,6 @@
-let spawn_range = 20; // in px, max dist (x and y separate) away from the mouse we can spawn particles 
-let drift_range = 20; // in px, max dist (x and y separate) a particle can drift
+const spawn_range = 20; // in px, max dist (x and y separate) away from the mouse we can spawn particles 
+const drift_range = 20; // in px, max dist (x and y separate) a particle can drift
+const base_size = 14; //px for base width and height
 
 document.addEventListener("mousemove", handleMoveEvent);
 
@@ -20,6 +21,10 @@ document.addEventListener("touchmove", function(e){
 
 }, {passive: false}); //iOS safari weirdness
 
+
+document.addEventListener("touchend", function(){
+    prev_touchmove = undefined; //don't play connect the dots between two different touch sessions
+})
 
 
 function handleMoveEvent(e){
@@ -55,15 +60,15 @@ function createParticle(pageX, pageY){
     }
 
     //set star position, size, and movement direction
-    p.style.top = pageY + spawn_range*Math.random() + "px";
-    p.style.left = pageX + spawn_range*Math.random() + "px";
-    let scale = "scale(" + (0.25 + 1.5*Math.random()) + ")";
-    p.style.transform = scale + " translate(-50%, -50%)";
-    let translateX = "calc(-50% + " + drift_range*(1-2*Math.random()) + "px)";
-    let translateY = "calc(-50% + " + drift_range*(1-2*Math.random()) + "px)";
-    p.style.setProperty("--end-transform", `translate(${translateX}, ${translateY}) ${scale}`)
-    // p.style.setProperty("--end-top", pageY + drift_range*(1-2*Math.random()) + "px");
-    // p.style.setProperty("--end-left", pageX + drift_range*(1-2*Math.random()) + "px");
+    
+    let size = base_size * (0.25 + 1.5*Math.random());
+    p.style.width = size + "px";
+    p.style.height = size + "px";
+    p.style.top = pageY - 0.5*size + spawn_range*Math.random() + "px";
+    p.style.left = pageX - 0.5*size + spawn_range*Math.random() + "px";
+    let translateX = drift_range*(1-2*Math.random()) + "px";
+    let translateY = drift_range*(1-2*Math.random()) + "px";
+    p.style.setProperty("--end-transform", `translate(${translateX}, ${translateY})`)
 
     //set star shadow color
     let colors = ["#00f6","#f0f6"];
