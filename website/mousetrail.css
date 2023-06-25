@@ -2,8 +2,8 @@
     z-index: -1;
 
     position: absolute;
-    width: 10px;
-    height: 10px;
+    width: 12px;
+    height: 12px;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -11,11 +11,8 @@
     background: radial-gradient(var(--shadow-color), transparent);
 
     color: white;
-    font-size: 12px;
     user-select: none;
     
-    transform: translate(-50%, -50%);
-
     animation: fade 2000ms;
     animation-fill-mode: forwards;
 }
@@ -26,7 +23,6 @@
     }
     to {
         opacity: 0;
-        top: var(--end-top);
-        left: var(--end-left);
+        transform: var(--end-transform);
     }
 }
