@@ -1,7 +1,152 @@
-#gallery {
+/* #gallery {
     margin-top: 55px;
     width: 100%;
     height: calc(100vh - 45px);
     border: none;
     position: absolute;
+} */
+
+:root {
+    --width-no-scrollbar: calc(100vw - 16px); /* scrollbar width seems to be 16px */
+    --image-width: 30vw;
+    --gap: calc((var(--width-no-scrollbar) - 3*var(--image-width)) / 4);
+}
+
+/* #scroll_container {
+    padding: var(--gap);
+    height: calc(100vh - 2*var(--gap));
+    overflow-y: auto;
+} */
+
+#title {
+    font-size: 6vw;
+    text-align: center;
+    margin: 0;
+    margin-bottom: var(--gap);
+    font-family: Allura;
+    color: white;
+    text-shadow: 0 0 10px white;
+}
+
+#gallery {
+    margin-top: 60px;
+    display: flex;
+    gap: var(--gap);
+    justify-content: center;
+    align-items: flex-start; /* needed for accurate column height measurements in main.js */
+}
+
+.column {
+    display: flex;
+    flex-direction: column;
+    width: var(--image-width); /* needed to preserve layout if images haven't loaded yet */
+    gap: var(--gap);
+}
+
+.img_container {
+    cursor: pointer;
+}
+
+img {
+    width: var(--image-width);
+    display: block; /* remove descender space from images being rendered inline */
+    user-select: none;
+}
+
+.grid_image {
+    outline: 0px solid transparent; /* so it will transition */
+    transition-property: transform, outline;
+    transition-duration: 0.5s;
+    opacity: 0;
+}
+.grid_image.loaded {
+    animation: fade_in 1s;
+    animation-fill-mode: forwards;
+}
+
+@media (hover: hover) {
+    .img_container:hover .grid_image {
+        transform: scale(0.95);
+        outline: calc(0.025*var(--image-width)) solid white;
+    }
+}
+
+#zoom_img_container {
+    display: none;
+    position: fixed;
+    z-index: 20;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    cursor: url('images/x.png') 15 15, auto;
+}
+#zoom_img_container #blackout {
+    width: 100%;
+    height: 100%;
+    background-color: black;
+    animation-duration: 0.5s;
+    animation-fill-mode: forwards;
+}
+#zoom_img_container img {
+    position: absolute;
+    transform: translate(-50%, -50%);
+    animation-duration: 0.5s;
+    animation-fill-mode: forwards;
+
+    --max-width: calc(100vw - 5vw);
+    --max-height: calc(100vh - 5vw);
+    --big-width: min(var(--max-width), calc(var(--aspect-ratio)*var(--max-height)));
+    /* --small-width and --aspect-ratio provided by js in openImage() */
+}
+
+
+#zoom_img_container.trigger_open {
+    display: block;
+}
+#zoom_img_container.trigger_open #blackout {
+    animation-name: fade_in;
+}
+#zoom_img_container.trigger_open img {
+    animation-name: expand;
+}
+
+#zoom_img_container.trigger_close #blackout {
+    animation-name: fade_out;
+}
+#zoom_img_container.trigger_close img {
+    animation-name: contract;
+}
+
+
+@keyframes fade_in {
+    from {opacity: 0;}
+    to {opacity: 1;}
+}
+@keyframes fade_out {
+    from {opacity: 1;}
+    to {opacity: 0;}
+}
+
+@keyframes expand {
+    from {
+        width: var(--small-width);
+    }
+    to {
+        top: 50%;
+        left: 50%;
+        width: var(--big-width);
+    }
+}
+@keyframes contract {
+    from {
+        top: 50%;
+        left: 50%;
+        width: var(--big-width);
+    }
+    to {
+        top: var(--top-dest);
+        left: var(--left-dest);
+        width: var(--small-width);
+    }
 }
