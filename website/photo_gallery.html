@@ -2,15 +2,15 @@
 <html lang="en">
 
 <head>
-	<title>Adam M. Kosinski's Website - Photography</title>
-	<meta name="viewport" content="width=device-width initial-scale=1">
+    <title>Adam M. Kosinski's Website - Photography</title>
+    <meta name="viewport" content="width=device-width initial-scale=1">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Allura">
-	<link type="text/css" rel="stylesheet" href="base.css" />
-	<link type="text/css" rel="stylesheet" href="photo_gallery.css" />
-	<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Open+Sans&family=Life+Savers">
-	<link rel="icon" href="images/favicon.png">
+    <link type="text/css" rel="stylesheet" href="base.css" />
+    <link type="text/css" rel="stylesheet" href="photo_gallery.css" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Open+Sans&family=Life+Savers">
+    <link rel="icon" href="images/favicon.png">
 
-	<script>
+    <script>
         //stuff for the side nav menu on small screens
         function toggleSideNav() {
             let header = document.querySelector("#header");
@@ -23,28 +23,30 @@
 </head>
 
 <body>
-	<header id="header">
-        <button onclick="toggleSideNav()">
-            <img id="hamburger" src="images/hamburger_icon.png" alt="Open navigation menu" />
-        </button>
-        <div id="nav_blackout" onclick="toggleSideNav()"></div>
-        <nav>
-            <button id="close_sidenav" onclick="toggleSideNav()" aria-label="Close navigation menu">&#10006;</button>
-            <a href="../index.html">Home</a>
-            <a href="projects.html">Projects</a>
-            <a href="photo_gallery.html">Photography</a>
-            <a href="about.html">About</a>
-        </nav>
-    </header>
+    <!-- scroll container exists to disable scrolling when zoom img is open, body scrolling is hard to prevent on iOS -->
+    <div id="scroll_container">
+        <header id="header">
+            <button onclick="toggleSideNav()">
+                <img id="hamburger" src="images/hamburger_icon.png" alt="Open navigation menu" />
+            </button>
+            <div id="nav_blackout" onclick="toggleSideNav()"></div>
+            <nav>
+                <button id="close_sidenav" onclick="toggleSideNav()"
+                    aria-label="Close navigation menu">&#10006;</button>
+                <a href="../index.html">Home</a>
+                <a href="projects.html">Projects</a>
+                <a href="photo_gallery.html">Photography</a>
+                <a href="about.html">About</a>
+            </nav>
+        </header>
 
-	<!-- <div id="scroll_container"> -->
-        <!-- <p id="title">Adam's Photo Gallery</p> -->
         <div id="gallery">
             <div class="column"></div>
             <div class="column"></div>
             <div class="column"></div>
         </div>
-    <!-- </div> -->
+    </div>
+
 
     <div id="zoom_img_container">
         <div id="blackout"></div>
@@ -53,9 +55,9 @@
 
     <script src="https://adam-kosinski.github.io/Photo-Gallery/images/filenames.js"></script>
     <script src="photo_gallery.js"></script>
-	<script>
-		window.addEventListener("load", function () { document.body.style.opacity = 1; });
-	</script>
+    <script>
+        window.addEventListener("load", function () { document.body.style.opacity = 1; });
+    </script>
 </body>
 
 </html>

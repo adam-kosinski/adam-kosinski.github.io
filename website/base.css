@@ -46,9 +46,7 @@ main {
 #header {
     position: fixed;
     height: 85px;
-    width: 100vw;
-    top: -20px; /* sometimes scrolling reveals a little above */
-    padding-top: 20px;
+    width: 100%;
     font-size: 18px;
     z-index: 10;
     background: linear-gradient(black, #000e 65%, transparent);
