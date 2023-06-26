@@ -27,7 +27,7 @@ body {
 }
 
 #gallery {
-    margin-top: -25px;
+    margin-top: 85px;
     display: flex;
     gap: var(--gap);
     justify-content: center;
