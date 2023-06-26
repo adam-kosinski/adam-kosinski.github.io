@@ -11,6 +11,7 @@ function addImage(i) {
     let cols = document.querySelectorAll(".column");
     let n_cols = cols.length;
 
+    //make image container for more reliable hover
     let div = document.createElement("div");
     div.classList.add("img_container");
     div.addEventListener("click", function(){
@@ -47,14 +48,10 @@ function addImage(i) {
 
 
 //keep track of the most center element so that when we resize the window, we can scroll to it
-document.addEventListener("scroll", function(e){
+document.getElementById("scroll_container").addEventListener("scroll", function(e){
     if(last_resize_time + 50 < performance.now()){ //hack to prevent scrollIntoView from triggering a scroll event and changing the center element
         centerElement = getCenterElement();
     }
-});
-window.addEventListener("resize", function(){
-    last_resize_time = performance.now();
-    centerElement.scrollIntoView({block: "center"});
 });
 function getCenterElement(){
     let window_center = 0.5*window.innerHeight;
@@ -73,6 +70,14 @@ function getCenterElement(){
 
     return best;
 }
+//when resize the window, scroll to center element
+let old_window_width = window.innerWidth;
+window.addEventListener("resize", function(){
+    if (window.innerWidth == old_window_width) return; //iOS thing, sometimes resize triggered on scroll
+    old_window_width = window.innerWidth;
+    last_resize_time = performance.now();
+    centerElement.scrollIntoView({block: "center"});
+});
 
 
 
@@ -93,11 +98,11 @@ function openImage(container){
     zoom_img.style.setProperty("--aspect-ratio", rect.width / rect.height);
 
     zoom_img_container.classList.add("trigger_open");
+    img.style.visibility = "hidden";
 
-    zoom_img.addEventListener("animationend", function finishOpeningImage(){
-        zoom_img.src = "https://adam-kosinski.github.io/Photo-Gallery/images/" + img.dataset.filename;
-        zoom_img.removeEventListener("animationend", finishOpeningImage);
-    });
+    zoom_img.addEventListener("animationend", () => {
+        // zoom_img.src = "https://adam-kosinski.github.io/Photo-Gallery/images/" + img.dataset.filename;
+    }, {once: true});
 }
 
 
@@ -123,10 +128,11 @@ function closeImage(){
 
     zoom_img_container.classList.add("trigger_close");
 
-    zoom_img.addEventListener("animationend", function finishClosingImage(){
+
+    zoom_img.addEventListener("animationend", () => {
         zoom_img_container.classList.remove("trigger_open", "trigger_close");
-        zoom_img.removeEventListener("animationend", finishClosingImage);
-    });
+        img.style.visibility = "visible";
+    }, {once: true});
 }
 
 
