@@ -81,28 +81,46 @@ window.addEventListener("resize", function(){
 
 
 
-function openImage(container){
-    open_container = container;
 
-    let img = container.querySelector("img");
+function getZoomImageTransform(img){
     let rect = img.getBoundingClientRect();
-    let zoom_img_container = document.getElementById("zoom_img_container");
+    let zoom_img = document.getElementById("zoom_img");
 
-    let zoom_img = zoom_img_container.querySelector("img");
+    //calculate translate
+    let translateX = rect.x + rect.width/2 - window.innerWidth/2;
+    let translateY = rect.y + rect.height/2 - window.innerHeight/2;
+
+    //calculate scale change
+    let padding = Number(getComputedStyle(zoom_img).padding.split("px")[0]);
+    let max_width = window.innerWidth - 2*padding;
+    let max_height = window.innerHeight - 2*padding;
+    let scale = Math.max(rect.width / max_width, rect.height / max_height);
+
+    return `translate(${translateX}px, ${translateY}px) scale(${scale})`;
+}
+
+
+function openImage(img_container){
+    //by default, position the zoom image in the open state
+    //when opening, figure out transform to match the image, set that
+    //add the trigger_open class to start a css animation, always to translate 0 and scale 0
+
+    open_container = img_container;
+
+    let img = img_container.querySelector("img");
+    let zoom_img = document.getElementById("zoom_img");
+
+    zoom_img.style.transform = getZoomImageTransform(img);
     zoom_img.src = img.src;
-    zoom_img.style.top = rect.top + 0.5*rect.height + "px"; //css translates it -50%, -50% to make centering easier
-    zoom_img.style.left = rect.left + 0.5*rect.width + "px";
-    zoom_img.style.width = rect.width + "px";
 
-    zoom_img.style.setProperty("--small-width", rect.width + "px");
-    zoom_img.style.setProperty("--aspect-ratio", rect.width / rect.height);
-
-    zoom_img_container.classList.add("trigger_open");
-    img.style.visibility = "hidden";
-
-    zoom_img.addEventListener("animationend", () => {
-        // zoom_img.src = "https://adam-kosinski.github.io/Photo-Gallery/images/" + img.dataset.filename;
+    zoom_img.addEventListener("load", () => {
+        document.getElementById("zoom_img_container").classList.add("trigger_open");
+        img.style.visibility = "hidden";
     }, {once: true});
+
+    // zoom_img.addEventListener("animationend", () => {
+    //     zoom_img.src = "https://adam-kosinski.github.io/Photo-Gallery/images/" + img.dataset.filename;
+    // }, {once: true});
 }
 
 
@@ -118,16 +136,9 @@ function closeImage(){
     let zoom_img_container = document.getElementById("zoom_img_container");
     let zoom_img = zoom_img_container.querySelector("img");
     let img = open_container.querySelector("img");
-    zoom_img.src = img.src;
-    let rect = img.getBoundingClientRect();
-
-    zoom_img.style.setProperty("--small-width", rect.width + "px");
-    zoom_img.style.setProperty("--small-height", rect.height + "px");
-    zoom_img.style.setProperty("--top-dest", rect.top + 0.5*rect.height + "px");
-    zoom_img.style.setProperty("--left-dest", rect.left + 0.5*rect.width + "px");
-
+    
+    zoom_img.style.transform = getZoomImageTransform(open_container); //use the container since the image might still be shrunk from the hover
     zoom_img_container.classList.add("trigger_close");
-
 
     zoom_img.addEventListener("animationend", () => {
         zoom_img_container.classList.remove("trigger_open", "trigger_close");
