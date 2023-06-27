@@ -4,10 +4,6 @@
     --gap: calc((var(--width-no-scrollbar) - 3*var(--image-width)) / 4);
 }
 
-body {
-    /* defer to scroll_container for scrolling */
-    overflow: hidden;
-}
 #scroll_container {
     height: 100%;
     overflow-y: auto;
@@ -69,7 +65,9 @@ img {
 }
 
 #zoom_img_container {
-    display: none;
+    display: none; /* default flex */
+    align-items: center;
+    justify-content: center;
     position: fixed;
     z-index: 20;
     top: 0;
@@ -85,24 +83,22 @@ img {
     left: -50vw;
     top: -50vh;
     background-color: black;
-    animation-duration: 0.5s;
+    animation-duration: 0.35s;
     animation-fill-mode: forwards;
 }
 #zoom_img_container img {
-    position: absolute;
-    transform: translate(-50%, -50%);
-    animation-duration: 0.5s;
-    animation-fill-mode: forwards;
+    max-width: 100%;
+    max-height: 100%;
+    padding: var(--gap);
+    box-sizing: border-box;
 
-    --max-width: calc(100vw - 5vw);
-    --max-height: calc(100vh - 5vw);
-    --big-width: min(var(--max-width), calc(var(--aspect-ratio)*var(--max-height)));
-    /* --small-width and --aspect-ratio provided by js in openImage() */
+    animation-duration: 0.35s;
+    animation-fill-mode: forwards;
 }
 
 
 #zoom_img_container.trigger_open {
-    display: block;
+    display: flex;
 }
 #zoom_img_container.trigger_open #blackout {
     animation-name: fade_in;
@@ -129,24 +125,9 @@ img {
 }
 
 @keyframes expand {
-    from {
-        width: var(--small-width);
-    }
-    to {
-        top: 50%;
-        left: 50%;
-        width: var(--big-width);
-    }
+    /* 50% {transform: scale(1.03);} */
+    100% {transform: translate(0, 0) scale(1);}
 }
 @keyframes contract {
-    from {
-        top: 50%;
-        left: 50%;
-        width: var(--big-width);
-    }
-    to {
-        top: var(--top-dest);
-        left: var(--left-dest);
-        width: var(--small-width);
-    }
+    from {transform: translate(0, 0) scale(1);}
 }
