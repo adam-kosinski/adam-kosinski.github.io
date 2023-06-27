@@ -3,7 +3,7 @@ let last_resize_time = -Infinity; //see scroll event handler
 let open_container; //stores the .img_container whose content we're displaying in the zoom_img_container
 let zoom_img = document.getElementById("zoom_img");
 let zoom_img_hammer = new Hammer(zoom_img, { enable: false });
-
+zoom_img_hammer.get("pinch").set({enable: true})
 
 window.addEventListener("load", function () {
     addImage(0);
@@ -147,26 +147,26 @@ function closeImage() {
 }
 
 
-//hammer for interactive closing image! -------------
+//Hammer for interactive closing image! -------------
 
 //TODO: bug where sometimes the image will get teleported to the top left corner when panning
 
 // interactive panning
 zoom_img_hammer.get("pan").set({ direction: Hammer.DIRECTION_ALL });
-let pan_origin;
+let pan_active = false;
 zoom_img_hammer.on("panstart", e => {
     if (zoom_img.classList.contains("reset") || !e.additionalEvent || e.additionalEvent != "pandown") return;
-    pan_origin = { x: e.clientX, y: e.clientY };
+    pan_active = true;
 });
 zoom_img_hammer.on("pan", e => {
-    if (!pan_origin) return;
+    if (!pan_active) return;
     zoom_img.style.transform = `translate(${e.deltaX}px, ${e.deltaY}px)`;
 });
 
 //when stop panning, return image to center
 zoom_img_hammer.on("panend", e => {
-    if (!pan_origin) return; //only trigger reset if was a valid pan
-    pan_origin = undefined;
+    if (!pan_active) return; //only trigger reset if was a valid pan
+    pan_active = false;
 
     zoom_img.classList.add("reset");
     zoom_img.addEventListener("animationend", () => {
@@ -178,7 +178,7 @@ zoom_img_hammer.on("panend", e => {
 //swipe down to close
 zoom_img_hammer.get("swipe").set({ direction: Hammer.DIRECTION_VERTICAL });
 zoom_img_hammer.on("swipedown", e => {
-    if (!pan_origin) return;
+    if (!pan_active) return;
     closeImage();
 });
 
