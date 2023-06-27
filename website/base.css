@@ -10,6 +10,9 @@ body {
     width: 100%;
     color: white;
     font-family: "Open Sans", sans-serif;
+    font-size: 16px;
+    -webkit-text-size-adjust: none;
+    text-size-adjust: none;
     
     opacity: 0;
     transition-property: opacity;
@@ -26,6 +29,7 @@ main {
     text-decoration: none;
 
     /*normal stuff*/
+    font-size: 16px;
     margin-top: 24px;
     border: 1px solid #fff8;
     cursor: pointer;
