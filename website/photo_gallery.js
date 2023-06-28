@@ -2,10 +2,11 @@ let centerElement; //see getCenterElement()
 let last_resize_time = -Infinity; //see scroll event handler
 let open_container; //stores the .img_container whose content we're displaying in the zoom_img_container
 let zoom_img = document.getElementById("zoom_img");
-let zoom_img_hammer = new Hammer(zoom_img, { enable: false });
-zoom_img_hammer.get("pinch").set({enable: true})
+// let zoom_img_hammer = new Hammer(zoom_img, { enable: false });
 
 window.addEventListener("load", function () {
+    let scrollbar_width = window.innerWidth - document.getElementById("scroll_container").clientWidth;
+    document.documentElement.style.setProperty("--scrollbar-width", scrollbar_width + "px");
     addImage(0);
     centerElement = document.querySelector(".img_container"); //start at 0 scroll, so just use the first image
 });
