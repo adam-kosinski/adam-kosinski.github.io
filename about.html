@@ -4,21 +4,12 @@
 <head>
     <title>Adam M. Kosinski's Website</title>
     <meta name="viewport" content="width=device-width initial-scale=1">
-    <link type="text/css" rel="stylesheet" href="base.css" />
-    <link type="text/css" rel="stylesheet" href="about.css" />
+    <link type="text/css" rel="stylesheet" href="css/base.css" />
+    <link type="text/css" rel="stylesheet" href="css/about.css" />
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Open+Sans&family=Life+Savers">
     <link rel="icon" href="images/favicon.png">
 
-    <script>
-        //stuff for the side nav menu on small screens
-        function toggleSideNav() {
-            let header = document.querySelector("#header");
-            header.classList.toggle("nav-open");
-            let visible = header.classList.contains("nav-open");
-            document.querySelectorAll("#header nav > *").forEach(el => el.setAttribute("tabindex", visible ? "0" : "-1"));
-        }
-        window.addEventListener("resize", function () { document.querySelector("#header").classList.remove("nav-open"); });
-    </script>
+    <script src="js/nav_menu.js"></script>
 </head>
 
 <body>
@@ -29,7 +20,7 @@
         <div id="nav_blackout" onclick="toggleSideNav()"></div>
         <nav>
             <button id="close_sidenav" onclick="toggleSideNav()" aria-label="Close navigation menu">&#10006;</button>
-            <a href="../index.html">Home</a>
+            <a href="index.html">Home</a>
             <a href="projects.html">Projects</a>
             <a href="photo_gallery.html">Photography</a>
             <a href="about.html">About</a>

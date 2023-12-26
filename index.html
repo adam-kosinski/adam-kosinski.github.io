@@ -5,23 +5,13 @@
 	<title>Adam M. Kosinski's Website - Home</title>
 	<meta name="viewport" content="width=device-width initial-scale=1">
 	<meta name="google-site-verification" content="Rx_2EKffIU4uD8hQb1YRo6jEPDEOMf4CtbiGodiaY0g" />
-	<link type="text/css" rel="stylesheet" href="website/base.css" />
-	<link type="text/css" rel="stylesheet" href="website/home.css" />
+	<link type="text/css" rel="stylesheet" href="css/base.css" />
+	<link type="text/css" rel="stylesheet" href="css/home.css" />
+    <link type="text/css" rel="stylesheet" href="css/mousetrail.css" />
 	<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Open+Sans&family=Life+Savers">
-	<link rel="icon" href="website/images/favicon.png">
+	<link rel="icon" href="images/favicon.png">
 
-	<link type="text/css" rel="stylesheet" href="website/mousetrail.css" />
-
-	<script>
-        //stuff for the side nav menu on small screens
-        function toggleSideNav() {
-            let header = document.querySelector("#header");
-            header.classList.toggle("nav-open");
-            let visible = header.classList.contains("nav-open");
-            document.querySelectorAll("#header nav > *").forEach(el => el.setAttribute("tabindex", visible ? "0" : "-1"));
-        }
-        window.addEventListener("resize", function () { document.querySelector("#header").classList.remove("nav-open"); });
-    </script>
+	<script src="js/nav_menu.js"></script>
 </head>
 
 <body>
@@ -29,36 +19,36 @@
 
 	<header id="header">
         <button onclick="toggleSideNav()">
-            <img id="hamburger" src="website/images/hamburger_icon.png" alt="Open navigation menu" />
+            <img id="hamburger" src="images/hamburger_icon.png" alt="Open navigation menu" />
         </button>
         <div id="nav_blackout" onclick="toggleSideNav()"></div>
         <nav>
             <button id="close_sidenav" onclick="toggleSideNav()" aria-label="Close navigation menu">&#10006;</button>
             <a href="index.html">Home</a>
-            <a href="website/projects.html">Projects</a>
-            <a href="website/photo_gallery.html">Photography</a>
-            <a href="website/about.html">About</a>
+            <a href="projects.html">Projects</a>
+            <a href="photo_gallery.html">Photography</a>
+            <a href="about.html">About</a>
         </nav>
     </header>
 
 	<main>
 		<div id="intro">
 			<p id="hello">Hi, I'm Adam</p>
-			<a href="website/projects.html" class="box_link">View My Projects ></a>
+			<a href="projects.html" class="box_link">View My Projects ></a>
 		</div>
 	</main>
 
     <!-- preload mousetrail images -->
     <div style="display: none;">
-        <img src="website/images/small_star.svg">
-        <img src="website/images/four_pointed_star.svg">
-        <img src="website/images/eight_pointed_star.svg">
+        <img src="images/small_star.svg">
+        <img src="images/four_pointed_star.svg">
+        <img src="images/eight_pointed_star.svg">
     </div>
 
 	<script>
 		window.addEventListener("load", function () { document.body.style.opacity = 1; })
 	</script>
-	<script src="website/mousetrail.js"></script>
+	<script src="js/mousetrail.js"></script>
 </body>
 
 </html>

@@ -12,7 +12,7 @@ body {
 }
 
 #background_image {
-    background-image: url('images/stars.jpg');
+    background-image: url('../images/stars.jpg');
     background-size: cover;
     background-position: center;
     width: 100%;

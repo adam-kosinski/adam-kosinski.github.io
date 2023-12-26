@@ -50,13 +50,13 @@ function createParticle(pageX, pageY){
 
     //set star type
     if(Math.random() < 0.3){
-        p.src = "website/images/four_pointed_star.svg";
+        p.src = "images/four_pointed_star.svg";
     }
     else if(Math.random() < 0.4){
-        p.src = "website/images/eight_pointed_star.svg";
+        p.src = "images/eight_pointed_star.svg";
     }
     else {
-        p.src = "website/images/small_star.svg";
+        p.src = "images/small_star.svg";
     }
 
     //set star position, size, and movement direction
