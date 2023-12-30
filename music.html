@@ -2,18 +2,18 @@
 <html lang="en">
 
 <head>
-	<title>Music | Adam M. Kosinski</title>
-	<meta name="viewport" content="width=device-width initial-scale=1">
-	<link type="text/css" rel="stylesheet" href="css/base.css" />
+    <title>Music | Adam M. Kosinski</title>
+    <meta name="viewport" content="width=device-width initial-scale=1">
+    <link type="text/css" rel="stylesheet" href="css/base.css" />
     <link type="text/css" rel="stylesheet" href="css/music.css" />
-	<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Open+Sans&family=Life+Savers">
-	<link rel="icon" href="images/favicon.png">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Open+Sans&family=Life+Savers">
+    <link rel="icon" href="images/favicon.png">
 
-	<script src="js/nav_menu.js"></script>
+    <script src="js/nav_menu.js"></script>
 </head>
 
 <body>
-	<header id="header">
+    <header id="header">
         <button onclick="toggleSideNav()">
             <img id="hamburger" src="images/hamburger_icon.png" alt="Open navigation menu" />
         </button>
@@ -28,55 +28,64 @@
         </nav>
     </header>
 
-	<main>
+    <main>
         <p id="page_title">Music</p>
+
+        <p class="year_label">2023</p>
 
         <div class="track">
             <img src="images/spirits_of_the_chapel.jpg">
-            <div class="track_info">
+            <div class="track_content">
                 <p class="track_title">Spirits of the Chapel</p>
+                <div class="audio_player" data-audio-src="music/Spirits of the Chapel.mp3"></div>
                 <p class="track_description">
-                    [Stuff about the track]
+                    This spooky track came out of an interesting creative limitation. A while ago, I recorded some otherworldly sounds from inside the Duke Chapel. In this piece, I challenged myself to only use sounds from <a target="_blank" href="music/Chapel Shrieks 1.mp3">this</a> 11 second clip of that recording, with various effects applied. As you listen, you can almost hear the Halloween spirits throwing a late night party in the chapel.
                 </p>
-                <audio controls src="https://drive.google.com/uc?authuser=0&id=13Dux3OVmMFAD0SGBJEOPAqU1klQSBktU&export=download"></audio>
             </div>
         </div>
 
+        <p class="year_label">2022</p>
+
         <div class="track">
             <img src="images/child_of_the_crescent_moon.png">
-            <div class="track_info">
+            <div class="track_content">
                 <p class="track_title">Child of the Crescent Moon</p>
+                <div class="audio_player" data-audio-src="music/Child of the Crescent Moon.mp3"></div>
                 <p class="track_description">
-                    [Stuff about the track]
+                    This is a pensieve piano piece I came up with one evening. The melody was inspired by the mental image of a child gazing up at a crescent moon late at night.
                 </p>
             </div>
         </div>
 
         <div class="track">
             <img src="images/winter_bells.jpg">
-            <div class="track_info">
+            <div class="track_content">
                 <p class="track_title">Winter Bells</p>
+                <div class="audio_player" data-audio-src="music/Winter Bells.mp3"></div>
                 <p class="track_description">
-                    [Stuff about the track]
+                    This track originated from me experimenting with the <a target="_blank" href="https://www.pianobook.co.uk/packs/winter-voices/">Pianobook Winter Voices</a> sample library. It reflects the beauty of icicles and snow in a sunny winter wonderland, and the joy of playing in the snow.
                 </p>
             </div>
         </div>
+
+        <p class="year_label">2021</p>
 
         <div class="track">
             <img src="images/waves.JPG">
-            <div class="track_info">
+            <div class="track_content">
                 <p class="track_title">Waves</p>
+                <div class="audio_player" data-audio-src="music/Waves.mp3"></div>
                 <p class="track_description">
-                    [Stuff about the track]
+                    I originally wrote this peaceful track to accompany one of my sister's multimedia art projects. As you listen, I hope you can close your eyes, imagine the beauty of the deep blue ocean, and enjoy a moment of peace.
                 </p>
             </div>
         </div>
 
-	</main>
+    </main>
 
-	<script>
-		window.addEventListener("load", function () { document.body.style.opacity = 1; })
-	</script>
+    <script>
+        window.addEventListener("load", function () { document.body.style.opacity = 1; })
+    </script>
     <script src="js/music.js"></script>
 </body>
 

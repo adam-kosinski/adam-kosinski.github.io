@@ -20,7 +20,10 @@ body {
 }
 
 main {
-    padding: 65px 10vw 0 10vw; /*side padding and dodge the page header*/
+    padding-top: 65px; /* to dodge the page header */
+    padding-bottom: 40px; /* to leave space for fade in animation */
+    margin: 0 10vw 0 10vw;
+    max-width: 900px;
 }
 
 .box_link {
@@ -98,7 +101,7 @@ button:has(#hamburger) {
 }
 
 
-@media (max-width: 370px) {
+@media (max-width: 420px) {
     button:has(#hamburger) {
         display: block;
         cursor: pointer;
