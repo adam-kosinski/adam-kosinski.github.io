@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<title>Music | Adam M. Kosinski</title>
+	<meta name="viewport" content="width=device-width initial-scale=1">
+	<link type="text/css" rel="stylesheet" href="css/base.css" />
+    <link type="text/css" rel="stylesheet" href="css/music.css" />
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Open+Sans&family=Life+Savers">
+	<link rel="icon" href="images/favicon.png">
+
+	<script src="js/nav_menu.js"></script>
+</head>
+
+<body>
+	<header id="header">
+        <button onclick="toggleSideNav()">
+            <img id="hamburger" src="images/hamburger_icon.png" alt="Open navigation menu" />
+        </button>
+        <div id="nav_blackout" onclick="toggleSideNav()"></div>
+        <nav>
+            <button id="close_sidenav" onclick="toggleSideNav()" aria-label="Close navigation menu">&#10006;</button>
+            <a href="index.html">Home</a>
+            <a href="projects.html">Projects</a>
+            <a href="music.html">Music</a>
+            <a href="photo_gallery.html">Photography</a>
+            <a href="about.html">About</a>
+        </nav>
+    </header>
+
+	<main>
+        <p id="page_title">Music</p>
+
+        <div class="track">
+            <img src="images/spirits_of_the_chapel.jpg">
+            <div class="track_info">
+                <p class="track_title">Spirits of the Chapel</p>
+                <p class="track_description">
+                    [Stuff about the track]
+                </p>
+                <audio controls src="https://drive.google.com/uc?authuser=0&id=13Dux3OVmMFAD0SGBJEOPAqU1klQSBktU&export=download"></audio>
+            </div>
+        </div>
+
+        <div class="track">
+            <img src="images/child_of_the_crescent_moon.png">
+            <div class="track_info">
+                <p class="track_title">Child of the Crescent Moon</p>
+                <p class="track_description">
+                    [Stuff about the track]
+                </p>
+            </div>
+        </div>
+
+        <div class="track">
+            <img src="images/winter_bells.jpg">
+            <div class="track_info">
+                <p class="track_title">Winter Bells</p>
+                <p class="track_description">
+                    [Stuff about the track]
+                </p>
+            </div>
+        </div>
+
+        <div class="track">
+            <img src="images/waves.JPG">
+            <div class="track_info">
+                <p class="track_title">Waves</p>
+                <p class="track_description">
+                    [Stuff about the track]
+                </p>
+            </div>
+        </div>
+
+	</main>
+
+	<script>
+		window.addEventListener("load", function () { document.body.style.opacity = 1; })
+	</script>
+    <script src="js/music.js"></script>
+</body>
+
+</html>
