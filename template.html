@@ -16,7 +16,7 @@
         <button onclick="toggleSideNav()">
             <img id="hamburger" src="images/hamburger_icon.png" alt="Open navigation menu" />
         </button>
-        <div id="nav_blackout" onclick="toggleSideNav()"></div>
+        <div id="nav_blackout" onpointerdown="toggleSideNav()"></div>
         <nav>
             <button id="close_sidenav" onclick="toggleSideNav()" aria-label="Close navigation menu">&#10006;</button>
             <a href="index.html">Home</a>
@@ -26,9 +26,11 @@
             <a href="about.html">About</a>
         </nav>
     </header>
-	<main>
+
+	<main class="main">
 
 	</main>
+    
 	<script>
 		window.addEventListener("load", function () { document.body.style.opacity = 1; })
 	</script>

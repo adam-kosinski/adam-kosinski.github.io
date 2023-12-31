@@ -19,7 +19,7 @@ body {
     transition-duration: 1s;
 }
 
-main {
+.main {
     padding-top: 65px; /* to dodge the page header */
     padding-bottom: 40px; /* to leave space for fade in animation */
     margin: 0 10vw 0 10vw;
@@ -52,6 +52,7 @@ main {
 
 #header {
     position: fixed;
+    top: 0;
     height: 85px;
     width: 100%;
     font-size: 18px;

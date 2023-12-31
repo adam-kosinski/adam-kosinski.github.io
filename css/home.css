@@ -11,6 +11,10 @@ body {
     overflow: hidden;
 }
 
+main {
+    padding-top: 65px;
+}
+
 #background_image {
     background-image: url('../images/stars.jpg');
     background-size: cover;
