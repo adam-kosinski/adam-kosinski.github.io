@@ -2,6 +2,10 @@ body, html {
     height: initial;
 }
 
+body:has(.seeking) {
+    user-select: none;
+}
+
 #page_title {
     font-size: 64px;
     margin: 48px 0 48px 0;
