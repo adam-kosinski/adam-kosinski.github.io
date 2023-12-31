@@ -75,7 +75,6 @@ document.querySelectorAll(".audio_player").forEach(player => {
     let context;
     let analyser;
     let frequency_data;
-    let hz_per_freq_index; // hz interval that each index increase in frequency_data represents
     let exp_coef; // exp_coef * exp_base ^ x_norm (where x_norm = x/canvas.width belongs to [0,1]) maps to the frequency plotted at that x
     let exp_base;
     // we use x_norm instead of x, because the canvas width might change and I don't want to refit the exponential function
@@ -92,7 +91,6 @@ document.querySelectorAll(".audio_player").forEach(player => {
         analyser = context.createAnalyser();
         analyser.fftSize = 8192;
         frequency_data = new Uint8Array(analyser.frequencyBinCount);
-        hz_per_freq_index = context.sampleRate / analyser.fftSize;
 
         // calculate exp_coef and exp_base, we want:
         // exp_coef * (exp_base ^ 0) = low_hz_bound
@@ -124,7 +122,7 @@ document.querySelectorAll(".audio_player").forEach(player => {
             const x_norm = x / ctx.canvas.width; // using x_norm instead of x because canvas width isn't guaranteed to stay the same
             const freq_index = Math.floor(exp_coef * (exp_base ** x_norm));
 
-            if (freq_index < 0 || freq_index >= frequency_data.length) break; // just in case
+            if (freq_index < 0 || freq_index >= frequency_data.length) continue; // just in case
             if (prev_freq_index && freq_index == prev_freq_index) continue; //smoothing, don't add a new point if we don't have new info
             prev_freq_index = freq_index;
             
@@ -146,13 +144,6 @@ document.querySelectorAll(".audio_player").forEach(player => {
 
         ctx.closePath();
         ctx.fillStyle = "#fff3";
-        const gradient = ctx.createLinearGradient(0, 0, ctx.canvas.width, 0);
-        gradient.addColorStop(0, "#f004");
-        gradient.addColorStop(0.2, "#ff04");
-        gradient.addColorStop(0.4, "#0f04");
-        gradient.addColorStop(0.6, "#0ff4");
-        gradient.addColorStop(1, "#f0f4");
-        ctx.fillStyle = gradient;
         ctx.fill();
     }
     visualize();
