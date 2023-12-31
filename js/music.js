@@ -17,12 +17,14 @@ window.addEventListener("load", updateVisibleTracks);
 
 
 
-function updateVisualizationCanvasWidths(){
+function updateVisualizationCanvasDimensions(){
     document.querySelectorAll(".visualization_canvas").forEach(canvas => {
-        canvas.width = canvas.getBoundingClientRect().width;
+        // make canvas pixels twice as small as css pixels for better resolution
+        canvas.width = 2 * canvas.getBoundingClientRect().width;
+        canvas.height = 2 * canvas.getBoundingClientRect().height;
     });
 }
-window.addEventListener("resize", updateVisualizationCanvasWidths);
+window.addEventListener("resize", updateVisualizationCanvasDimensions);
 
 
 
@@ -53,36 +55,36 @@ document.querySelectorAll(".audio_player").forEach(player => {
     <div class="time_and_seek">
         <div class="time_and_seek_top_row">
             <p class="time_display"><span class="current_time">0:00</span> / <span class="duration">0:00</span></p>
-            <canvas height=20 class="visualization_canvas"></canvas>
+            <canvas class="visualization_canvas"></canvas>
         </div>
         <div class="seek_bar_event_target">
             <div class="seek_bar">
                 <div class="seek_handle"></div>
             </div>
         </div>
-    </div>
-    `;
+    </div>`;
 
     const audio_element = new Audio();
     audio_element.preload = "metadata";
     audio_element.src = player.dataset.audioSrc;
     player.append(audio_element); // easier to implement pause all audio function
 
-    let context; // don't initialize until after user interaction, to avoid warning
+    const visualization_canvas = player.querySelector(".visualization_canvas");
+
+    // declare audio context variables, we will initialize after user interaction to avoid warning
+    let context;
     let analyser;
     let frequency_data;
     let hz_per_freq_index; // hz interval that each index increase in frequency_data represents
-
-    let exp_coef; // exp_coef * exp_base ^ x_norm (where x_norm belongs to [0,1]) maps to the frequency plotted at that x
+    let exp_coef; // exp_coef * exp_base ^ x_norm (where x_norm = x/canvas.width belongs to [0,1]) maps to the frequency plotted at that x
     let exp_base;
     // we use x_norm instead of x, because the canvas width might change and I don't want to refit the exponential function
 
-    const visualization_canvas = player.querySelector(".visualization_canvas");
     // visualization config
     const low_hz_bound = 5; // x = 0 will map to this hz
     const high_hz_bound = 2000; // x = canvas width will map to this hz
-    const baseline_px = 2;
-    const top_clearance_px = 1; // so the stroke doesn't clip the canvas top
+    const baseline_px = 4; // when amplitude is zero, still show some height to guarantee a solid stroke / fill
+    const top_clearance_px = 2; // so the stroke doesn't clip the canvas top
 
     const initAudioContext = function () {
         context = new AudioContext();
@@ -134,6 +136,8 @@ document.querySelectorAll(".audio_player").forEach(player => {
 
         ctx.lineTo(x, ctx.canvas.height - baseline_px);
         ctx.strokeStyle = "white";
+        ctx.lineWidth = 2;
+        ctx.lineJoin = "round";
         ctx.stroke();
 
         //do baseline bit
@@ -142,6 +146,13 @@ document.querySelectorAll(".audio_player").forEach(player => {
 
         ctx.closePath();
         ctx.fillStyle = "#fff3";
+        const gradient = ctx.createLinearGradient(0, 0, ctx.canvas.width, 0);
+        gradient.addColorStop(0, "#f004");
+        gradient.addColorStop(0.2, "#ff04");
+        gradient.addColorStop(0.4, "#0f04");
+        gradient.addColorStop(0.6, "#0ff4");
+        gradient.addColorStop(1, "#f0f4");
+        ctx.fillStyle = gradient;
         ctx.fill();
     }
     visualize();
@@ -213,4 +224,4 @@ document.querySelectorAll(".audio_player").forEach(player => {
     });
 });
 
-updateVisualizationCanvasWidths();
+updateVisualizationCanvasDimensions();
