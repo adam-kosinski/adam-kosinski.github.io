@@ -119,19 +119,31 @@ button.play_pause {
     flex-grow: 1;
     flex-wrap: wrap;
 }
-@media (max-width: 650px) {
-    .time_and_seek {
-        flex-wrap: wrap;
-    }
+
+.time_and_seek_top_row {
+    display: flex;
+    gap: 10px;
+    width: 100%;
 }
 
 
 .time_display {
     white-space: nowrap;
     margin: 0;
-    margin-right: 16px; /* 10px to emulate flexbox gap + 6px to accomodate seek handle when at far left */
-    /* if we set gap on the flexbox parent, it would apply vertically when flex-wrap: wrap; is active, not desired */
 }
+
+
+.visualization_canvas {
+    height: 20px;
+    width: 100px;
+    flex-grow: 1;
+    opacity: 0;
+    transition: opacity 1s;
+}
+.playing .visualization_canvas {
+    opacity: 1;
+}
+
 
 
 .seek_bar_event_target {
@@ -139,7 +151,6 @@ button.play_pause {
     height: 20px; /* taller to more easily capture events */
     display: flex;
     align-items: center;
-    margin-right: 6px; /* to accomodate seek handle when at far right */
     cursor: pointer;
     touch-action: none; /* so that we don't drop the seeking to start scrolling by accident etc */
 }
@@ -170,3 +181,5 @@ button.play_pause {
 .seeking .seek_handle {
     opacity: 1;
 }
+
+
