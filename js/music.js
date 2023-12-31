@@ -92,6 +92,7 @@ document.querySelectorAll(".audio_player").forEach(player => {
     });
     const setCurrentTimeDisplay = function (time) {
         player.querySelector(".current_time").textContent = durationString(time);
+        seek_bar.style.borderLeftWidth = 0; // hack so that getBoundingClientRect() works on shrinking window resize (remove border briefly so that width can be calculated by the browser correctly)
         const fraction = time / audio_element.duration;
         seek_bar.style.borderLeftWidth = fraction * seek_bar.getBoundingClientRect().width + "px";
     }
@@ -99,6 +100,7 @@ document.querySelectorAll(".audio_player").forEach(player => {
         if (player.classList.contains("seeking")) return;
         setCurrentTimeDisplay(audio_element.currentTime);
     });
+    window.addEventListener("resize", e => {setCurrentTimeDisplay(audio_element.currentTime);});
 
     // seek
     let seek_time_target = 0; // store where we want to seek until we're done seeking, only then update audio's current time
