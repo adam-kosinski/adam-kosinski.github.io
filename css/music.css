@@ -117,6 +117,7 @@ button.play_pause {
     margin: 0;
     width: 100px;
     flex-grow: 1;
+    flex-wrap: wrap;
 }
 @media (max-width: 650px) {
     .time_and_seek {
