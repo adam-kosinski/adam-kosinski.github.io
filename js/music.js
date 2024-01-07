@@ -125,7 +125,7 @@ document.querySelectorAll(".audio_player").forEach(player => {
     howl.on("pause", () => { player.classList.remove("playing") });
     howl.on("end", () => { player.classList.remove("playing") });
 
-    
+
     // duration
 
     const seek_bar = player.querySelector(".seek_bar");
@@ -177,7 +177,7 @@ document.querySelectorAll(".audio_player").forEach(player => {
     const display_loop = function () {
         requestAnimationFrame(display_loop);
 
-        if (!locked && !player.classList.contains("seeking")){
+        if (!locked && !player.classList.contains("seeking")) {
             setCurrentTimeDisplay(howl.seek());
         }
 
@@ -238,4 +238,14 @@ navigator.mediaSession.setActionHandler("play", () => {
 navigator.mediaSession.setActionHandler("pause", () => {
     console.log("media session pause");
     pauseAllAudio();
+});
+
+
+// really hacky fix for safari iOS audio bugs caused by minimizing and reopening the page
+// pause music manually when the app is closed / minimized to avoid music speed-up and pausing failures
+// (bug where it will loop the last half second or so indefinitely when you pause)
+document.addEventListener("visibilitychange", e => {
+    if (/iPhone/.test(navigator.userAgent) && document.visibilityState != "visible") {
+        pauseAllAudio();
+    }
 });
