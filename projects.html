@@ -1,269 +1,388 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
+  <head>
     <title>Projects | Adam M. Kosinski</title>
-    <meta name="viewport" content="width=device-width initial-scale=1">
+    <meta name="viewport" content="width=device-width initial-scale=1" />
     <link type="text/css" rel="stylesheet" href="css/base.css" />
     <link type="text/css" rel="stylesheet" href="css/projects.css" />
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Open+Sans&family=Life+Savers">
-    <link rel="icon" href="images/favicon.png">
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Open+Sans&family=Life+Savers"
+    />
+    <link rel="icon" href="images/favicon.png" />
 
     <script src="js/nav_menu.js"></script>
-</head>
+  </head>
 
-<body>
+  <body>
     <header id="header">
-        <button onclick="toggleSideNav()">
-            <img id="hamburger" src="images/hamburger_icon.png" alt="Open navigation menu" />
+      <button onclick="toggleSideNav()">
+        <img
+          id="hamburger"
+          src="images/hamburger_icon.png"
+          alt="Open navigation menu"
+        />
+      </button>
+      <div id="nav_blackout" onpointerdown="toggleSideNav()"></div>
+      <nav>
+        <button
+          id="close_sidenav"
+          onclick="toggleSideNav()"
+          aria-label="Close navigation menu"
+        >
+          &#10006;
         </button>
-        <div id="nav_blackout" onpointerdown="toggleSideNav()"></div>
-        <nav>
-            <button id="close_sidenav" onclick="toggleSideNav()" aria-label="Close navigation menu">&#10006;</button>
-            <a href="index.html">Home</a>
-            <a href="projects.html">Projects</a>
-            <a href="music.html">Music</a>
-            <a href="photo_gallery.html">Photography</a>
-            <a href="about.html">About</a>
-        </nav>
+        <a href="index.html">Home</a>
+        <a href="projects.html">Projects</a>
+        <a href="music.html">Music</a>
+        <a href="photo_gallery.html">Photography</a>
+        <a href="about.html">About</a>
+      </nav>
     </header>
 
     <main class="main">
-        <p id="page_title">Projects</p>
+      <p id="page_title">Projects</p>
 
-        <div class="project">
-            <p class="project_title">Bird ID Training Tool</p>
-            <div class="project_info">
-                <img src="images/bird_id.png">
-                <p class="project_description">
-                    This is a tool that helps you learn to identify birds based on their song and what they look like.
-                    It interfaces with the iNaturalist API to provide endless practice examples for any bird on the planet,
-                    and automatically links to resources explaining how to identify them. There is also a cool search feature
-                    for finding out which birds are commonly observed in your area, and letting you practice those.
-                    <br><br>
-                    This project helped me learn the basics of Figma, which I used to design the user interface (UI) for this app.
-                    It is my first mobile-first UI design, and first time I put significant effort into the UI of a website.
-                    <br>
-                    <a href="https://adam-kosinski.github.io/Birds/" class="box_link">Take a Look ></a>
-                </p>
-            </div>
+      <div class="project">
+        <p class="project_title">Fake Monet Painting Generator</p>
+        <div class="project_info">
+          <img src="images/monet_gan.png" />
+          <p class="project_description">
+            I coded this demo to showcase my final project for a Deep Machine
+            Learning class. For the project, me and a partner trained a type of
+            generative adversarial network (GAN) called a
+            <a href="https://arxiv.org/pdf/1703.10593" target="_blank"
+              >CycleGAN</a
+            >
+            to convert photos into the style of Monet. We combined this with a
+            <a href="https://arxiv.org/pdf/1710.10196" target="_blank"
+              >progressive growing technique</a
+            >
+            for more stable training.
+            <br />
+            <a
+              href="https://adam-kosinski.github.io/Monet-GAN-Demo/"
+              class="box_link"
+              >Take a Look ></a
+            >
+          </p>
         </div>
+      </div>
 
-        <div class="project">
-            <p class="project_title">Wildflower ID Training Tool</p>
-            <div class="project_info">
-                <img src="images/wildflowers.png">
-                <p class="project_description">
-                    This is a tool I created to help me learn to identify wildflower families.
-                    It repeatedly shows you images of wildflowers in my home area pulled from iNaturalist
-                    and you have to guess the wildflower family.
-                    <br>
-                    <a href="https://adam-kosinski.github.io/Wildflowers/" class="box_link">Take a Look ></a>
-                </p>
-            </div>
+      <div class="project">
+        <p class="project_title">Pente Game Engine</p>
+        <div class="project_info">
+          <img src="images/pente.png" />
+          <p class="project_description">
+            This is a game engine designed to play and analyze the board game
+            Pente. This project was inspired by my enjoyment of this game, and
+            the absence of other analysis engines online for this game. The
+            algorithm uses a variant of minimax/alpha-beta pruning called
+            principal variation search, in combination with various heuristics I
+            learned about while researching.
+            <br />
+            <a href="https://adam-kosinski.github.io/Pente/" class="box_link"
+              >Take a Look ></a
+            >
+          </p>
         </div>
+      </div>
 
-        <div class="project">
-            <p class="project_title">PMAPS</p>
-            <div class="project_info">
-                <img src="images/PMAPS.png">
-                <div class="project_description">
-                    This is an app for Project WILD, a backpacking / outdoor activity preorientation program at Duke
-                    University. It lets staffers annotate and categorize locations on a trail map. These annotations can
-                    then be viewed by others, a fantastic way of sharing knowledge about an area. The app existed since
-                    2014, but it stopped functioning around 2016. I became in charge of getting the project back up and
-                    running in Fall 2022, and in addition to doing so, improved the design a bit and added several new
-                    features (commenting, a legend, etc). Working on this gave me a lot of experience with the Google
-                    Maps API and Google Firebase's Realtime Database, which the project is built upon. It also gave me
-                    an appreciation for how cloud platforms can make creating genuinely useful apps much
-                    easier.<br><br>Note: No link for this one since the app is intended for Project WILD use only.
-                </div>
-            </div>
+      <div class="project">
+        <p class="project_title">Bird ID Training Tool</p>
+        <div class="project_info">
+          <img src="images/bird_id.png" />
+          <p class="project_description">
+            This is a tool that helps you learn to identify birds based on their
+            song and what they look like. It interfaces with the iNaturalist API
+            to provide endless practice examples for any bird on the planet, and
+            automatically links to resources explaining how to identify them.
+            There is also a cool search feature for finding out which birds are
+            commonly observed in your area, and letting you practice those.
+            <br /><br />
+            This project helped me learn the basics of Figma, which I used to
+            design the user interface (UI) for this app. It is my first
+            mobile-first UI design, and first time I put significant effort into
+            the UI of a website.
+            <br />
+            <a href="https://adam-kosinski.github.io/Birds/" class="box_link"
+              >Take a Look ></a
+            >
+          </p>
         </div>
+      </div>
 
-        <div class="project">
-            <p class="project_title">Photo Gallery</p>
-            <div class="project_info">
-                <img src="images/photo_gallery.png">
-                <div class="project_description">
-                    An interactive photo gallery layout I created from scratch to display some of my most artistic
-                    photos. This project helped me learn a lot about HTML flexbox, CSS variables, CSS animations/transitions, and touch events.
-                    You can see the gallery at the link below or by navigating to the website's "Photography" tab.
-                    <br>
-                    <a href="photo_gallery.html" class="box_link">Take a Look ></a>
-                </div>
-            </div>
+      <div class="project">
+        <p class="project_title">Wildflower ID Training Tool</p>
+        <div class="project_info">
+          <img src="images/wildflowers.png" />
+          <p class="project_description">
+            This is a tool I created to help me learn to identify wildflower
+            families. It repeatedly shows you images of wildflowers in my home
+            area pulled from iNaturalist and you have to guess the wildflower
+            family.
+            <br />
+            <a
+              href="https://adam-kosinski.github.io/Wildflowers/"
+              class="box_link"
+              >Take a Look ></a
+            >
+          </p>
         </div>
+      </div>
 
-        <div class="project">
-            <p class="project_title">Pig Latin</p>
-            <div class="project_info">
-                <img src="images/pig.png">
-                <div class="project_description">
-                    Some JavaScript code I wrote that will translate any website into pig latin. This is one of my
-                    favorite projects.
-                    <br>
-                    <a href="https://adam-kosinski.github.io/Small-Projects/Pig%20Latin/pigLatin.html" class="box_link">Take a Look ></a>
-                </div>
-            </div>
+      <div class="project">
+        <p class="project_title">PMAPS</p>
+        <div class="project_info">
+          <img src="images/PMAPS.png" />
+          <div class="project_description">
+            This is an app for Project WILD, a backpacking / outdoor activity
+            preorientation program at Duke University. It lets staffers annotate
+            and categorize locations on a trail map. These annotations can then
+            be viewed by others, a fantastic way of sharing knowledge about an
+            area. The app existed since 2014, but it stopped functioning around
+            2016. I became in charge of getting the project back up and running
+            in Fall 2022, and in addition to doing so, improved the design a bit
+            and added several new features (commenting, a legend, etc). Working
+            on this gave me a lot of experience with the Google Maps API and
+            Google Firebase's Realtime Database, which the project is built
+            upon. It also gave me an appreciation for how cloud platforms can
+            make creating genuinely useful apps much easier.<br /><br />Note: No
+            link for this one since the app is intended for Project WILD use
+            only.
+          </div>
         </div>
+      </div>
 
-        <div class="project">
-            <p class="project_title">Interactive Graph Editor</p>
-            <div class="project_info">
-                <img src="images/draw_graph.png">
-                <div class="project_description">
-                    This is a program I created when studying mathematical graphs in high school. It allows
-                    you to input a graph and move around the vertices, a useful tool for identifying if two
-                    graphs are the same. It also automatically generates the adjacency matrix of the graph,
-                    which can be copied and used by other programs to analyze the graph. This is a much quicker
-                    method of inputting graphs into a computer than creating the adjacency matrix by hand.
-                    <br>
-                    <a href="https://adam-kosinski.github.io/Draw-Graph/" class="box_link">Take a Look ></a>
-                </div>
-            </div>
+      <div class="project">
+        <p class="project_title">Photo Gallery</p>
+        <div class="project_info">
+          <img src="images/photo_gallery.png" />
+          <div class="project_description">
+            An interactive photo gallery layout I created from scratch to
+            display some of my most artistic photos. This project helped me
+            learn a lot about HTML flexbox, CSS variables, CSS
+            animations/transitions, and touch events. You can see the gallery at
+            the link below or by navigating to the website's "Photography" tab.
+            <br />
+            <a href="photo_gallery.html" class="box_link">Take a Look ></a>
+          </div>
         </div>
+      </div>
 
-        <div class="project">
-            <p class="project_title">Catch the Snitch</p>
-            <div class="project_info">
-                <img src="images/snitch.png">
-                <div class="project_description">
-                    A Harry-Potter inspired program where you have one goal - click on the flying snitch to catch it.
-                    The snitch stops moving once you've caught it. Sounds easy, right? Go on then, give it a try...
-                    <br>
-                    <a href="https://adam-kosinski.github.io/Small-Projects/Catch%20The%20Snitch/snitch.html" class="box_link">Take a Look ></a>
-                </div>
-            </div>
+      <div class="project">
+        <p class="project_title">Pig Latin</p>
+        <div class="project_info">
+          <img src="images/pig.png" />
+          <div class="project_description">
+            Some JavaScript code I wrote that will translate any website into
+            pig latin. This is one of my favorite projects.
+            <br />
+            <a
+              href="https://adam-kosinski.github.io/Small-Projects/Pig%20Latin/pigLatin.html"
+              class="box_link"
+              >Take a Look ></a
+            >
+          </div>
         </div>
+      </div>
 
-        <div class="project">
-            <p class="project_title">Shadows</p>
-            <div class="project_info">
-                <img src="images/shadows.png">
-                <div class="project_description">
-                    A fun little program where you create polygons and then can move a light source
-                    around to cast shadows.
-                    <br>
-                    <a href="https://adam-kosinski.github.io/Small-Projects/Shadows/shadows.html" class="box_link">Take a Look ></a>
-                </div>
-            </div>
+      <div class="project">
+        <p class="project_title">Interactive Graph Editor</p>
+        <div class="project_info">
+          <img src="images/draw_graph.png" />
+          <div class="project_description">
+            This is a program I created when studying mathematical graphs in
+            high school. It allows you to input a graph and move around the
+            vertices, a useful tool for identifying if two graphs are the same.
+            It also automatically generates the adjacency matrix of the graph,
+            which can be copied and used by other programs to analyze the graph.
+            This is a much quicker method of inputting graphs into a computer
+            than creating the adjacency matrix by hand.
+            <br />
+            <a
+              href="https://adam-kosinski.github.io/Draw-Graph/"
+              class="box_link"
+              >Take a Look ></a
+            >
+          </div>
         </div>
+      </div>
 
-        <div class="project">
-            <p class="project_title">Frustration</p>
-            <div class="project_info">
-                <img src="images/frustration.png">
-                <div class="project_description">
-                    This program came out a simple question - "How frustrating could I make a user interface
-                    to use?" Try it out and see if you can keep your temper.
-                    <br>
-                    <a href="https://adam-kosinski.github.io/Small-Projects/Frustration/frustration.html" class="box_link">Take a Look ></a>
-                </div>
-            </div>
+      <div class="project">
+        <p class="project_title">Catch the Snitch</p>
+        <div class="project_info">
+          <img src="images/snitch.png" />
+          <div class="project_description">
+            A Harry-Potter inspired program where you have one goal - click on
+            the flying snitch to catch it. The snitch stops moving once you've
+            caught it. Sounds easy, right? Go on then, give it a try...
+            <br />
+            <a
+              href="https://adam-kosinski.github.io/Small-Projects/Catch%20The%20Snitch/snitch.html"
+              class="box_link"
+              >Take a Look ></a
+            >
+          </div>
         </div>
+      </div>
 
-        <div class="project">
-            <p class="project_title">Tank Trouble Remake</p>
-            <div class="project_info">
-                <img src="images/tanks.png">
-                <div class="project_description">
-                    This is a remake of the popular online game Tank Trouble, that I did as a personal
-                    challenge. Conveniently, it also means I can play the game with my friends without ads
-                    or weird cookies.
-                    <br>
-                    <a href="https://adam-kosinski.github.io/Tanks/" class="box_link">Take a Look ></a>
-                </div>
-            </div>
+      <div class="project">
+        <p class="project_title">Shadows</p>
+        <div class="project_info">
+          <img src="images/shadows.png" />
+          <div class="project_description">
+            A fun little program where you create polygons and then can move a
+            light source around to cast shadows.
+            <br />
+            <a
+              href="https://adam-kosinski.github.io/Small-Projects/Shadows/shadows.html"
+              class="box_link"
+              >Take a Look ></a
+            >
+          </div>
         </div>
+      </div>
 
-        <div class="project">
-            <p class="project_title">Mastermind</p>
-            <div class="project_info">
-                <img src="images/mastermind.png">
-                <div class="project_description">
-                    The famous board game Mastermind! Now you can play it solo.
-                    <br>
-                    <a href="https://adam-kosinski.github.io/Small-Projects/Mastermind/mastermind.html" class="box_link">Take a Look ></a>
-                </div>
-            </div>
+      <div class="project">
+        <p class="project_title">Frustration</p>
+        <div class="project_info">
+          <img src="images/frustration.png" />
+          <div class="project_description">
+            This program came out a simple question - "How frustrating could I
+            make a user interface to use?" Try it out and see if you can keep
+            your temper.
+            <br />
+            <a
+              href="https://adam-kosinski.github.io/Small-Projects/Frustration/frustration.html"
+              class="box_link"
+              >Take a Look ></a
+            >
+          </div>
         </div>
+      </div>
 
-        <div class="project">
-            <p class="project_title">Isometric 3D Rendering from Scratch</p>
-            <div class="project_info">
-                <img src="images/iso.png">
-                <div class="project_description">
-                    This is an attempt to render a rotating cube completely from scratch (just JavaScript and an HTML
-                    Canvas). I learned a lot about graphics and rendering through this project.
-                    <br>
-                    <!-- <a href="../Isometric/iso.html" class="box_link">Take a Look ></a> -->
-                </div>
-            </div>
+      <div class="project">
+        <p class="project_title">Tank Trouble Remake</p>
+        <div class="project_info">
+          <img src="images/tanks.png" />
+          <div class="project_description">
+            This is a remake of the popular online game Tank Trouble, that I did
+            as a personal challenge. Conveniently, it also means I can play the
+            game with my friends without ads or weird cookies.
+            <br />
+            <a href="https://adam-kosinski.github.io/Tanks/" class="box_link"
+              >Take a Look ></a
+            >
+          </div>
         </div>
+      </div>
 
-        <div class="project">
-            <p class="project_title">Puzzle Cube Solver</p>
-            <div class="project_info">
-                <img src="images/puzzle_cube.png">
-                <div class="project_description">
-                    In an engineering class we created 3x3x3 puzzle cubes where you had to fit together several
-                    pieces to form the complete cube. I wanted to see if my cube had a unique solution, so I wrote
-                    a program that could solve the cube and output all possible solutions.
-                    <br>
-                    <!-- <a href="../Puzzle%20Cube/cube.html" class="box_link">Take a Look ></a> -->
-                </div>
-            </div>
+      <div class="project">
+        <p class="project_title">Mastermind</p>
+        <div class="project_info">
+          <img src="images/mastermind.png" />
+          <div class="project_description">
+            The famous board game Mastermind! Now you can play it solo.
+            <br />
+            <a
+              href="https://adam-kosinski.github.io/Small-Projects/Mastermind/mastermind.html"
+              class="box_link"
+              >Take a Look ></a
+            >
+          </div>
         </div>
+      </div>
 
-        <div class="project">
-            <p class="project_title">Three.js Experiment</p>
-            <div class="project_info">
-                <img src="images/threejs_test.png">
-                <div class="project_description">
-                    This was a test I created in preparation for working on a multiplayer fencing
-                    game (which I'm no longer working on).
-                    <br>
-                    <a href="https://adam-kosinski.github.io/Small-Projects/threejs%20test/3D.html" class="box_link">Take a Look ></a>
-                </div>
-            </div>
+      <div class="project">
+        <p class="project_title">Isometric 3D Rendering from Scratch</p>
+        <div class="project_info">
+          <img src="images/iso.png" />
+          <div class="project_description">
+            This is an attempt to render a rotating cube completely from scratch
+            (just JavaScript and an HTML Canvas). I learned a lot about graphics
+            and rendering through this project.
+            <br />
+            <!-- <a href="../Isometric/iso.html" class="box_link">Take a Look ></a> -->
+          </div>
         </div>
+      </div>
 
-        <div class="project">
-            <p class="project_title">Dodge Game</p>
-            <div class="project_info">
-                <img src="images/dodge_game.png">
-                <div class="project_description">
-                    A simple game a friend and I made in an hour-long coding challenge. You move your mouse to dodge the
-                    moving red boxes.
-                    <br>
-                    <a href="https://adam-kosinski.github.io/Small-Projects/Dodge Game/dodgeGame.html" class="box_link">Take a Look ></a>
-                </div>
-            </div>
+      <div class="project">
+        <p class="project_title">Puzzle Cube Solver</p>
+        <div class="project_info">
+          <img src="images/puzzle_cube.png" />
+          <div class="project_description">
+            In an engineering class we created 3x3x3 puzzle cubes where you had
+            to fit together several pieces to form the complete cube. I wanted
+            to see if my cube had a unique solution, so I wrote a program that
+            could solve the cube and output all possible solutions.
+            <br />
+            <!-- <a href="../Puzzle%20Cube/cube.html" class="box_link">Take a Look ></a> -->
+          </div>
         </div>
+      </div>
 
-        <div class="project">
-            <p class="project_title">Maze Player</p>
-            <div class="project_info">
-                <img src="images/maze.png">
-                <div class="project_description">
-                    A maze solver program, where you try to find your way through one of several mazes with limited
-                    vision. Good luck!
-                    <br>
-                    <a href="https://adam-kosinski.github.io/Small-Projects/Maze/maze.html" class="box_link">Take a Look ></a>
-                </div>
-            </div>
+      <!-- <div class="project">
+        <p class="project_title">Three.js Experiment</p>
+        <div class="project_info">
+          <img src="images/threejs_test.png" />
+          <div class="project_description">
+            This was a test I created in preparation for working on a
+            multiplayer fencing game (which I'm no longer working on).
+            <br />
+            <a
+              href="https://adam-kosinski.github.io/Small-Projects/threejs%20test/3D.html"
+              class="box_link"
+              >Take a Look ></a
+            >
+          </div>
         </div>
+      </div> -->
 
+      <div class="project">
+        <p class="project_title">Dodge Game</p>
+        <div class="project_info">
+          <img src="images/dodge_game.png" />
+          <div class="project_description">
+            A simple game a friend and I made in an hour-long coding challenge.
+            You move your mouse to dodge the moving red boxes.
+            <br />
+            <a
+              href="https://adam-kosinski.github.io/Small-Projects/Dodge Game/dodgeGame.html"
+              class="box_link"
+              >Take a Look ></a
+            >
+          </div>
+        </div>
+      </div>
 
-        <!-- <a href="Nonograms/NonogramSolver/nonogramSolver.html">Nonogram Solver</a>
+      <div class="project">
+        <p class="project_title">Maze Player</p>
+        <div class="project_info">
+          <img src="images/maze.png" />
+          <div class="project_description">
+            A maze solver program, where you try to find your way through one of
+            several mazes with limited vision. Good luck!
+            <br />
+            <a
+              href="https://adam-kosinski.github.io/Small-Projects/Maze/maze.html"
+              class="box_link"
+              >Take a Look ></a
+            >
+          </div>
+        </div>
+      </div>
+
+      <!-- <a href="Nonograms/NonogramSolver/nonogramSolver.html">Nonogram Solver</a>
             <a href="Nonograms/NonogramMaker/nonogramMaker.html">Nonogram Maker</a>
             <p>Game on Graphs Stuff: <a href="Game on Graphs/Version 2/graphs.html">link</a></p> -->
     </main>
     <script>
-        window.addEventListener("load", function () { document.body.style.opacity = 1; })
+      window.addEventListener("load", function () {
+        document.body.style.opacity = 1;
+      });
     </script>
     <script src="js/projects.js"></script>
-</body>
-
+  </body>
 </html>

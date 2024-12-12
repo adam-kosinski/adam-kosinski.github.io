@@ -1,44 +1,65 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
+  <head>
     <title>About | Adam M. Kosinski</title>
-    <meta name="viewport" content="width=device-width initial-scale=1">
+    <meta name="viewport" content="width=device-width initial-scale=1" />
     <link type="text/css" rel="stylesheet" href="css/base.css" />
     <link type="text/css" rel="stylesheet" href="css/about.css" />
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Open+Sans&family=Life+Savers">
-    <link rel="icon" href="images/favicon.png">
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Open+Sans&family=Life+Savers"
+    />
+    <link rel="icon" href="images/favicon.png" />
 
     <script src="js/nav_menu.js"></script>
-</head>
+  </head>
 
-<body>
+  <body>
     <header id="header">
-        <button onclick="toggleSideNav()">
-            <img id="hamburger" src="images/hamburger_icon.png" alt="Open navigation menu" />
+      <button onclick="toggleSideNav()">
+        <img
+          id="hamburger"
+          src="images/hamburger_icon.png"
+          alt="Open navigation menu"
+        />
+      </button>
+      <div id="nav_blackout" onpointerdown="toggleSideNav()"></div>
+      <nav>
+        <button
+          id="close_sidenav"
+          onclick="toggleSideNav()"
+          aria-label="Close navigation menu"
+        >
+          &#10006;
         </button>
-        <div id="nav_blackout" onpointerdown="toggleSideNav()"></div>
-        <nav>
-            <button id="close_sidenav" onclick="toggleSideNav()" aria-label="Close navigation menu">&#10006;</button>
-            <a href="index.html">Home</a>
-            <a href="projects.html">Projects</a>
-            <a href="music.html">Music</a>
-            <a href="photo_gallery.html">Photography</a>
-            <a href="about.html">About</a>
-        </nav>
+        <a href="index.html">Home</a>
+        <a href="projects.html">Projects</a>
+        <a href="music.html">Music</a>
+        <a href="photo_gallery.html">Photography</a>
+        <a href="about.html">About</a>
+      </nav>
     </header>
     <main class="main">
-        <img id="adam_pic" src="images/Adam_Kosinski.png" alt="Picture of Adam Kosinski"/>
-        <p id="page_title">About Me</p>
-        <p id="text_content">
-            Hi there! My name is Adam M. Kosinski, and I'm an undergraduate student at Duke University majoring in
-            Computer Science, with plans to minor in Biology and French. I expect to graduate in May 2024. Some of
-            my other interests include hiking, plants, music, and board games.
-        </p>
+      <img
+        id="adam_pic"
+        src="images/Adam_Kosinski.png"
+        alt="Picture of Adam Kosinski"
+      />
+      <p id="page_title">About Me</p>
+      <p id="text_content">
+        Hi there! My name is Adam M. Kosinski. This website is a place for me to
+        showcase all my fun personal projects that I work on in my free time.
+        I'm an master's in computer science student at Duke University. In my
+        undergrad, I majored in Computer Science with a minor in Biology focused
+        on plants/ecology. I expect to finish my computer science master's
+        degree in May 2025. Some of my interests include hiking, plants, music,
+        and board games.
+      </p>
     </main>
     <script>
-        window.addEventListener("load", function () { document.body.style.opacity = 1; })
+      window.addEventListener("load", function () {
+        document.body.style.opacity = 1;
+      });
     </script>
-</body>
-
+  </body>
 </html>
